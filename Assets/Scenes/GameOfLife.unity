@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   _Material: {fileID: 2100000, guid: 5623b62e053ccd04ba73f93d5d5c54f1, type: 2}
-  _InitMode: 1
+  _InitMode: 2
   _InitialCellPositions:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -176,6 +176,8 @@ MonoBehaviour:
   - {x: 2, y: 1}
   - {x: 0, y: 2}
   _InitalPreset: 0
+  _RandomResolution: 10
+  _RandomChance: 0.5
   _IterationDuration: 0.5
   simulationBounds:
     m_Position: {x: 0, y: 0, z: 0}

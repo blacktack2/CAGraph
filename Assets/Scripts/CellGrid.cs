@@ -18,7 +18,7 @@ public class CellGrid : MonoBehaviour
     [SerializeField]
     private Material _Material;
 
-    private enum InitMode { Manual, Preset }
+    private enum InitMode { Manual, Preset, Random }
 
     [SerializeField]
     private InitMode _InitMode = InitMode.Manual;
@@ -27,6 +27,10 @@ public class CellGrid : MonoBehaviour
     private Vector2Int[] _InitialCellPositions;
     [SerializeField]
     private Preset _InitalPreset;
+    [SerializeField, Range(2, 100)]
+    private int _RandomResolution = 10;
+    [SerializeField, Range(0, 1)]
+    private float _RandomChance = 0.5f;
 
     [SerializeField]
     private float _IterationDuration = 0.5f;
@@ -46,9 +50,16 @@ public class CellGrid : MonoBehaviour
             for (int i = 0; i < _InitialCellPositions.Length; i++)
                 CreateCell(_InitialCellPositions[i]);
         }
-        else
+        else if (_InitMode == InitMode.Preset)
         {
             LoadPreset(Vector2Int.zero);
+        }
+        else
+        {
+            for (int x = 0; x < _RandomResolution; x++)
+                for (int y = 0; y < _RandomResolution; y++)
+                    if (Random.value < _RandomChance)
+                        CreateCell(new Vector2Int(x - _RandomResolution / 2, y - _RandomResolution / 2));
         }
     }
 
