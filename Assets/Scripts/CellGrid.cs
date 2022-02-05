@@ -27,7 +27,7 @@ public class CellGrid : MonoBehaviour
     private Vector2Int[] _InitialCellPositions;
     [SerializeField]
     private Preset _InitalPreset;
-    [SerializeField, Range(2, 100)]
+    [SerializeField, Range(2, 1000)]
     private int _RandomResolution = 10;
     [SerializeField, Range(0, 1)]
     private float _RandomChance = 0.5f;
@@ -35,7 +35,9 @@ public class CellGrid : MonoBehaviour
     [SerializeField]
     private float _IterationDuration = 0.5f;
 
-    public BoundsInt simulationBounds;
+    private BoundsInt _SimulationBounds;
+    public BoundsInt simulationBounds => _SimulationBounds;
+    public int cellCount => _Cells.Count;
 
     private Dictionary<Vector2Int, Transform> _Cells;
     private Dictionary<Vector2Int, CellData> _Neighbours;
@@ -121,8 +123,8 @@ public class CellGrid : MonoBehaviour
                 max.y = Mathf.Max(position.y + 1, max.y);
             }
         }
-        simulationBounds.min = min;
-        simulationBounds.max = max;
+        _SimulationBounds.min = min;
+        _SimulationBounds.max = max;
     }
 
     void IncrementNeighboursAt(Vector2Int position)
@@ -137,7 +139,6 @@ public class CellGrid : MonoBehaviour
     void LoadPreset(Vector2Int offset)
     {
         string filename = "Presets/" + _PresetFiles[(int)_InitalPreset];
-        Debug.Log(filename);
         TextAsset dataset = Resources.Load<TextAsset>(filename);
         string[] positions = dataset.text.Split(new char[] {','});
         foreach (string posText in positions)
