@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellGrid : MonoBehaviour
+public class CellGridCPU : CellGrid
 {
     private struct CellData
     {
@@ -27,7 +27,7 @@ public class CellGrid : MonoBehaviour
     private Vector2Int[] _InitialCellPositions;
     [SerializeField]
     private Preset _InitalPreset;
-    [SerializeField, Range(2, 1000)]
+    [SerializeField, Range(2, 200)]
     private int _RandomResolution = 10;
     [SerializeField, Range(0, 1)]
     private float _RandomChance = 0.5f;
@@ -37,7 +37,6 @@ public class CellGrid : MonoBehaviour
 
     private BoundsInt _SimulationBounds;
     public BoundsInt simulationBounds => _SimulationBounds;
-    public int cellCount => _Cells.Count;
 
     private Dictionary<Vector2Int, Transform> _Cells;
     private Dictionary<Vector2Int, CellData> _Neighbours;
@@ -164,5 +163,10 @@ public class CellGrid : MonoBehaviour
         {
             Destroy(_Cells[position].gameObject);
         }
+    }
+
+    public override int GetCellCount()
+    {
+        return _Cells.Count;
     }
 }

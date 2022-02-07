@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraTrackBounds : MonoBehaviour
 {
     [SerializeField]
-    private CellGrid _TrackTarget;
+    private CellGridCPU _TrackTarget;
 
     void LateUpdate()
     {

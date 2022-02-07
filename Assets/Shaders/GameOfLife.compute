@@ -1,0 +1,34 @@
+#pragma kernel IterateCells
+
+RWStructuredBuffer<int> _Cells;
+RWStructuredBuffer<int> _NextCells;
+
+uint _Scale;
+
+int GetCellAt(uint2 xy)
+{
+    if (xy.x < _Scale && xy.y < _Scale)
+        return _Cells[xy.x + xy.y * _Scale];
+    return false;
+}
+
+void SetCellAt(uint2 xy, int value)
+{
+    if (xy.x < _Scale && xy.y < _Scale)
+        _NextCells[xy.x + xy.y * _Scale] = value;
+}
+
+[numthreads(8, 8, 1)]
+void IterateCells(uint3 id: SV_DispatchThreadID)
+{
+    uint neighbours =
+        GetCellAt(id.xy + int2(-1, -1)) +
+        GetCellAt(id.xy + int2(-1,  0)) +
+        GetCellAt(id.xy + int2(-1,  1)) +
+        GetCellAt(id.xy + int2( 0, -1)) +
+        GetCellAt(id.xy + int2( 0,  1)) +
+        GetCellAt(id.xy + int2( 1, -1)) +
+        GetCellAt(id.xy + int2( 1,  0)) +
+        GetCellAt(id.xy + int2( 1,  1));
+    SetCellAt(id.xy, neighbours == 3 || (GetCellAt(id.xy) && neighbours == 2));
+}
