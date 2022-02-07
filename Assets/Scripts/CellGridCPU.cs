@@ -43,8 +43,11 @@ public class CellGridCPU : CellGrid
 
     private float _IterationTime = 0f;
 
+    private int _Iteration;
+
     void Awake()
     {
+        _Iteration = 0;
         _Cells = new Dictionary<Vector2Int, Transform>();
         if (_InitMode == InitMode.Manual)
         {
@@ -78,6 +81,7 @@ public class CellGridCPU : CellGrid
     {
         CalculateNeighbours();
         UpdateCells();
+        _Iteration++;
     }
 
     void CalculateNeighbours()
@@ -168,5 +172,9 @@ public class CellGridCPU : CellGrid
     public override int GetCellCount()
     {
         return _Cells.Count;
+    }
+    public override int GetIteration()
+    {
+        return _Iteration;
     }
 }

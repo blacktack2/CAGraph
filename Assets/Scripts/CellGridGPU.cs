@@ -42,12 +42,15 @@ public class CellGridGPU : CellGrid
 
     private float _IterationTime = 0f;
 
+    private int _Iteration;
+
     private ComputeBuffer _CellsBuffer;
     private ComputeBuffer _NextCellsBuffer;
     private ComputeBuffer _PositionsBuffer;
 
     void OnEnable()
     {
+        _Iteration = 0;
         Camera.main.orthographicSize = _Scale / 2;
         _CellsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
         _NextCellsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
@@ -106,6 +109,8 @@ public class CellGridGPU : CellGrid
         int[] newCells = new int[_Scale * _Scale];
         _NextCellsBuffer.GetData(newCells);
         _CellsBuffer.SetData(newCells);
+        
+        _Iteration++;
     }
 
     void LoadManual(int[] cells)
@@ -154,5 +159,9 @@ public class CellGridGPU : CellGrid
     public override int GetCellCount()
     {
         return 0;
+    }
+    public override int GetIteration()
+    {
+        return _Iteration;
     }
 }

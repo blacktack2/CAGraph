@@ -38,6 +38,8 @@ public class StatsPanelText : MonoBehaviour
             else
                 text += string.Format("MS\nBest:{0:F1}\nAvrg:{1:F1}\nWrst:{2:F1}", 1000f * _BestDuration, 1000f * _Duration / _Frames, 1000f * _WorstDuration);
 
+            text += string.Format("\n\nStep:{0}", _CellGrid.GetIteration());
+
             int cellCount = _CellGrid.GetCellCount();
             _MaxCount = Mathf.Max(_MaxCount, cellCount);
             text += string.Format("\n\nNumCells:{0}\nMaxCells:{1}", cellCount, _MaxCount);
