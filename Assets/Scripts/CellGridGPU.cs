@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CellGridGPU : CellGrid
@@ -10,10 +9,6 @@ public class CellGridGPU : CellGrid
         _CellsID = Shader.PropertyToID("_Cells"),
         _NextCellsID = Shader.PropertyToID("_NextCells"),
         _ScaleID = Shader.PropertyToID("_Scale");
-
-    private enum Preset { Glider, T3_Pulsar, }
-
-    private static readonly string[] _PresetFiles = { "Glider", "T3_Pulsar" };
 
     [SerializeField]
     private ComputeShader _ComputeShader;
@@ -56,12 +51,18 @@ public class CellGridGPU : CellGrid
         _NextCellsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
         _PositionsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 3 * 4);
         int[] cells = new int[_Scale * _Scale];
-        if (_InitMode == InitMode.Manual)
-            LoadManual(cells);
-        else if (_InitMode == InitMode.Preset)
-            LoadPreset(cells, Vector2Int.zero);
-        else
-            LoadRandomized(cells);
+        switch (_InitMode)
+        {
+            case InitMode.Manual:
+                cells = PositionToGrid(_InitialCellPositions, _Scale);
+                break;
+            case InitMode.Preset:
+                cells = PositionToGrid(LoadPreset(_InitalPreset), _Scale);
+                break;
+            case InitMode.Random: default:
+                cells = PositionToGrid(LoadRandomized(_Scale, _RandomChance), _Scale);
+                break;
+        }
         _CellsBuffer.SetData(cells);
         Vector3[] positions = new Vector3[_Scale * _Scale];
         for (int i = 0; i < positions.Length; i++)
@@ -109,51 +110,8 @@ public class CellGridGPU : CellGrid
         int[] newCells = new int[_Scale * _Scale];
         _NextCellsBuffer.GetData(newCells);
         _CellsBuffer.SetData(newCells);
-        
+
         _Iteration++;
-    }
-
-    void LoadManual(int[] cells)
-    {
-        bool doSizeWarning = false;
-        Vector2Int center = new Vector2Int(_Scale / 2, _Scale / 2);
-        for (int i = 0; i < _InitialCellPositions.Length; i++)
-        {
-            Vector2Int position = _InitialCellPositions[i];
-            if (position.x >= 0 && position.x < _Scale && position.y >= 0 && position.y < _Scale)
-                cells[position.x + position.y * _Scale] = 1;
-            else
-                doSizeWarning = true;
-        }
-        if (doSizeWarning)
-            Debug.LogWarning("Cell(s) exeeding simulation bounds.");
-    }
-
-    void LoadPreset(int[] cells, Vector2Int offset)
-    {
-        bool doSizeWarning = false;
-        Vector2Int center = new Vector2Int(_Scale / 2, _Scale / 2);
-        string filename = "Presets/" + _PresetFiles[(int)_InitalPreset];
-        TextAsset dataset = Resources.Load<TextAsset>(filename);
-        string[] positions = dataset.text.Split(new char[] {','});
-        foreach (string posText in positions)
-        {
-            string[] coords = posText.Split(new char[] {':'});
-            Vector2Int position = center + offset + new Vector2Int(int.Parse(coords[0]), int.Parse(coords[1]));
-            if (position.x >= 0 && position.x < _Scale && position.y >= 0 && position.y < _Scale)
-                cells[position.x + position.y * _Scale] = 1;
-            else
-                doSizeWarning = true;
-        }
-        if (doSizeWarning)
-            Debug.LogWarning("Preset exceeds simulation bounds. Set the bounds larger or use a smaller preset.");
-    }
-
-    void LoadRandomized(int[] cells)
-    {
-        for (int i = 0; i < cells.Length; i++)
-            if (Random.value < _RandomChance)
-                cells[i] = 1;
     }
 
     public override int GetCellCount()

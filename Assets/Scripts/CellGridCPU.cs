@@ -9,10 +9,6 @@ public class CellGridCPU : CellGrid
         public bool isLive;
     }
 
-    private enum Preset { Glider, T3_Pulsar, }
-
-    private static readonly string[] _PresetFiles = { "Glider", "T3_Pulsar" };
-
     [SerializeField]
     private Mesh _Mesh;
     [SerializeField]
@@ -49,22 +45,37 @@ public class CellGridCPU : CellGrid
     {
         _Iteration = 0;
         _Cells = new Dictionary<Vector2Int, Transform>();
-        if (_InitMode == InitMode.Manual)
+        // if (_InitMode == InitMode.Manual)
+        // {
+        //     for (int i = 0; i < _InitialCellPositions.Length; i++)
+        //         CreateCell(_InitialCellPositions[i]);
+        // }
+        // else if (_InitMode == InitMode.Preset)
+        // {
+        //     LoadPreset(Vector2Int.zero);
+        // }
+        // else
+        // {
+        //     for (int x = 0; x < _RandomResolution; x++)
+        //         for (int y = 0; y < _RandomResolution; y++)
+        //             if (Random.value < _RandomChance)
+        //                 CreateCell(new Vector2Int(x - _RandomResolution / 2, y - _RandomResolution / 2));
+        // }
+        Vector2Int[] cells;
+        switch (_InitMode)
         {
-            for (int i = 0; i < _InitialCellPositions.Length; i++)
-                CreateCell(_InitialCellPositions[i]);
+            case InitMode.Manual:
+                cells = _InitialCellPositions;
+                break;
+            case InitMode.Preset:
+                cells = LoadPreset(_InitalPreset);
+                break;
+            case InitMode.Random: default:
+                cells = LoadRandomized(_RandomResolution, _RandomChance);
+                break;
         }
-        else if (_InitMode == InitMode.Preset)
-        {
-            LoadPreset(Vector2Int.zero);
-        }
-        else
-        {
-            for (int x = 0; x < _RandomResolution; x++)
-                for (int y = 0; y < _RandomResolution; y++)
-                    if (Random.value < _RandomChance)
-                        CreateCell(new Vector2Int(x - _RandomResolution / 2, y - _RandomResolution / 2));
-        }
+        foreach (Vector2Int position in cells)
+            CreateCell(position);
     }
 
     void Update()
@@ -137,18 +148,6 @@ public class CellGridCPU : CellGrid
             cellData = new CellData {isLive = false, neighbours = 0};
         cellData.neighbours += 1;
         _Neighbours[position] = cellData;
-    }
-
-    void LoadPreset(Vector2Int offset)
-    {
-        string filename = "Presets/" + _PresetFiles[(int)_InitalPreset];
-        TextAsset dataset = Resources.Load<TextAsset>(filename);
-        string[] positions = dataset.text.Split(new char[] {','});
-        foreach (string posText in positions)
-        {
-            string[] coords = posText.Split(new char[] {':'});
-            CreateCell(offset + new Vector2Int(int.Parse(coords[0]), int.Parse(coords[1])));
-        }
     }
 
     void CreateCell(Vector2Int position)

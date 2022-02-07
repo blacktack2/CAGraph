@@ -439,7 +439,7 @@ MonoBehaviour:
   _ComputeShader: {fileID: 7200000, guid: 629b97d4ff94938469bce6467fa1fbb1, type: 3}
   _Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   _Material: {fileID: 2100000, guid: 5623b62e053ccd04ba73f93d5d5c54f1, type: 2}
-  _InitMode: 2
+  _InitMode: 0
   _InitialCellPositions: []
   _InitalPreset: 1
   _Scale: 2500

@@ -20,7 +20,7 @@ void ShaderGraphFunction_float(float3 In, out bool OutCell, out float3 OutPos)
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
         OutCell = _Cells[unity_InstanceID];
     #else
-        OutCell = false;
+        OutCell = true;
     #endif
     OutPos = In;
 }
@@ -30,7 +30,7 @@ void ShaderGraphFunction_half(float3 In, out bool OutCell, out float3 OutPos)
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
         OutCell = _Cells[unity_InstanceID];
     #else
-        OutCell = false;
+        OutCell = true;
     #endif
     OutPos = In;
 }
