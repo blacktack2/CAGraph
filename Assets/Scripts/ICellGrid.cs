@@ -3,8 +3,17 @@ using UnityEngine;
 
 public abstract class CellGrid : MonoBehaviour
 {
-    protected enum Preset { Glider, T3_Pulsar, }
-    private static readonly string[] _PresetFiles = { "Glider", "T3_Pulsar" };
+    protected enum Preset
+    {
+        Glider, T3_Pulsar,
+         PrePulsarShuttle88, PrePulsarShuttle90,
+         Period256GliderGun
+    }
+    private static readonly string[] _PresetFiles = {
+        "Glider", "T3_Pulsar",
+        "PrePulsarShuttle88", "PrePulsarShuttle90",
+        "Period256GliderGun"
+    };
 
     public abstract int GetCellCount();
 
