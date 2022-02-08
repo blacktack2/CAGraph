@@ -1,0 +1,12 @@
+#pragma kernel IterateCells
+
+RWStructuredBuffer<int> _Cells0;
+RWStructuredBuffer<int> _Cells1;
+
+bool bufferFlag = false;
+
+[numthreads(8, 8, 1)]
+void IterateCells(uint3 id: SV_DispatchThreadID)
+{
+
+}

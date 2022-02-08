@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellGridCPU : CellGrid
+public class CellGridGOL_CPU : CellGrid
 {
     private struct CellData
     {

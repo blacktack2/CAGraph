@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CellGridGPU : CellGrid
+public class CellGridGOL_GPU : CellGrid
 {
     const int _MaxScale = 5000;
 
