@@ -7,7 +7,9 @@ public class CellGridGPU : CellGrid
     private static readonly int
         _PositionsID = Shader.PropertyToID("_Positions"),
         _CellsID = Shader.PropertyToID("_Cells"),
-        _NextCellsID = Shader.PropertyToID("_NextCells"),
+        _Cells0ID = Shader.PropertyToID("_Cells0"),
+        _Cells1ID = Shader.PropertyToID("_Cells1"),
+        _BufferFlagID = Shader.PropertyToID("_BufferFlag"),
         _ScaleID = Shader.PropertyToID("_Scale");
 
     [SerializeField]
@@ -38,17 +40,19 @@ public class CellGridGPU : CellGrid
     private float _IterationTime = 0f;
 
     private int _Iteration;
+    private bool _BufferFlag;
 
-    private ComputeBuffer _CellsBuffer;
-    private ComputeBuffer _NextCellsBuffer;
+    private ComputeBuffer _Cells0Buffer;
+    private ComputeBuffer _Cells1Buffer;
     private ComputeBuffer _PositionsBuffer;
 
     void OnEnable()
     {
         _Iteration = 0;
+        _BufferFlag = false;
         Camera.main.orthographicSize = _Scale / 2;
-        _CellsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
-        _NextCellsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
+        _Cells0Buffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
+        _Cells1Buffer = new ComputeBuffer(_MaxScale * _MaxScale, 4);
         _PositionsBuffer = new ComputeBuffer(_MaxScale * _MaxScale, 3 * 4);
         int[] cells = new int[_Scale * _Scale];
         switch (_InitMode)
@@ -63,7 +67,8 @@ public class CellGridGPU : CellGrid
                 cells = PositionToGrid(LoadRandomized(_Scale, _RandomChance), _Scale);
                 break;
         }
-        _CellsBuffer.SetData(cells);
+        _Cells0Buffer.SetData(cells);
+        _Cells1Buffer.SetData(cells);
         Vector3[] positions = new Vector3[_Scale * _Scale];
         for (int i = 0; i < positions.Length; i++)
             positions[i] = new Vector3(i % _Scale - (float)_Scale / 2f, (i / _Scale) - (float)_Scale / 2f, 0);
@@ -73,11 +78,11 @@ public class CellGridGPU : CellGrid
 
     void OnDisable()
     {
-        _CellsBuffer.Release();
-        _NextCellsBuffer.Release();
+        _Cells0Buffer.Release();
+        _Cells1Buffer.Release();
         _PositionsBuffer.Release();
-        _CellsBuffer = null;
-        _NextCellsBuffer = null;
+        _Cells0Buffer = null;
+        _Cells1Buffer = null;
         _PositionsBuffer = null;
     }
 
@@ -92,24 +97,27 @@ public class CellGridGPU : CellGrid
 
         Bounds bounds = new Bounds(Vector3.zero, Vector3.one * _Scale);
 
-        _Material.SetBuffer(_CellsID, _CellsBuffer);
+        if (_BufferFlag)
+            _Material.SetBuffer(_CellsID, _Cells0Buffer);
+        else
+            _Material.SetBuffer(_CellsID, _Cells1Buffer);
         _Material.SetInt(_ScaleID, _Scale);
         Graphics.DrawMeshInstancedProcedural(_Mesh, 0, _Material, bounds, _Scale * _Scale);
     }
 
     void IterateCells()
     {
+        _BufferFlag = !_BufferFlag;
+
+        _ComputeShader.SetBool(_BufferFlagID, _BufferFlag);
         _ComputeShader.SetInt(_ScaleID, _Scale);
         int kernelIndex = 0;
         int groups = Mathf.CeilToInt(_Scale / 8f);
 
-        _ComputeShader.SetBuffer(kernelIndex, _CellsID, _CellsBuffer);
-        _ComputeShader.SetBuffer(kernelIndex, _NextCellsID, _NextCellsBuffer);
-        _ComputeShader.Dispatch(kernelIndex, groups, groups, 1);
 
-        int[] newCells = new int[_Scale * _Scale];
-        _NextCellsBuffer.GetData(newCells);
-        _CellsBuffer.SetData(newCells);
+        _ComputeShader.SetBuffer(kernelIndex, _Cells0ID, _Cells0Buffer);
+        _ComputeShader.SetBuffer(kernelIndex, _Cells1ID, _Cells1Buffer);
+        _ComputeShader.Dispatch(kernelIndex, groups, groups, 1);
 
         _Iteration++;
     }

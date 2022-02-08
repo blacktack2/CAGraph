@@ -442,7 +442,7 @@ MonoBehaviour:
   _InitMode: 2
   _InitialCellPositions: []
   _InitalPreset: 4
-  _Scale: 2500
+  _Scale: 5000
   _RandomChance: 0.5
   _IterationDuration: 0
 --- !u!4 &929533068

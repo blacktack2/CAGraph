@@ -1,21 +1,33 @@
 #pragma kernel IterateCells
 
-RWStructuredBuffer<int> _Cells;
-RWStructuredBuffer<int> _NextCells;
+RWStructuredBuffer<int> _Cells0;
+RWStructuredBuffer<int> _Cells1;
+
+bool _BufferFlag = false;
 
 uint _Scale;
 
 int GetCellAt(uint2 xy)
 {
     if (xy.x < _Scale && xy.y < _Scale)
-        return _Cells[xy.x + xy.y * _Scale];
+    {
+        if (_BufferFlag)
+            return _Cells1[xy.x + xy.y * _Scale];
+        else
+            return _Cells0[xy.x + xy.y * _Scale];
+    }
     return false;
 }
 
 void SetCellAt(uint2 xy, int value)
 {
     if (xy.x < _Scale && xy.y < _Scale)
-        _NextCells[xy.x + xy.y * _Scale] = value;
+    {
+        if (_BufferFlag)
+            _Cells0[xy.x + xy.y * _Scale] = value;
+        else
+            _Cells1[xy.x + xy.y * _Scale] = value;
+    }
 }
 
 [numthreads(8, 8, 1)]
