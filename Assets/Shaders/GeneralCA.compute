@@ -1,12 +1,61 @@
-#pragma kernel IterateCells
+#pragma kernel IterateLifeCells
+// #pragma kernel IterateGeneralCells
 
 RWStructuredBuffer<int> _Cells0;
 RWStructuredBuffer<int> _Cells1;
 
-bool bufferFlag = false;
+RWStructuredBuffer<int> _LifeRules;
+
+bool _BufferFlag = false;
+
+uint _Scale;
+
+int GetCellAt(uint2 xy)
+{
+    if (xy.x < _Scale && xy.y < _Scale)
+    {
+        if (_BufferFlag)
+            return _Cells1[xy.x + xy.y * _Scale];
+        else
+            return _Cells0[xy.x + xy.y * _Scale];
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void SetCellAt(uint2 xy, int value)
+{
+    if (xy.x < _Scale && xy.y < _Scale)
+    {
+        if (_BufferFlag)
+            _Cells0[xy.x + xy.y * _Scale] = value;
+        else
+            _Cells1[xy.x + xy.y * _Scale] = value;
+    }
+}
+
+uint CountNeighboursAt(uint2 xy)
+{
+    return GetCellAt(xy + int2(-1, -1)) +
+           GetCellAt(xy + int2(-1,  0)) +
+           GetCellAt(xy + int2(-1,  1)) +
+           GetCellAt(xy + int2( 0, -1)) +
+           GetCellAt(xy + int2( 0,  1)) +
+           GetCellAt(xy + int2( 1, -1)) +
+           GetCellAt(xy + int2( 1,  0)) +
+           GetCellAt(xy + int2( 1,  1));
+}
 
 [numthreads(8, 8, 1)]
-void IterateCells(uint3 id: SV_DispatchThreadID)
+void IterateLifeCells(uint3 id: SV_DispatchThreadID)
 {
-
+    SetCellAt(id.xy, _LifeRules[GetCellAt(id.xy) * 9 + CountNeighboursAt(id.xy)]);
 }
+
+// [numthreads(8, 8, 1)]
+// void IterateGeneralCells(uint3 id: SV_DispatchThreadID)
+// {
+
+// }
