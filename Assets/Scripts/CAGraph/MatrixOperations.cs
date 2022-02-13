@@ -19,9 +19,14 @@ namespace CAGraph.Utilities
 
         public static void ClearMatrix(Types.Matrix matrix)
         {
+            FillMatrix(matrix, 0);
+        }
+
+        public static void FillMatrix(Types.Matrix matrix, int value)
+        {
             int[] cells = matrix.GetCells();
             for (int c = 0; c < cells.Length; c++)
-                cells[c] = 0;
+                cells[c] = value;
             matrix.SetCells(cells);
         }
     }
