@@ -1,51 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
-[CreateNodeMenu("Input/Matrix", 0)]
-public class MatrixInitNode : Node
+namespace CAGraph.Nodes
 {
-    [SerializeField]
-    private Matrix _Matrix;
-    [SerializeField, Range(2, 200)]
-    private int _MatrixWidth = 100, _MatrixHeight = 100;
-
-    [SerializeField, Output] private Matrix _MatrixOut;
-
-    private Matrix _MatrixOutBuffer;
-
-    private void Reset()
+    [CreateNodeMenu("Input/Matrix", 0)]
+    public class MatrixInitNode : Node
     {
-        name = "Matrix";
-    }
+        [SerializeField]
+        private Types.Matrix _Matrix;
+        [SerializeField, Range(2, 200)]
+        private int _MatrixWidth = 100, _MatrixHeight = 100;
 
-    protected override void Init()
-    {
-        base.Init();
-        if (_Matrix == null || _MatrixOut == null)
+        [SerializeField, Output] private Types.Matrix _MatrixOut;
+
+        private Types.Matrix _MatrixOutBuffer;
+
+        private void Reset()
         {
-            _Matrix = new Matrix(_MatrixWidth, _MatrixHeight);
-            _MatrixOutBuffer = _Matrix.Copy();
+            name = "Matrix";
         }
-    }
 
-    public override object GetValue(NodePort port)
-    {
-        return _MatrixOutBuffer;
-    }
-
-    public void UpdateMatrix()
-    {
-        if (_MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
+        protected override void Init()
         {
-            _Matrix = new Matrix(_MatrixWidth, _MatrixHeight);
-            _MatrixOutBuffer = _Matrix.Copy();
+            base.Init();
+            if (_Matrix == null || _MatrixOut == null)
+            {
+                _Matrix = new Types.Matrix(_MatrixWidth, _MatrixHeight);
+                _MatrixOutBuffer = _Matrix.Copy();
+            }
         }
-    }
 
-    public Matrix GetMatrix()
-    {
-        return _Matrix;
+        public override object GetValue(NodePort port)
+        {
+            return _MatrixOutBuffer;
+        }
+
+        public void UpdateMatrix()
+        {
+            if (_MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
+            {
+                _Matrix = new Types.Matrix(_MatrixWidth, _MatrixHeight);
+                _MatrixOutBuffer = _Matrix.Copy();
+            }
+        }
+
+        public Types.Matrix GetMatrix()
+        {
+            return _Matrix;
+        }
     }
 }

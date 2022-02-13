@@ -1,46 +1,49 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
 
-[CustomNodeEditor(typeof(MatrixInitNode))]
-public class MatrixInitNodeEditor : NodeEditor
+namespace CAGraph.Editors
 {
-    private MatrixInitNode _MatrixInitNode;
-
-    private bool _ShowPreview = true;
-
-    public override void OnBodyGUI()
+    [CustomNodeEditor(typeof(Nodes.MatrixInitNode))]
+    public class MatrixInitNodeEditor : NodeEditor
     {
-        if (_MatrixInitNode == null)
-            _MatrixInitNode = target as MatrixInitNode;
+        private Nodes.MatrixInitNode _MatrixInitNode;
 
-        int width = GetWidth() - (GetBodyStyle().padding.left + GetBodyStyle().padding.right);
+        private bool _ShowPreview = true;
 
-        serializedObject.Update();
+        public override void OnBodyGUI()
+        {
+            if (_MatrixInitNode == null)
+                _MatrixInitNode = target as Nodes.MatrixInitNode;
 
-        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
+            int width = GetWidth() - (GetBodyStyle().padding.left + GetBodyStyle().padding.right);
 
-        DisplayMatrixBounds(width);
-        _MatrixInitNode.UpdateMatrix();
-        
-        _ShowPreview = CAEditorUtilities.DisplayPreview((Matrix) _MatrixInitNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
+            serializedObject.Update();
 
-        serializedObject.ApplyModifiedProperties();
-    }
+            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
 
-    private void DisplayMatrixBounds(int width)
-    {
-        float labelWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth = width / 4;
-        EditorGUILayout.BeginHorizontal();
-        
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixWidth"), new GUIContent("width"), GUILayout.Width(width / 2));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixHeight"), new GUIContent("height"), GUILayout.Width(width / 2));
-        
-        EditorGUILayout.EndHorizontal();
-        EditorGUIUtility.labelWidth = labelWidth;
+            DisplayMatrixBounds(width);
+            _MatrixInitNode.UpdateMatrix();
+
+            _ShowPreview = Utilities.CAEditorUtilities.DisplayPreview(
+                (Types.Matrix) _MatrixInitNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DisplayMatrixBounds(int width)
+        {
+            float labelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = width / 4;
+            EditorGUILayout.BeginHorizontal();
+            
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixWidth"),
+                                          new GUIContent("width"), GUILayout.Width(width / 2));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixHeight"),
+                                          new GUIContent("height"), GUILayout.Width(width / 2));
+            
+            EditorGUILayout.EndHorizontal();
+            EditorGUIUtility.labelWidth = labelWidth;
+        }
     }
 }

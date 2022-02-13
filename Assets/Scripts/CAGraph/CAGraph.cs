@@ -1,8 +1,11 @@
 using UnityEngine;
 using XNode;
 
-[CreateAssetMenu]
-public class CAGraph : NodeGraph
+namespace CAGraph
 {
-    
+    [CreateAssetMenu]
+    public class CAGraph : NodeGraph
+    {
+        
+    }
 }
