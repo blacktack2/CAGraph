@@ -11,7 +11,9 @@ public class CellGridGeneral : CellGrid
         _Cells1ID = Shader.PropertyToID("_Cells1"),
         _LifeRulesID = Shader.PropertyToID("_LifeRules"),
         _BufferFlagID = Shader.PropertyToID("_BufferFlag"),
-        _ScaleID = Shader.PropertyToID("_Scale");
+        _ScaleID = Shader.PropertyToID("_Scale"),
+        _ScaleXID = Shader.PropertyToID("_ScaleX"),
+        _ScaleYID = Shader.PropertyToID("_ScaleY");
 
     [SerializeField]
     private ComputeShader _ComputeShader;
@@ -124,11 +126,13 @@ public class CellGridGeneral : CellGrid
         for (int i = 0; i < 9; i++)
         {
             lifeRules[i] = _BirthRules[i] ? 1 : 0;
-            lifeRules[9 + i] = _SurvivalRules[i] ? 0 : 1;
+            lifeRules[9 + i] = _SurvivalRules[i] ? 1 : 0;
         }
         _LifeRulesBuffer.SetData(lifeRules);
 
-        _ComputeShader.SetInt(_ScaleID, _Scale);
+        // _ComputeShader.SetInt(_ScaleID, _Scale);
+        _ComputeShader.SetInt(_ScaleXID, _Scale);
+        _ComputeShader.SetInt(_ScaleYID, _Scale);
     }
 
     void IterateCells()
@@ -136,7 +140,7 @@ public class CellGridGeneral : CellGrid
         _BufferFlag = !_BufferFlag;
 
         _ComputeShader.SetBool(_BufferFlagID, _BufferFlag);
-        _ComputeShader.SetInt(_ScaleID, _Scale);
+        // _ComputeShader.SetInt(_ScaleID, _Scale);
 
         int kernelIndex = 0;
 
