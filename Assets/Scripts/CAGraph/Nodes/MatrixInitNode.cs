@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
+[CreateNodeMenu("Input/Matrix", 0)]
 public class MatrixInitNode : Node
 {
     [SerializeField]

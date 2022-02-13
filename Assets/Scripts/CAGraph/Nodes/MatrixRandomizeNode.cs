@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
+[CreateNodeMenu("Operations/Matrix/Randomize", 20)]
 public class MatrixRandomizeNode : Node
 {
     [SerializeField]

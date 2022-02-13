@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
+[CreateNodeMenu("Operations/Matrix/Clear", 10)]
 public class MatrixClearNode : Node
 {
     [SerializeField, Input] private Matrix _MatrixIn;
