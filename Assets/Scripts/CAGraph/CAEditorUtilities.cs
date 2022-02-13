@@ -18,17 +18,20 @@ public class CAEditorUtilities
             _PreviewToggleStyle = new GUIStyle("Foldout");
         if (_PreviewStyle == null)
             _PreviewStyle = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
+
         bool showOut = EditorGUILayout.Toggle(" ", show, _PreviewToggleStyle);
         if (showOut)
         {
             if (matrix == null)
             {
+                EditorGUILayout.LabelField("Cells: null");
                 if (_NullPreview == null)
                     InitNullPreview();
                 EditorGUILayout.LabelField(new GUIContent(_NullPreview), _PreviewStyle, GUILayout.Height(previewWidth));
             }
             else
             {
+                EditorGUILayout.LabelField(string.Format("Cells: {0} ({1}x{2})", matrix.GetCells().Length, matrix.width, matrix.height));
                 EditorGUILayout.LabelField(new GUIContent(matrix.preview), _PreviewStyle, GUILayout.Height(previewWidth));
             }
         }

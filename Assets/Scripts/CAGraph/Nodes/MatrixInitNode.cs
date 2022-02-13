@@ -12,25 +12,34 @@ public class MatrixInitNode : Node
 
     [SerializeField, Output] private Matrix _MatrixOut;
 
+    private Matrix _MatrixOutBuffer;
+
+    private void Reset()
+    {
+        name = "Matrix";
+    }
+
     protected override void Init()
     {
         base.Init();
-        if (_Matrix == null)
+        if (_Matrix == null || _MatrixOut == null)
+        {
             _Matrix = new Matrix(_MatrixWidth, _MatrixHeight);
+            _MatrixOutBuffer = _Matrix.Copy();
+        }
     }
 
     public override object GetValue(NodePort port)
     {
-        return _Matrix.Copy();
+        return _MatrixOutBuffer;
     }
 
     public void UpdateMatrix()
     {
         if (_MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
         {
-            _Matrix.width = _MatrixWidth;
-            _Matrix.height = _MatrixHeight;
-            _Matrix.Reset();
+            _Matrix = new Matrix(_MatrixWidth, _MatrixHeight);
+            _MatrixOutBuffer = _Matrix.Copy();
         }
     }
 

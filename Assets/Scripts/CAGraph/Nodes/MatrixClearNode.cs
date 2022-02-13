@@ -8,18 +8,36 @@ public class MatrixClearNode : Node
     [SerializeField, Input] private Matrix _MatrixIn;
     [SerializeField, Output] private Matrix _MatrixOut;
 
+    private long _MatrixInIDBuffer = 0L;
+    private Matrix _MatrixOutBuffer;
+
+    private void Reset()
+    {
+        name = "Clear Matrix";
+    }
+
     public override object GetValue(NodePort port)
     {
         if (port.fieldName == "_MatrixOut")
-            return ClearMatrix(GetInputValue<Matrix>("_MatrixIn"));
+            return GetClearedMatrix();
         return null;
     }
 
-    private Matrix ClearMatrix(Matrix matrix)
+    private Matrix GetClearedMatrix()
     {
+        Matrix matrix = GetInputValue<Matrix>("_MatrixIn");
         if (matrix == null)
+        {
+            _MatrixInIDBuffer = 0L;
+            _MatrixOutBuffer = null;
             return null;
-        MatrixOperations.ClearMatrix(matrix);
-        return matrix;
+        }
+        else if (_MatrixOutBuffer == null || matrix.id != _MatrixInIDBuffer)
+        {
+            _MatrixInIDBuffer = matrix.id;
+            _MatrixOutBuffer = matrix.Copy();
+            MatrixOperations.ClearMatrix(_MatrixOutBuffer);
+        }
+        return _MatrixOutBuffer;
     }
 }

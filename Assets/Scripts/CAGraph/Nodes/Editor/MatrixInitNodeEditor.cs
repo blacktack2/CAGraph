@@ -12,41 +12,6 @@ public class MatrixInitNodeEditor : NodeEditor
 
     private bool _ShowPreview = true;
 
-    private enum InitMode { EMPTY, RANDOM }
-    private InitMode _InitMode = InitMode.EMPTY;
-
-    private int _RandomizerSeed = 0;
-    private float _RandomChance = 0.5f;
-
-    void OnFocus()
-    {
-        LoadPrefs();
-    }
-    void OnLostFocus()
-    {
-        SavePrefs();
-    }
-    void OnDestroy()
-    {
-        SavePrefs();
-    }
-
-    private void LoadPrefs()
-    {
-        if (EditorPrefs.HasKey("_InitMode"))
-            _InitMode = (InitMode) EditorPrefs.GetInt("_InitMode");
-        if (EditorPrefs.HasKey("_RandomizerSeed"))
-            _RandomizerSeed = EditorPrefs.GetInt("_RandomizerSeed");
-        if (EditorPrefs.HasKey("_RandomChance"))
-            _RandomChance = EditorPrefs.GetFloat("_RandomChance");
-    }
-    private void SavePrefs()
-    {
-        EditorPrefs.SetInt("_InitMode", (int) _InitMode);
-        EditorPrefs.SetInt("_RandomizerSeed", _RandomizerSeed);
-        EditorPrefs.SetFloat("_RandomChance", _RandomChance);
-    }
-
     public override void OnBodyGUI()
     {
         if (_MatrixInitNode == null)
@@ -60,9 +25,8 @@ public class MatrixInitNodeEditor : NodeEditor
 
         DisplayMatrixBounds(width);
         _MatrixInitNode.UpdateMatrix();
-        DisplayMatrixInitOperations(width);
-
-        _ShowPreview = CAEditorUtilities.DisplayPreview(_MatrixInitNode.GetMatrix(), _ShowPreview);
+        
+        _ShowPreview = CAEditorUtilities.DisplayPreview((Matrix) _MatrixInitNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -78,51 +42,5 @@ public class MatrixInitNodeEditor : NodeEditor
         
         EditorGUILayout.EndHorizontal();
         EditorGUIUtility.labelWidth = labelWidth;
-    }
-
-    private void DisplayMatrixInitOperations(int width)
-    {
-        _InitMode = (InitMode) EditorGUILayout.EnumPopup(_InitMode);
-        switch (_InitMode)
-        {
-            case InitMode.EMPTY:
-                DisplayInitOptionsEmpty(width);
-                break;
-            case InitMode.RANDOM:
-                DisplayInitOptionsRandom(width);
-                break;
-        }
-    }
-
-    private void DisplayInitOptionsEmpty(int width)
-    {
-        if (EditorGUILayout.DropdownButton(new GUIContent("Clear"), FocusType.Passive))
-        {
-            MatrixOperations.ClearMatrix(_MatrixInitNode.GetMatrix());
-        }
-    }
-
-    private void DisplayInitOptionsRandom(int width)
-    {
-        EditorGUILayout.BeginHorizontal();
-        
-        int seed = _RandomizerSeed;
-        if (EditorGUILayout.DropdownButton(new GUIContent("Reroll Seed"), FocusType.Passive, GUILayout.Width(width / 2)))
-            seed = (int) DateTime.Now.Ticks;
-        seed = EditorGUILayout.IntField(seed);
-
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-
-        float chance = Mathf.Clamp01(EditorGUILayout.FloatField("Chance", _RandomChance));
-        
-        if (seed != _RandomizerSeed || chance != _RandomChance)
-        {
-            _RandomizerSeed = seed;
-            _RandomChance = chance;
-            MatrixOperations.RandomizeMatrix(_MatrixInitNode.GetMatrix(), _RandomChance, _RandomizerSeed);
-        }
- 
-        EditorGUILayout.EndHorizontal();
     }
 }

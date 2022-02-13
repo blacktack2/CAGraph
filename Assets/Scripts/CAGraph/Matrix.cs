@@ -10,13 +10,22 @@ public class Matrix
     private int[] _Cells;
     private Texture2D _Preview;
     public Texture2D preview {get {return _Preview;}}
-    [SerializeField, HideInInspector]
+    [SerializeField, HideInInspector, Min(2)]
     public int width;
-    [SerializeField, HideInInspector]
+    [SerializeField, HideInInspector, Min(2)]
     public int height;
+
+    private long _ID;
+    public long id {get {return _ID;}}
 
     public Matrix(int width, int height)
     {
+        MatrixInit(width, height, DateTime.Now.Ticks);
+    }
+
+    private void MatrixInit(int width, int height, long id)
+    {
+        _ID = id;
         this.width = width;
         this.height = height;
 
@@ -38,8 +47,10 @@ public class Matrix
     public void SetCells(int[] cells)
     {
         if (cells.Length != width * height)
-            throw new FormatException(string.Format("Cannot accept matrix of different size (Expected size: {}, got {}", width * height, cells.Length));
-        _Cells = cells;
+            throw new FormatException(string.Format("Cannot accept matrix of different size (Expected size: {}, got {})", width * height, cells.Length));
+        
+        Array.Copy(cells, _Cells, _Cells.Length);
+        UpdateID();
         GeneratePreview();
     }
 
@@ -66,5 +77,10 @@ public class Matrix
         Matrix copy = new Matrix(width, height);
         copy.SetCells(_Cells);
         return copy;
+    }
+
+    public void UpdateID()
+    {
+        _ID = DateTime.Now.Ticks;
     }
 }

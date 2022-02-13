@@ -16,6 +16,8 @@ public class MatrixClearNodeEditor : NodeEditor
         if (_MatrixClearNode == null)
             _MatrixClearNode = target as MatrixClearNode;
         
+        serializedObject.Update();
+
         EditorGUILayout.BeginHorizontal();
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixIn"));
@@ -23,6 +25,8 @@ public class MatrixClearNodeEditor : NodeEditor
 
         EditorGUILayout.EndHorizontal();
 
-        CAEditorUtilities.DisplayPreview((Matrix) _MatrixClearNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
+        _ShowPreview = CAEditorUtilities.DisplayPreview((Matrix) _MatrixClearNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
+        
+        serializedObject.ApplyModifiedProperties();
     }
 }
