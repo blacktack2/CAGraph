@@ -358,8 +358,8 @@ MonoBehaviour:
   _RandomChance: 0.64
   _Scale: 301
   _IterationDuration: 0.1
-  _SurvivalRules: 000000010001010101
-  _BirthRules: 000000000001010101
+  _SurvivalRules: 000001010000000000
+  _BirthRules: 000000010000000000
 --- !u!1 &1439395224
 GameObject:
   m_ObjectHideFlags: 0

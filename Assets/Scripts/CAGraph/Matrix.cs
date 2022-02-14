@@ -6,13 +6,15 @@ namespace CAGraph.Types
     [Serializable]
     public class Matrix
     {
+        public const int maxMatrixSize = 100;
+
         [SerializeField, HideInInspector]
         private int[] _Cells;
         private Texture2D _Preview;
         public Texture2D preview {get {return _Preview;}}
-        [SerializeField, HideInInspector, Min(2)]
+        [SerializeField, HideInInspector, Range(2, maxMatrixSize)]
         public int width;
-        [SerializeField, HideInInspector, Min(2)]
+        [SerializeField, HideInInspector, Range(2, maxMatrixSize)]
         public int height;
 
         private long _ID;
@@ -41,7 +43,9 @@ namespace CAGraph.Types
 
         public int[] GetCells()
         {
-            return _Cells;
+            int[] cells = new int[_Cells.Length];
+            Array.Copy(_Cells, cells, _Cells.Length);
+            return cells;
         }
 
         public void SetCells(int[] cells)

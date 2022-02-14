@@ -8,7 +8,7 @@ namespace CAGraph.Nodes
     {
         [SerializeField]
         private Types.Matrix _Matrix;
-        [SerializeField, Range(2, 200)]
+        [SerializeField, Range(2, Types.Matrix.maxMatrixSize)]
         private int _MatrixWidth = 100, _MatrixHeight = 100;
 
         [SerializeField, Output] private Types.Matrix _MatrixOut;
