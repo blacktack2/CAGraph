@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CAGraph.Utilities
@@ -27,6 +28,15 @@ namespace CAGraph.Utilities
             int[] cells = matrix.GetCells();
             for (int c = 0; c < cells.Length; c++)
                 cells[c] = value;
+            matrix.SetCells(cells);
+        }
+
+        public static void ReplaceMatrixValues(Types.Matrix matrix, List<int> toReplace, int replaceWith)
+        {
+            int[] cells = matrix.GetCells();
+            for (int c = 0; c < cells.Length; c++)
+                if (toReplace.Contains(cells[c]))
+                    cells[c] = replaceWith;
             matrix.SetCells(cells);
         }
     }
