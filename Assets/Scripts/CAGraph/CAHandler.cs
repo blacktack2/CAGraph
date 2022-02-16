@@ -34,7 +34,6 @@ namespace CAGraph.Utilities
 
         public void Disable()
         {
-            Debug.Log("ONDISABLE");
             _Cells0Buffer.Dispose();
             _Cells1Buffer.Dispose();
             _LifeRulesBuffer.Dispose();

@@ -38,7 +38,7 @@ namespace CAGraph.Types
         {
             _Cells = new int[width * height];
 
-            GeneratePreview();
+            UpdatePreview();
         }
 
         public int[] GetCells()
@@ -55,10 +55,10 @@ namespace CAGraph.Types
             
             Array.Copy(cells, _Cells, _Cells.Length);
             UpdateID();
-            GeneratePreview();
+            UpdatePreview();
         }
 
-        private void GeneratePreview()
+        public void UpdatePreview()
         {
             Texture2D preview = new Texture2D(width, height);
             Color[] pixels = preview.GetPixels(0);

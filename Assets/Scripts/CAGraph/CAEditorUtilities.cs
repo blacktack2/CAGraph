@@ -32,6 +32,8 @@ namespace CAGraph.Utilities
                 else
                 {
                     EditorGUILayout.LabelField(string.Format("Cells: {0} ({1}x{2})", matrix.GetCells().Length, matrix.width, matrix.height));
+                    if (matrix.preview == null)
+                        matrix.UpdatePreview();
                     EditorGUILayout.LabelField(new GUIContent(matrix.preview), _PreviewStyle, GUILayout.Height(previewWidth));
                 }
             }
