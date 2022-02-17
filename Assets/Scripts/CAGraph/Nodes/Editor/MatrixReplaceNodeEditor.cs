@@ -6,52 +6,49 @@ using XNodeEditor;
 namespace CAGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.MatrixReplaceNode))]
-    public class MatrixReplaceNodeEditor : NodeEditor
+    public class MatrixReplaceNodeEditor : BaseNodeEditor<Nodes.MatrixReplaceNode>
     {
-        private Nodes.MatrixReplaceNode _MatrixReplaceNode;
+        private SerializedProperty _MatrixIn, _MatrixOut, _ToReplace, _Replacement;
 
         private ReorderableList _ToReplaceList;
 
-        private bool _ShowPreview = true;
-
-        public override void OnBodyGUI()
+        protected override void OnNodeEnable()
         {
-            if (_MatrixReplaceNode == null)
-                _MatrixReplaceNode = target as Nodes.MatrixReplaceNode;
-            if (_ToReplaceList == null)
-            {
-                _ToReplaceList = new ReorderableList(serializedObject, serializedObject.FindProperty("_ToReplace"), true, true, true, true);
-                _ToReplaceList.drawElementCallback = DrawListItems;
-                _ToReplaceList.drawHeaderCallback = DrawHeader;
-            }
-            
-            serializedObject.Update();
+            _MatrixIn    = serializedObject.FindProperty("_MatrixIn");
+            _MatrixOut   = serializedObject.FindProperty("_MatrixOut");
+            _ToReplace   = serializedObject.FindProperty("_ToReplace");
+            _Replacement = serializedObject.FindProperty("_Replacement");
 
+            _ToReplaceList = new ReorderableList(serializedObject, _ToReplace, true, true, true, true);
+            _ToReplaceList.drawElementCallback = DrawListItems;
+            _ToReplaceList.drawHeaderCallback = DrawHeader;
+
+            AddPreview("_MatrixOut");
+        }
+
+        protected override void NodeInputGUI()
+        {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixIn"));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
+            NodeEditorGUILayout.PropertyField(_MatrixIn);
+            NodeEditorGUILayout.PropertyField(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
+        }
 
+        protected override void NodeBodyGUI()
+        {
             _ToReplaceList.DoLayoutList();            
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_Replacement"), new GUIContent("with:"));
-            
-            serializedObject.ApplyModifiedProperties();
-
-            _ShowPreview = Utilities.CAEditorUtilities.DisplayPreview(
-                (Types.Matrix) _MatrixReplaceNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
+            NodeEditorGUILayout.PropertyField(_Replacement, new GUIContent("with:"));
         }
 
         private void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty element = _ToReplaceList.serializedProperty.GetArrayElementAtIndex(index);
 
-            EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), element, GUIContent.none
             );
-            _MatrixReplaceNode.toReplaceChanged |= EditorGUI.EndChangeCheck();
         }
 
         private void DrawHeader(Rect rect)

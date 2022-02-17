@@ -12,12 +12,15 @@ namespace CAGraph
 
         private Utilities.CAHandler _CAHandler;
         public Utilities.CAHandler CAHandler {get {return _CAHandler;}}
+        private Utilities.CAEditorUtilities _CAEditorUtilities;
+        public Utilities.CAEditorUtilities CAEditorUtilities {get {return _CAEditorUtilities;}}
 
         void OnEnable()
         {
-            if (_CAHandler == null)
-                _CAHandler = new Utilities.CAHandler(_ComputeShader);
+            _CAHandler = new Utilities.CAHandler(_ComputeShader);
+            _CAEditorUtilities = new Utilities.CAEditorUtilities();
             _CAHandler.Enable();
+            _CAEditorUtilities.Enable();
         }
 
         void OnDisable()

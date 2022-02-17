@@ -4,7 +4,7 @@ using XNode;
 namespace CAGraph.Nodes
 {
     [CreateNodeMenu("Operations/Matrix/Fill", 10)]
-    public class MatrixFillNode : Node
+    public class MatrixFillNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix _MatrixIn;
         [SerializeField, Output] private Types.Matrix _MatrixOut;
@@ -25,36 +25,24 @@ namespace CAGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_MatrixOut")
-                return GetFilledMatrix();
+            {
+                GetMatrixInput(
+                    "_MatrixIn", "_MatrixOut",
+                    ref _MatrixOutBuffer, ref _MatrixInIDBuffer,
+                    _FillValue != _CurrentFillValue
+                );
+                return _MatrixOutBuffer;
+            }
             return null;
         }
-
-        private Types.Matrix GetFilledMatrix()
+        
+        protected override void UpdateMatrixOutput(string portName)
         {
-            Types.Matrix matrix = GetInputValue<Types.Matrix>("_MatrixIn");
-            if (matrix == null)
+            if (portName == "_MatrixOut")
             {
-                _MatrixInIDBuffer = 0L;
-                _MatrixOutBuffer = null;
-                return null;
+                _CurrentFillValue = _FillValue;
+                Utilities.MatrixOperations.FillMatrix(_MatrixOutBuffer, _FillValue);
             }
-            else if (_MatrixOutBuffer == null || matrix.id != _MatrixInIDBuffer)
-            {
-                _MatrixInIDBuffer = matrix.id;
-                _MatrixOutBuffer = matrix.Copy();
-                Fill();
-            }
-            else if (_FillValue != _CurrentFillValue)
-            {
-                Fill();
-            }
-            return _MatrixOutBuffer;
-        }
-
-        private void Fill()
-        {
-            _CurrentFillValue = _FillValue;
-            Utilities.MatrixOperations.FillMatrix(_MatrixOutBuffer, _FillValue);
         }
     }
 }

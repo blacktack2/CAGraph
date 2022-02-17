@@ -5,7 +5,7 @@ using XNode;
 namespace CAGraph.Nodes
 {
     [CreateNodeMenu("Operations/Matrix/Replace", 10)]
-    public class MatrixReplaceNode : Node
+    public class MatrixReplaceNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix _MatrixIn;
         [SerializeField, Output] private Types.Matrix _MatrixOut;
@@ -35,38 +35,25 @@ namespace CAGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_MatrixOut")
-                return GetReplacedMatrix();
+            {
+                GetMatrixInput(
+                    "_MatrixIn", "_MatrixOut",
+                    ref _MatrixOutBuffer, ref _MatrixInIDBuffer,
+                    _Replacement != _CurrentReplacement || toReplaceChanged
+                );
+                return _MatrixOutBuffer;
+            }
             return null;
         }
 
-        private Types.Matrix GetReplacedMatrix()
+        protected override void UpdateMatrixOutput(string portName)
         {
-            Types.Matrix matrix = GetInputValue<Types.Matrix>("_MatrixIn");
-            if (matrix == null)
+            if (portName == "_MatrixOut")
             {
-                _MatrixInIDBuffer = 0L;
-                _MatrixOutBuffer = null;
-                return null;
+                _CurrentReplacement = _Replacement;
+                toReplaceChanged = false;
+                Utilities.MatrixOperations.ReplaceMatrixValues(_MatrixOutBuffer, _ToReplace, _Replacement);
             }
-            else if (_MatrixOutBuffer == null || matrix.id != _MatrixInIDBuffer)
-            {
-                _MatrixInIDBuffer = matrix.id;
-                _MatrixOutBuffer = matrix.Copy();
-                Replace();
-            }
-            else if (_Replacement != _CurrentReplacement || toReplaceChanged)
-            {
-                _MatrixOutBuffer = matrix.Copy();
-                Replace();
-            }
-            return _MatrixOutBuffer;
-        }
-
-        private void Replace()
-        {
-            _CurrentReplacement = _Replacement;
-            toReplaceChanged = false;
-            Utilities.MatrixOperations.ReplaceMatrixValues(_MatrixOutBuffer, _ToReplace, _Replacement);
         }
 
         private bool CompareLists<T>(List<T> a, List<T> b)

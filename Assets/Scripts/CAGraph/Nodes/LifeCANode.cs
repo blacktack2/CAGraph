@@ -5,7 +5,7 @@ using XNode;
 namespace CAGraph.Nodes
 {
     [CreateNodeMenu("Operations/Matrix/Lifelike CA", 5)]
-    public class LifeCANode : Node
+    public class LifeCANode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix _MatrixIn;
         [SerializeField, Output] private Types.Matrix _MatrixOut;

@@ -4,7 +4,7 @@ using XNode;
 namespace CAGraph.Nodes
 {
     [CreateNodeMenu("Operations/Matrix/Randomize", 20)]
-    public class MatrixRandomizeNode : Node
+    public class MatrixRandomizeNode : BaseNode
     {
         [SerializeField]
         private int _Seed = 0;
@@ -28,37 +28,25 @@ namespace CAGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_MatrixOut")
-                return GetRandomizedMatrix();
+            {
+                GetMatrixInput(
+                    "_MatrixIn", "_MatrixOut",
+                    ref _MatrixOutBuffer, ref _MatrixInIDBuffer,
+                    _CurrentSeed != _Seed || _CurrentChance != _Chance
+                );
+                return _MatrixOutBuffer;
+            }
             return null;
         }
 
-        private Types.Matrix GetRandomizedMatrix()
+        protected override void UpdateMatrixOutput(string portName)
         {
-            Types.Matrix matrix = GetInputValue<Types.Matrix>("_MatrixIn");
-            if (matrix == null)
+            if (portName == "_MatrixOut")
             {
-                _MatrixInIDBuffer = 0L;
-                _MatrixOutBuffer = null;
-                return null;
+                _CurrentSeed = _Seed;
+                _CurrentChance = _Chance;
+                Utilities.MatrixOperations.RandomizeMatrix(_MatrixOutBuffer, _Chance, _Seed);
             }
-            else if (_MatrixOutBuffer == null || matrix.id != _MatrixInIDBuffer)
-            {
-                _MatrixInIDBuffer = matrix.id;
-                _MatrixOutBuffer = matrix.Copy();
-                Randomize();
-            }
-            else if (_CurrentSeed != _Seed || _CurrentChance != _Chance)
-            {
-                Randomize();
-            }
-            return _MatrixOutBuffer;
-        }
-
-        private void Randomize()
-        {
-            _CurrentSeed = _Seed;
-            _CurrentChance = _Chance;
-            Utilities.MatrixOperations.RandomizeMatrix(_MatrixOutBuffer, _Chance, _Seed);
         }
 
         public void SetSeed(int seed)

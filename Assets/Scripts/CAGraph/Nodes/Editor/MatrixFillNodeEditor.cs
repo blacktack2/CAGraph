@@ -7,32 +7,32 @@ using XNodeEditor;
 namespace CAGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.MatrixFillNode))]
-    public class MatrixFillNodeEditor : NodeEditor
+    public class MatrixFillNodeEditor : BaseNodeEditor<Nodes.MatrixFillNode>
     {
-        private Nodes.MatrixFillNode _MatrixClearNode;
+        private SerializedProperty _MatrixIn, _MatrixOut, _FillValue;
 
-        private bool _ShowPreview = true;
-
-        public override void OnBodyGUI()
+        protected override void OnNodeEnable()
         {
-            if (_MatrixClearNode == null)
-                _MatrixClearNode = target as Nodes.MatrixFillNode;
-            
-            serializedObject.Update();
+            _MatrixIn  = serializedObject.FindProperty("_MatrixIn");
+            _MatrixOut = serializedObject.FindProperty("_MatrixOut");
+            _FillValue = serializedObject.FindProperty("_FillValue");
 
+            AddPreview("_MatrixOut");
+        }
+
+        protected override void NodeInputGUI()
+        {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixIn"));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
+            NodeEditorGUILayout.PropertyField(_MatrixIn);
+            NodeEditorGUILayout.PropertyField(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
+        }
 
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_FillValue"), new GUIContent("fill value"));
-
-            _ShowPreview = Utilities.CAEditorUtilities.DisplayPreview(
-                (Types.Matrix) _MatrixClearNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
-            
-            serializedObject.ApplyModifiedProperties();
+        protected override void NodeBodyGUI()
+        {
+            NodeEditorGUILayout.PropertyField(_FillValue, new GUIContent("fill value"));
         }
     }
 }

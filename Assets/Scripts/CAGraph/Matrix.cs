@@ -74,7 +74,7 @@ namespace CAGraph.Types
                                     (float)Utilities.CAEditorUtilities.previewWidth / (float)height);
             int targetWidth = (int) (width * scale);
             int targetHeight = (int) (height * scale);
-            _Preview = Utilities.CAEditorUtilities.ScaleTexture(preview, targetWidth, targetHeight);
+            _Preview = ScaleTexture(preview, targetWidth, targetHeight);
         }
 
         public Matrix Copy()
@@ -87,6 +87,19 @@ namespace CAGraph.Types
         public void UpdateID()
         {
             _ID = DateTime.Now.Ticks;
+        }
+
+        private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
+        {
+            Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, true);
+            Color[] rpixels = result.GetPixels(0);
+            float incX = 1f / (float) targetWidth;
+            float incY = 1f / (float) targetHeight;
+            for (int px = 0; px < rpixels.Length; px++)
+                rpixels[px] = source.GetPixelBilinear(incX * ((float) px % targetWidth), incY * ((float) Mathf.Floor(px / targetWidth)));
+            result.SetPixels(rpixels, 0);
+            result.Apply();
+            return result;
         }
     }
 }

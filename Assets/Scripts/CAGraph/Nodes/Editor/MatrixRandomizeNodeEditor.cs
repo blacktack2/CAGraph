@@ -6,46 +6,44 @@ using XNodeEditor;
 namespace CAGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.MatrixRandomizeNode))]
-    public class MatrixRandomizeNodeEditor : NodeEditor
+    public class MatrixRandomizeNodeEditor : BaseNodeEditor<Nodes.MatrixRandomizeNode>
     {
-        private Nodes.MatrixRandomizeNode _MatrixRandomizeNode;
+        private SerializedProperty _MatrixIn, _MatrixOut, _Seed, _Chance;
 
-        private bool _ShowPreview = true;
-
-        public override void OnBodyGUI()
+        protected override void OnNodeEnable()
         {
-            if (_MatrixRandomizeNode == null)
-                _MatrixRandomizeNode = target as Nodes.MatrixRandomizeNode;
+            _MatrixIn  = serializedObject.FindProperty("_MatrixIn");
+            _MatrixOut = serializedObject.FindProperty("_MatrixOut");
+            _Seed      = serializedObject.FindProperty("_Seed");
+            _Chance    = serializedObject.FindProperty("_Chance");
 
-            int width = GetWidth() - (GetBodyStyle().padding.left + GetBodyStyle().padding.right);
+            AddPreview("_MatrixOut");
+        }
 
-            serializedObject.Update();
-
+        protected override void NodeInputGUI()
+        {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixIn"));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
+            NodeEditorGUILayout.PropertyField(_MatrixIn);
+            NodeEditorGUILayout.PropertyField(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
+        }
 
-            float labelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = width / 4;
+        protected override void NodeBodyGUI()
+        {
+            EditorGUIUtility.labelWidth = contentWidth / 4;
             EditorGUILayout.BeginHorizontal();
 
-            if (EditorGUILayout.DropdownButton(new GUIContent("Seed"), FocusType.Passive, GUILayout.Width(width / 2)))
-                _MatrixRandomizeNode.SetSeed((int) DateTime.Now.Ticks);
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_Seed"),
-                                              new GUIContent(), true, GUILayout.Width(width / 2));
+            if (EditorGUILayout.DropdownButton(new GUIContent("Seed"), FocusType.Passive, GUILayout.Width(contentWidth / 2)))
+                _Node.SetSeed((int) DateTime.Now.Ticks);
+            NodeEditorGUILayout.PropertyField(_Seed, new GUIContent(), true, GUILayout.Width(contentWidth / 2));
 
             EditorGUILayout.EndHorizontal();
-            EditorGUIUtility.labelWidth = labelWidth;
+            EditorGUIUtility.labelWidth = 0;
 
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_Chance"));
+            NodeEditorGUILayout.PropertyField(_Chance);
 
-            _ShowPreview = Utilities.CAEditorUtilities.DisplayPreview(
-                (Types.Matrix) _MatrixRandomizeNode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

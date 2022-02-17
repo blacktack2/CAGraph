@@ -4,7 +4,7 @@ using XNode;
 namespace CAGraph.Nodes
 {
     [CreateNodeMenu("Input/Matrix", 0)]
-    public class MatrixInitNode : Node
+    public class MatrixInitNode : BaseNode
     {
         [SerializeField]
         private Types.Matrix _Matrix;
@@ -37,16 +37,11 @@ namespace CAGraph.Nodes
 
         public void UpdateMatrix()
         {
-            if (_MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
+            if (_Matrix == null || _MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
             {
                 _Matrix = new Types.Matrix(_MatrixWidth, _MatrixHeight);
                 _MatrixOutBuffer = _Matrix.Copy();
             }
-        }
-
-        public Types.Matrix GetMatrix()
-        {
-            return _Matrix;
         }
     }
 }

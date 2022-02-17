@@ -299,9 +299,9 @@ MonoBehaviour:
     _Cells: 
     width: 0
     height: 0
-  _ToReplace: 0100000001000000
+  _ToReplace: 01000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
