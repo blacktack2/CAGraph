@@ -323,6 +323,7 @@ MonoBehaviour:
   - {fileID: -2929671622791551394}
   - {fileID: -755127166778291337}
   - {fileID: 1032208675868097698}
+  - {fileID: 7229963197556105936}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
 --- !u!114 &1032208675868097698
 MonoBehaviour:
@@ -406,3 +407,32 @@ MonoBehaviour:
     height: 0
   _Rules: 000000000001010101000000000001010101
   _Iterations: 4
+--- !u!114 &7229963197556105936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e50e3a1e8f47546a28e2216e58a5a9, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: 312}
+  ports:
+    keys:
+    - _FloatOut
+    values:
+    - _fieldName: _FloatOut
+      _node: {fileID: 7229963197556105936}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _FloatOut: 0
+  _FloatOutBuffer: 0
