@@ -322,7 +322,37 @@ MonoBehaviour:
   - {fileID: -4687547964778506056}
   - {fileID: -2929671622791551394}
   - {fileID: -755127166778291337}
+  - {fileID: 1032208675868097698}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
+--- !u!114 &1032208675868097698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c330f766f01ed042b6e00be9066cddb, type: 3}
+  m_Name: Integer
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -381.171, y: 178.13808}
+  ports:
+    keys:
+    - _IntegerOut
+    values:
+    - _fieldName: _IntegerOut
+      _node: {fileID: 1032208675868097698}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _IntegerOut: 0
+  _IntegerOutBuffer: 0
 --- !u!114 &1348431619762717489
 MonoBehaviour:
   m_ObjectHideFlags: 0
