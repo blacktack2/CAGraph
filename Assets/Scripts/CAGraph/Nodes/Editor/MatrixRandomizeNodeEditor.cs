@@ -24,8 +24,8 @@ namespace CAGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(_MatrixIn);
-            NodeEditorGUILayout.PropertyField(_MatrixOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixIn);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -37,12 +37,12 @@ namespace CAGraph.Editors
 
             if (EditorGUILayout.DropdownButton(new GUIContent("Seed"), FocusType.Passive, GUILayout.Width(contentWidth / 2)))
                 _Node.SetSeed((int) DateTime.Now.Ticks);
-            NodeEditorGUILayout.PropertyField(_Seed, new GUIContent(), true, GUILayout.Width(contentWidth / 2));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_Seed, new GUIContent(), true, GUILayout.Width(contentWidth / 2));
 
             EditorGUILayout.EndHorizontal();
             EditorGUIUtility.labelWidth = 0;
 
-            NodeEditorGUILayout.PropertyField(_Chance);
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_Chance);
 
         }
     }

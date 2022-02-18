@@ -41,7 +41,9 @@ namespace CAGraph.Editors
         public override void OnBodyGUI()
         {
             serializedObject.Update();
+            EditorGUIUtility.labelWidth = contentWidth / 3;
             NodeInputGUI();
+            EditorGUIUtility.labelWidth = 0;
             NodeBodyGUI();
             serializedObject.ApplyModifiedProperties();
             RenderPreviews();

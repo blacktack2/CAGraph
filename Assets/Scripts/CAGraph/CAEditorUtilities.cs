@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using XNodeEditor;
 
 namespace CAGraph.Utilities
 {
@@ -13,6 +14,56 @@ namespace CAGraph.Utilities
         public void Enable()
         {
             InitNullPreview();
+        }
+
+        public void PortFieldMinLabel(SerializedProperty port, bool includeChildren = true, params GUILayoutOption[] options)
+        {
+            PortFieldMinLabel(port, null, includeChildren, options);
+        }
+
+        public void PortFieldMinLabel(SerializedProperty port, GUIContent label, bool includeChildren = true, params GUILayoutOption[] options)
+        {
+            if (label == null)
+            {
+                EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(new GUIContent(port.name)).x;
+                NodeEditorGUILayout.PropertyField(port, includeChildren, options);
+            }
+            else
+            {
+                EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(label).x;
+                NodeEditorGUILayout.PropertyField(port, label, includeChildren, options);
+            }
+            EditorGUIUtility.labelWidth = 0;
+        }
+
+        public void PropertyFieldMinLabel(SerializedProperty property, bool includeChildren = true, params GUILayoutOption[] options)
+        {
+            PropertyFieldMinLabel(property, null, includeChildren, options);
+        }
+
+        public void PropertyFieldMinLabel(SerializedProperty property, GUIContent label, bool includeChildren = true, params GUILayoutOption[] options)
+        {
+            if (label == null)
+            {
+                EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(new GUIContent(property.name)).x;
+                EditorGUILayout.PropertyField(property, includeChildren, options);
+            }
+            else
+            {
+                EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(label).x;
+                EditorGUILayout.PropertyField(property, label, includeChildren, options);
+            }
+            EditorGUIUtility.labelWidth = 0;
+        }
+
+        public void SetLabelWidthToText(string label)
+        {
+            SetLabelWidthToText(new GUIContent(label));
+        }
+
+        public void SetLabelWidthToText(GUIContent label)
+        {
+            EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(label).x;
         }
 
         private void InitNullPreview()

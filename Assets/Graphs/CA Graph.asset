@@ -301,7 +301,7 @@ MonoBehaviour:
     height: 0
   _ToReplace: 01000000
   _Replacement: 1
-  toReplaceChanged: 1
+  toReplaceChanged: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: Integer
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -381.171, y: 178.13808}
+  position: {x: -392, y: 184}
   ports:
     keys:
     - _IntegerOut

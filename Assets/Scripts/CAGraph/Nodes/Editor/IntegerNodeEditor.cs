@@ -17,12 +17,12 @@ namespace CAGraph.Editors
 
         protected override void NodeInputGUI()
         {
-            NodeEditorGUILayout.PropertyField(_IntegerOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_IntegerOut);
         }
 
         protected override void NodeBodyGUI()
         {
-            NodeEditorGUILayout.PropertyField(_IntegerOutBuffer, new GUIContent("value"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_IntegerOutBuffer, new GUIContent("value"));
         }
     }
 }

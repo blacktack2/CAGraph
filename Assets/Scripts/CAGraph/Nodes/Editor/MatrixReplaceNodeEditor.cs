@@ -30,8 +30,8 @@ namespace CAGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(_MatrixIn);
-            NodeEditorGUILayout.PropertyField(_MatrixOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixIn);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -39,7 +39,7 @@ namespace CAGraph.Editors
         protected override void NodeBodyGUI()
         {
             _ToReplaceList.DoLayoutList();            
-            NodeEditorGUILayout.PropertyField(_Replacement, new GUIContent("with:"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_Replacement, new GUIContent("with:"));
         }
 
         private void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)

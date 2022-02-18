@@ -61,8 +61,8 @@ namespace CAGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(_MatrixIn);
-            NodeEditorGUILayout.PropertyField(_MatrixOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixIn);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -70,21 +70,21 @@ namespace CAGraph.Editors
         protected override void NodeBodyGUI()
         {
             EditorGUILayout.LabelField("Rule:", GUILayout.Width(30));
-             
+            
             string[] rules = _Node.GetRuleStrings();
-            float labelWidth = EditorGUIUtility.labelWidth;
             EditorGUILayout.BeginHorizontal();
 
-            EditorGUIUtility.labelWidth = 10;
+            graph.CAEditorUtilities.SetLabelWidthToText("B");
             string born    = EditorGUILayout.TextField("B", rules[0]);
             string survive = EditorGUILayout.TextField("S", rules[1]);
+            EditorGUIUtility.labelWidth = 0;
+
             if (_Node.CompareNotation(born, survive))
                 SetRuleFromNotation(born, survive);
 
             EditorGUILayout.EndHorizontal();
-            EditorGUIUtility.labelWidth = labelWidth;
 
-            NodeEditorGUILayout.PropertyField(_Iterations, new GUIContent("Iterations"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_Iterations, new GUIContent("Iterations"));
         }
 
         private void SetRuleFromNotation(string born, string survive)

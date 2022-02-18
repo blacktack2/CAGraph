@@ -20,7 +20,7 @@ namespace CAGraph.Editors
 
         protected override void NodeInputGUI()
         {
-            NodeEditorGUILayout.PropertyField(_MatrixOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
         }
 
         protected override void NodeBodyGUI()
@@ -28,8 +28,10 @@ namespace CAGraph.Editors
             EditorGUIUtility.labelWidth = contentWidth / 4;
             EditorGUILayout.BeginHorizontal();
             
-            NodeEditorGUILayout.PropertyField(_MatrixWidth, new GUIContent("width"), true, GUILayout.Width(contentWidth / 2));
-            NodeEditorGUILayout.PropertyField(_MatrixHeight, new GUIContent("height"), true, GUILayout.Width(contentWidth / 2));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(
+                _MatrixWidth, new GUIContent("width"), true, GUILayout.Width(contentWidth / 2));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(
+                _MatrixHeight, new GUIContent("height"), true, GUILayout.Width(contentWidth / 2));
             
             EditorGUILayout.EndHorizontal();
             

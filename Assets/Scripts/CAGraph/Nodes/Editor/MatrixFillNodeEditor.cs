@@ -24,15 +24,15 @@ namespace CAGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            NodeEditorGUILayout.PropertyField(_MatrixIn);
-            NodeEditorGUILayout.PropertyField(_MatrixOut);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixIn);
+            graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
         }
 
         protected override void NodeBodyGUI()
         {
-            NodeEditorGUILayout.PropertyField(_FillValue, new GUIContent("fill value"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_FillValue, new GUIContent("fill value"));
         }
     }
 }
