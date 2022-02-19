@@ -18,6 +18,8 @@ MonoBehaviour:
     keys:
     - _MatrixIn
     - _MatrixOut
+    - _Seed
+    - _Chance
     values:
     - _fieldName: _MatrixIn
       _node: {fileID: -7409981092686690784}
@@ -46,12 +48,30 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _Seed: 0
-  _Chance: 0.6
+    - _fieldName: _Seed
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Chance
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   _MatrixIn:
     _Cells: 
     width: 0
     height: 0
+  _Seed: 0
+  _Chance: 0.6
   _MatrixOut:
     _Cells: 
     width: 0
@@ -353,7 +373,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _IntegerOut: 0
-  _IntegerOutBuffer: 0
+  _IntegerOutBuffer: 1
 --- !u!114 &1348431619762717489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,4 +455,4 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _FloatOut: 0
-  _FloatOutBuffer: 0
+  _FloatOutBuffer: 0.5
