@@ -6,16 +6,16 @@ namespace CAGraph.Nodes
     [CreateNodeMenu("Operations/Matrix/Randomize", 20)]
     public class MatrixRandomizeNode : BaseNode
     {
-        [SerializeField, Input] private Types.Matrix _MatrixIn;
+        [SerializeField, Input] private Types.Matrix01 _MatrixIn;
         [SerializeField, Input] private int _Seed = 0;
         [SerializeField, Input, Range(0f, 1f)] private float _Chance = 0.5f;
-        [SerializeField, Output] private Types.Matrix _MatrixOut;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
         private int _CurrentSeed = 0;
         private float _CurrentChance = 0f;
 
         private long _MatrixInIDBuffer = 0L;
-        private Types.Matrix _MatrixOutBuffer;
+        private Types.Matrix01 _MatrixOutBuffer;
 
         private void Reset()
         {
@@ -50,7 +50,7 @@ namespace CAGraph.Nodes
             {
                 _CurrentSeed = GetSeed();
                 _CurrentChance = GetChance();
-                Utilities.MatrixOperations.RandomizeMatrix(_MatrixOutBuffer, _CurrentChance, _CurrentSeed);
+                Utilities.MatrixOperations.RandomizeMatrix01(_MatrixOutBuffer, _CurrentChance, _CurrentSeed);
             }
         }
 

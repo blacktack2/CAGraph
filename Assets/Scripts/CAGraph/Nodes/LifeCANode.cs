@@ -7,8 +7,8 @@ namespace CAGraph.Nodes
     [CreateNodeMenu("Operations/Matrix/Lifelike CA", 5)]
     public class LifeCANode : BaseNode
     {
-        [SerializeField, Input] private Types.Matrix _MatrixIn;
-        [SerializeField, Output] private Types.Matrix _MatrixOut;
+        [SerializeField, Input] private Types.Matrix01 _MatrixIn;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
         [SerializeField, HideInInspector]
         private bool[] _Rules = new bool[18];
@@ -21,7 +21,7 @@ namespace CAGraph.Nodes
         private CAGraph _Graph;
 
         private long _MatrixInIDBuffer = 0L;
-        private Types.Matrix _MatrixOutBuffer;
+        private Types.Matrix01 _MatrixOutBuffer;
 
         protected override void Init()
         {
@@ -37,44 +37,32 @@ namespace CAGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_MatrixOut")
-                return GetIteratedMatrix();
+            {
+                GetMatrixInput(
+                    "_MatrixIn", "_MatrixOut",
+                    ref _MatrixOutBuffer, ref _MatrixInIDBuffer,
+                    _RulesChanged || _Iterations != _CurrentIterations
+                );
+                return _MatrixOutBuffer;
+            }
             return null;
         }
 
-        private Types.Matrix GetIteratedMatrix()
+        protected override void UpdateMatrixOutput(string portName)
         {
-            Types.Matrix matrix = GetInputValue<Types.Matrix>("_MatrixIn");
-            if (matrix == null)
+            if (portName == "_MatrixOut")
             {
-                _MatrixInIDBuffer = 0L;
-                _MatrixOutBuffer = null;
-                return null;
+                _RulesChanged = false;
+                _CurrentIterations = _Iterations;
+
+                int[] rules = new int[18];
+                for (int i = 0; i < rules.Length; i++)
+                    rules[i] = _Rules[i] ? 1 : 0;
+
+                _Graph.CAHandler.IterateCells(_MatrixOutBuffer, rules, _Iterations);
             }
-            else if (_MatrixOutBuffer == null || matrix.id != _MatrixInIDBuffer)
-            {
-                _MatrixInIDBuffer = matrix.id;
-                _MatrixOutBuffer = matrix.Copy();
-                Iterate();
-            }
-            else if (_RulesChanged || _Iterations != _CurrentIterations)
-            {
-                _MatrixOutBuffer = matrix.Copy();
-                Iterate();
-            }
-            return _MatrixOutBuffer;
         }
 
-        private void Iterate()
-        {
-            _RulesChanged = false;
-            _CurrentIterations = _Iterations;
-
-            int[] rules = new int[18];
-            for (int i = 0; i < rules.Length; i++)
-                rules[i] = _Rules[i] ? 1 : 0;
-
-            _Graph.CAHandler.IterateCells(_MatrixOutBuffer, rules, _Iterations);
-        }
 
         public bool CompareNotation(string born, string survive)
         {

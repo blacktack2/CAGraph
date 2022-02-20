@@ -7,8 +7,8 @@ namespace CAGraph.Nodes
     [CreateNodeMenu("Operations/Matrix/Replace", 10)]
     public class MatrixReplaceNode : BaseNode
     {
-        [SerializeField, Input] private Types.Matrix _MatrixIn;
-        [SerializeField, Output] private Types.Matrix _MatrixOut;
+        [SerializeField, Input] private Types.Matrix01 _MatrixIn;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
         [SerializeField]
         private List<int> _ToReplace = new List<int>();
@@ -20,7 +20,7 @@ namespace CAGraph.Nodes
         private int _CurrentReplacement = 0;
 
         private long _MatrixInIDBuffer = 0L;
-        private Types.Matrix _MatrixOutBuffer;
+        private Types.Matrix01 _MatrixOutBuffer;
 
         private void OnValidate()
         {
@@ -52,7 +52,7 @@ namespace CAGraph.Nodes
             {
                 _CurrentReplacement = _Replacement;
                 toReplaceChanged = false;
-                Utilities.MatrixOperations.ReplaceMatrixValues(_MatrixOutBuffer, _ToReplace, _Replacement);
+                Utilities.MatrixOperations.ReplaceMatrixValues<Types.Matrix01, int>(_MatrixOutBuffer, _ToReplace, _Replacement);
             }
         }
 

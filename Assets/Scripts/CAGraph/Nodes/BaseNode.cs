@@ -1,3 +1,4 @@
+using System;
 using XNode;
 
 namespace CAGraph.Nodes
@@ -9,23 +10,25 @@ namespace CAGraph.Nodes
             base.Init();
         }
 
-        protected void GetMatrixInput(string inputPortName, string outputPortName, ref Types.Matrix outBuffer, ref long inBuffer, bool parameterChanged)
+        protected void GetMatrixInput<MType>(string inputPortName, string outputPortName,
+                                      ref MType outBuffer, ref long inBuffer, bool parameterChanged)
+            where MType : Types.Matrix
         {
-            Types.Matrix matrix = GetInputValue<Types.Matrix>(inputPortName);
+            MType matrix = GetInputValue<MType>(inputPortName);
             if (matrix == null)
             {
                 inBuffer = 0L;
                 outBuffer = null;
             }
-            else if (outBuffer == null || matrix.id != inBuffer)
+            else if (outBuffer == null || matrix.GetID() != inBuffer)
             {
-                inBuffer = matrix.id;
-                outBuffer = matrix.Copy();
+                inBuffer = matrix.GetID();
+                outBuffer = (MType) matrix.Clone();
                 UpdateMatrixOutput(outputPortName);
             }
             else if (parameterChanged)
             {
-                outBuffer = matrix.Copy();
+                outBuffer = (MType) matrix.Clone();
                 UpdateMatrixOutput(outputPortName);
             }
         }

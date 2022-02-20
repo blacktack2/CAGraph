@@ -7,13 +7,13 @@ namespace CAGraph.Nodes
     public class MatrixInitNode : BaseNode
     {
         [SerializeField]
-        private Types.Matrix _Matrix;
-        [SerializeField, Range(2, Types.Matrix.maxMatrixSize)]
+        private Types.Matrix01 _Matrix;
+        [SerializeField, Range(2, Types.Matrix01.maxMatrixSize)]
         private int _MatrixWidth = 100, _MatrixHeight = 100;
 
-        [SerializeField, Output] private Types.Matrix _MatrixOut;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
-        private Types.Matrix _MatrixOutBuffer;
+        private Types.Matrix01 _MatrixOutBuffer;
 
         private void Reset()
         {
@@ -25,8 +25,7 @@ namespace CAGraph.Nodes
             base.Init();
             if (_Matrix == null || _MatrixOut == null)
             {
-                _Matrix = new Types.Matrix(_MatrixWidth, _MatrixHeight);
-                _MatrixOutBuffer = _Matrix.Copy();
+                ResetMatrix();
             }
         }
 
@@ -39,9 +38,14 @@ namespace CAGraph.Nodes
         {
             if (_Matrix == null || _MatrixWidth != _Matrix.width || _MatrixHeight != _Matrix.height)
             {
-                _Matrix = new Types.Matrix(_MatrixWidth, _MatrixHeight);
-                _MatrixOutBuffer = _Matrix.Copy();
+                ResetMatrix();
             }
+        }
+
+        private void ResetMatrix()
+        {
+            _Matrix = new Types.Matrix01(_MatrixWidth, _MatrixHeight);
+            _MatrixOutBuffer = _Matrix.Clone();
         }
     }
 }

@@ -6,8 +6,8 @@ namespace CAGraph.Nodes
     [CreateNodeMenu("Operations/Matrix/Fill", 10)]
     public class MatrixFillNode : BaseNode
     {
-        [SerializeField, Input] private Types.Matrix _MatrixIn;
-        [SerializeField, Output] private Types.Matrix _MatrixOut;
+        [SerializeField, Input] private Types.Matrix01 _MatrixIn;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
         [SerializeField]
         private int _FillValue = 0;
@@ -15,7 +15,7 @@ namespace CAGraph.Nodes
         private int _CurrentFillValue = -1;
 
         private long _MatrixInIDBuffer = 0L;
-        private Types.Matrix _MatrixOutBuffer;
+        private Types.Matrix01 _MatrixOutBuffer;
 
         private void Reset()
         {

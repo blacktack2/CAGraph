@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -70,7 +71,8 @@ namespace CAGraph.Editors
                     }
                     else
                     {
-                        EditorGUILayout.LabelField(string.Format("Cells: {0} ({1}x{2})", matrix.GetCells().Length, matrix.width, matrix.height));
+                        EditorGUILayout.LabelField(
+                            string.Format("Cells: {0} ({1}x{2})", matrix.GetCells().Length, matrix.width, matrix.height));
                         if (matrix.preview == null)
                             matrix.UpdatePreview();
                         EditorGUILayout.LabelField(

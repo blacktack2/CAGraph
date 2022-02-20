@@ -27,8 +27,8 @@ namespace CAGraph.Utilities
 
         public void Enable()
         {
-            _Cells0Buffer = new ComputeBuffer(Types.Matrix.maxMatrixSize * Types.Matrix.maxMatrixSize, sizeof(int));
-            _Cells1Buffer = new ComputeBuffer(Types.Matrix.maxMatrixSize * Types.Matrix.maxMatrixSize, sizeof(int));
+            _Cells0Buffer = new ComputeBuffer(Types.Matrix01.maxMatrixSize * Types.Matrix01.maxMatrixSize, sizeof(int));
+            _Cells1Buffer = new ComputeBuffer(Types.Matrix01.maxMatrixSize * Types.Matrix01.maxMatrixSize, sizeof(int));
             _LifeRulesBuffer = new ComputeBuffer(18, sizeof(int));
         }
 
@@ -43,7 +43,7 @@ namespace CAGraph.Utilities
             _LifeRulesBuffer = null;
         }
 
-        public void IterateCells(Types.Matrix matrix, int[] rules, int iterations)
+        public void IterateCells(Types.Matrix01 matrix, int[] rules, int iterations)
         {
             int kernelIndex = 0;
             bool bufferFlag = false;
