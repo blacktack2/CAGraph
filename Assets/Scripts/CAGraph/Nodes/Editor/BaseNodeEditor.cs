@@ -59,7 +59,7 @@ namespace CAGraph.Editors
                 preview.isShowing = EditorGUILayout.Toggle(" ", preview.isShowing, _PreviewToggleStyle);
                 if (preview.isShowing)
                 {
-                    Types.Matrix matrix = (Types.Matrix) _Node.GetOutputPort("_MatrixOut").GetOutputValue();
+                    Types.Matrix matrix = (Types.Matrix) _Node.GetOutputPort(preview.portName).GetOutputValue();
                     if (matrix == null)
                     {
                         EditorGUILayout.LabelField("Cells: null");
@@ -95,6 +95,18 @@ namespace CAGraph.Editors
         protected void AddPreview(string portName, bool startShowing)
         {
             _MatrixPreviews.Add(new Preview {portName = portName, isShowing = startShowing});
+        }
+
+        protected void RemovePreview(string portName)
+        {
+            for (int i = 0; i < _MatrixPreviews.Count; i++)
+            {
+                if (_MatrixPreviews[i].portName == portName)
+                {
+                    _MatrixPreviews.RemoveAt(i);
+                    break;
+                }
+            }
         }
 
         protected abstract void OnNodeEnable();
