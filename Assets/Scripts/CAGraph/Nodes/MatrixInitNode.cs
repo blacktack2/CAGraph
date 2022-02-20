@@ -20,10 +20,6 @@ namespace CAGraph.Nodes
 
         private Types.Matrix _MatrixBuffer;
 
-        // private Types.Matrix01 _Matrix01OutBuffer;
-        // private Types.MatrixContinuous _MatrixContinuousOutBuffer;
-        // private Types.MatrixUInt _MatrixUIntOutBuffer;
-
         private void Reset()
         {
             name = "Matrix";
@@ -51,21 +47,6 @@ namespace CAGraph.Nodes
 
         public void UpdateMatrix()
         {
-            // switch (_MatrixType)
-            // {
-            //     case MatrixType.Boolean:
-            //         if (MatrixChanged(_Matrix01OutBuffer))
-            //             _Matrix01OutBuffer = new Types.Matrix01(_MatrixWidth, _MatrixHeight);
-            //         break;
-            //     case MatrixType.Continuous:
-            //         if (MatrixChanged(_MatrixContinuousOutBuffer))
-            //             _MatrixContinuousOutBuffer = new Types.MatrixContinuous(_MatrixWidth, _MatrixHeight);
-            //         break;
-            //     case MatrixType.Integer:
-            //         if (MatrixChanged(_MatrixUIntOutBuffer))
-            //             _MatrixUIntOutBuffer = new Types.MatrixUInt(_MatrixWidth, _MatrixHeight);
-            //         break;
-            // }
             switch (_MatrixType)
             {
                 case MatrixType.Boolean:
