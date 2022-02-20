@@ -61,8 +61,13 @@ namespace CAGraph.Types
 
         protected override Color GetColorOf(int pixelAt)
         {
+            uint value = _Cells[pixelAt];
+            if (value == 0)
+                return Color.black;
+            if (value == 1)
+                return Color.white;
             Random.State state = Random.state;
-            Random.InitState((int) _Cells[pixelAt]);
+            Random.InitState((int) value);
             Color c = Random.ColorHSV(0f, 1f);
             Random.state = state;
             return c;
