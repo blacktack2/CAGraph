@@ -16,12 +16,7 @@ namespace CAGraph.Utilities
             InitNullPreview();
         }
 
-        public void PortFieldMinLabel(SerializedProperty port, bool includeChildren = true, params GUILayoutOption[] options)
-        {
-            PortFieldMinLabel(port, null, includeChildren, options);
-        }
-
-        public void PortFieldMinLabel(SerializedProperty port, GUIContent label, bool includeChildren = true, params GUILayoutOption[] options)
+        public void PortFieldMinLabel(SerializedProperty port, GUIContent label = null, bool includeChildren = true, params GUILayoutOption[] options)
         {
             if (label == null)
             {
@@ -36,12 +31,7 @@ namespace CAGraph.Utilities
             EditorGUIUtility.labelWidth = 0;
         }
 
-        public void PropertyFieldMinLabel(SerializedProperty property, bool includeChildren = true, params GUILayoutOption[] options)
-        {
-            PropertyFieldMinLabel(property, null, includeChildren, options);
-        }
-
-        public void PropertyFieldMinLabel(SerializedProperty property, GUIContent label, bool includeChildren = true, params GUILayoutOption[] options)
+        public void PropertyFieldMinLabel(SerializedProperty property, GUIContent label = null, bool includeChildren = true, params GUILayoutOption[] options)
         {
             if (label == null)
             {
