@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {
@@ -9,43 +8,6 @@ namespace CAGraph.Editors
     public class LifeCANodeEditor : BaseNodeEditor<Nodes.LifeCANode>
     {
         private SerializedProperty _MatrixIn, _MatrixOut, _Rules, _Iterations;
-
-        // public override void OnBodyGUI()
-        // {
-        //     if (_LifeCANode == null)
-        //         _LifeCANode = target as Nodes.LifeCANode;
-            
-        //     serializedObject.Update();
-            
-        //     EditorGUILayout.BeginHorizontal();
-
-        //     NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixIn"));
-        //     NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_MatrixOut"));
-
-        //     EditorGUILayout.EndHorizontal();
-
-        //     EditorGUILayout.LabelField("Rule:", GUILayout.Width(30));
-             
-        //     string[] rules = _LifeCANode.GetRuleStrings();
-        //     float labelWidth = EditorGUIUtility.labelWidth;
-        //     EditorGUILayout.BeginHorizontal();
-
-        //     EditorGUIUtility.labelWidth = 10;
-        //     string born    = EditorGUILayout.TextField("B", rules[0]);
-        //     string survive = EditorGUILayout.TextField("S", rules[1]);
-        //     if (_LifeCANode.CompareNotation(born, survive))
-        //         SetRuleFromNotation(born, survive);
-
-        //     EditorGUILayout.EndHorizontal();
-        //     EditorGUIUtility.labelWidth = labelWidth;
-
-        //     NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_Iterations"), new GUIContent("Iterations"));
-
-        //     serializedObject.ApplyModifiedProperties();
-
-        //     _ShowPreview = Utilities.CAEditorUtilities.DisplayPreview(
-        //         (Types.Matrix) _LifeCANode.GetOutputPort("_MatrixOut").GetOutputValue(), _ShowPreview);
-        // }
 
         protected override void OnNodeEnable()
         {
@@ -74,6 +36,7 @@ namespace CAGraph.Editors
             string[] rules = _Node.GetRuleStrings();
             EditorGUILayout.BeginHorizontal();
 
+            // Display rules in conventional B/S notation (e.g. Conway's Game of Life should be notated B3S23 or 3/23)
             graph.CAEditorUtilities.SetLabelWidthToText("B");
             string born    = EditorGUILayout.TextField("B", rules[0]);
             string survive = EditorGUILayout.TextField("S", rules[1]);

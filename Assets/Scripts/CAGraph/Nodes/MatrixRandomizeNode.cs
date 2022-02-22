@@ -3,11 +3,15 @@ using XNode;
 
 namespace CAGraph.Nodes
 {
+    /// <summary> Operation node for randomizing the values of a
+    /// <paramref name="Matrix" />.</summary>
     [CreateNodeMenu("Operations/Matrix/Randomize", 20)]
     public class MatrixRandomizeNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix01 _MatrixIn;
+        /// <summary> Seed for the random number generator. </summary>
         [SerializeField, Input] private int _Seed = 0;
+        /// <summary> Probability of a given cell being a 1. </summary>
         [SerializeField, Input, Range(0f, 1f)] private float _Chance = 0.5f;
         [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 

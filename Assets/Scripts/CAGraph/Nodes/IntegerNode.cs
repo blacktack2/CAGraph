@@ -3,12 +3,11 @@ using XNode;
 
 namespace CAGraph.Nodes
 {
-    [CreateNodeMenu("Input/Integer", 1)]
+    /// <summary> Constant node representing an Integer input. </summary>
+    [CreateNodeMenu("Constants/Integer", 1)]
     public class IntegerNode : BaseNode
     {
-        [SerializeField, Output] private int _IntegerOut;
-        [SerializeField]
-        private int _IntegerOutBuffer = 0;
+        [SerializeField, Output] private int _IntegerOut = 0;
         
         private void Reset()
         {
@@ -18,7 +17,7 @@ namespace CAGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_IntegerOut")
-                return _IntegerOutBuffer;
+                return _IntegerOut;
             return null;
         }
     }

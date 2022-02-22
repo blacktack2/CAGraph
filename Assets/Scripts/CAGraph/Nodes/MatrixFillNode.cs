@@ -3,12 +3,15 @@ using XNode;
 
 namespace CAGraph.Nodes
 {
+    /// <summary> Operation node for filling a <paramref name="Matrix" /> with
+    /// a single value. </summary>
     [CreateNodeMenu("Operations/Matrix/Fill", 10)]
     public class MatrixFillNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix01 _MatrixIn;
         [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
+        /// <summary> Value to fill the matrix with. </summary>
         [SerializeField]
         private int _FillValue = 0;
 

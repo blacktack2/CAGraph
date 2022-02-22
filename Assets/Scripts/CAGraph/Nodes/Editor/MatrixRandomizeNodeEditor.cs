@@ -1,7 +1,4 @@
-using System;
 using UnityEditor;
-using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {

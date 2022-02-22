@@ -1,10 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CAGraph.Types
 {
+    /// <summary> 2D array of cells, stored as a flattened array for use in
+    /// compute shaders. Cells are represented as integers with 0 and 1 as the
+    /// only accepted value. Integers are used instead of booleans to allow
+    /// transfer of the array to a compute shader. </summary>
     [Serializable]
     public class Matrix01 : Matrix
     {
@@ -14,14 +16,15 @@ namespace CAGraph.Types
         public Matrix01(int width, int height) : base(width, height)
         {
         }
-        
-        protected override void Reset()
+
+        protected override void ResetCells()
         {
             _Cells = new int[width * height];
-
-            UpdatePreview();
         }
 
+        /// <returns> The cells as a flattened matrix of integers (values 0-1).
+        /// </returns>
+        /// <seealso cref="base.GetCells()" />
         public new int[] GetCells()
         {
             int[] cells = new int[_Cells.Length];
@@ -36,6 +39,9 @@ namespace CAGraph.Types
             return conCells;
         }
 
+        /// <summary> Set the matrix to match <paramref name="cells" /> with
+        /// values clamped to 0 and 1, and reset the matrix ID. </summary>
+        /// <seealso cref="base.SetCells(IConvertible[] cells)" />
         public void SetCells(int[] cells)
         {
             if (cells.Length != width * height)
@@ -60,6 +66,8 @@ namespace CAGraph.Types
             SetCells(intCells);
         }
 
+        /// <returns> Black/white representation of the cell at
+        /// <paramref name="pixelAt" /> (0=black, 1=white). </returns>
         protected override Color GetColorOf(int pixelAt)
         {
             return _Cells[pixelAt] == 0 ? Color.black : Color.white;

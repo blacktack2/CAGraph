@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CAGraph.Utilities
 {
+    /// <summary> Handler class for applying Cellular Automata operations to
+    /// matrices. </summary>
     public class CAHandler
     {
         private static readonly int
@@ -43,6 +43,17 @@ namespace CAGraph.Utilities
             _LifeRulesBuffer = null;
         }
 
+        /// <summary> Run a lifelike CA simulation on
+        /// <paramref name="matrix" /> for a given set of rules and
+        /// number of itetrations. </summary>
+        /// <param name="matrix"> Boolean matrix to run the simulation on.
+        /// </param>
+        /// <param name="rules"> Array of 18 0-1 integers representing the
+        /// lifelike CA rules. Indexes 0-8 represent the birth rules for a
+        /// number of neighbours corresponding to each index. Likewise with
+        /// indexes 9-17 representing the survival rules. 0 will die/stay dead,
+        /// 1 will survive/be born </param>
+        /// <param name="iterations"> Number of iterations to run the simulation for. </param>
         public void IterateCells(Types.Matrix01 matrix, int[] rules, int iterations)
         {
             int kernelIndex = 0;
@@ -62,6 +73,8 @@ namespace CAGraph.Utilities
 
             int groupsX = Mathf.CeilToInt(matrix.width / 8f);
             int groupsY = Mathf.CeilToInt(matrix.height / 8f);
+            // Each iteration in a CA must run sequentially, but individual
+            // cells in an iteration can run in parallel
             for (int i = 0; i < iterations; i++)
             {
                 bufferFlag = !bufferFlag;

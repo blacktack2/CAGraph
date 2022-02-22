@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace CAGraph.Types
 {
+    /// <summary> 2D array of cells, stored as a flattened array for use in
+    /// compute shaders. Cells are represented as unsigned integers </summary>
     [Serializable]
     public class MatrixUInt : Matrix
     {
@@ -16,13 +16,14 @@ namespace CAGraph.Types
         {
         }
         
-        protected override void Reset()
+        protected override void ResetCells()
         {
             _Cells = new uint[width * height];
-
-            UpdatePreview();
         }
 
+        /// <returns> The cells as a flattened matrix of unsigned integers
+        /// </returns>
+        /// <seealso cref="base.GetCells()" />
         public new uint[] GetCells()
         {
             uint[] cells = new uint[_Cells.Length];
@@ -37,6 +38,9 @@ namespace CAGraph.Types
             return conCells;
         }
 
+        /// <summary> Set the matrix to match <paramref name="cells" />.
+        /// </summary>
+        /// <seealso cref="base.SetCells(IConvertible[] cells)" />
         public void SetCells(uint[] cells)
         {
             if (cells.Length != width * height)
@@ -59,6 +63,9 @@ namespace CAGraph.Types
             SetCells(uintCells);
         }
 
+        /// <returns> Color representation of the cell at
+        /// <paramref name="pixelAt" /> (0=black, 1=white, >1=random
+        /// high-saturation color). </returns>
         protected override Color GetColorOf(int pixelAt)
         {
             uint value = _Cells[pixelAt];

@@ -1,10 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CAGraph.Types
 {
+    /// <summary> 2D array of cells, stored as a flattened array for use in
+    /// compute shaders. Cells are represented as floats between 0 and 1.
+    /// (inclusive) </summary>
     [Serializable]
     public class MatrixContinuous : Matrix
     {
@@ -15,13 +16,14 @@ namespace CAGraph.Types
         {
         }
         
-        protected override void Reset()
+        protected override void ResetCells()
         {
             _Cells = new float[width * height];
-
-            UpdatePreview();
         }
 
+        /// <returns> The cells as a flattened matrix of floats (values 0-1).
+        /// </returns>
+        /// <seealso cref="base.GetCells()" />
         public new float[] GetCells()
         {
             float[] cells = new float[_Cells.Length];
@@ -36,6 +38,9 @@ namespace CAGraph.Types
             return conCells;
         }
 
+        /// <summary> Set the matrix to match <paramref name="cells" /> with
+        /// values clamped to 0 and 1, and reset the matrix ID. </summary>
+        /// <seealso cref="base.SetCells(IConvertible[] cells)" />
         public void SetCells(float[] cells)
         {
             if (cells.Length != width * height)
@@ -60,6 +65,8 @@ namespace CAGraph.Types
             SetCells(floatCells);
         }
 
+        /// <returns> Grayscale representation of the cell at
+        /// <paramref name="pixelAt" /> (0=black, 1=white). </returns>
         protected override Color GetColorOf(int pixelAt)
         {
             return new Color(_Cells[pixelAt], _Cells[pixelAt], _Cells[pixelAt]);

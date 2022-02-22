@@ -1,17 +1,24 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
 namespace CAGraph.Nodes
 {
+    /// <summary> Operation node for replacing specific values in a
+    /// <paramref name="Matrix" /> with another value. </summary>
     [CreateNodeMenu("Operations/Matrix/Replace", 10)]
     public class MatrixReplaceNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix01 _MatrixIn;
         [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
+        /// <summary> List of all values to be replaced by
+        /// <paramref name="_Replacement" />. </summary>
         [SerializeField]
         private List<int> _ToReplace = new List<int>();
+        /// <summary> Value to replace contents of
+        /// <paramref name="_ToReplace" /> with. </summary>
         [SerializeField]
         private int _Replacement = 0;
 
@@ -52,7 +59,11 @@ namespace CAGraph.Nodes
             {
                 _CurrentReplacement = _Replacement;
                 toReplaceChanged = false;
-                Utilities.MatrixOperations.ReplaceMatrixValues<Types.Matrix01, int>(_MatrixOutBuffer, _ToReplace, _Replacement);
+                // Cast contents of _ToReplace to IConvertible
+                List<IConvertible> toReplace = new List<IConvertible>();
+                foreach (int v in _ToReplace)
+                    toReplace.Add(v);
+                Utilities.MatrixOperations.ReplaceMatrixValues(_MatrixOutBuffer, toReplace, _Replacement);
             }
         }
 

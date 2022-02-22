@@ -1,16 +1,21 @@
 #pragma kernel IterateLifeCells
 
+// Flattened matrices of integers
 RWStructuredBuffer<int> _Cells0;
 RWStructuredBuffer<int> _Cells1;
 
 RWStructuredBuffer<int> _LifeRules;
 
+// Flag used to swap between using _Cells0 and _Cells1
+// (false = read 0, write 1 | true = read 1, write 0)
 bool _BufferFlag = false;
 
-// uint _Scale;
 uint _ScaleX;
 uint _ScaleY;
 
+/**
+ * Return the state of the cell at xy in the currently buffered array
+ */
 int GetCellAt(uint2 xy)
 {
     if (xy.x < _ScaleX && xy.y < _ScaleY)
@@ -26,6 +31,9 @@ int GetCellAt(uint2 xy)
     }
 }
 
+/**
+ * Set the state of the cell at xy in the currently buffered array
+ */
 void SetCellAt(uint2 xy, int value)
 {
     if (xy.x < _ScaleX && xy.y < _ScaleY)
@@ -37,6 +45,9 @@ void SetCellAt(uint2 xy, int value)
     }
 }
 
+/**
+ * Return the number of neighbours in the Moore neighbourhood of the cell at xy
+ */
 uint CountNeighboursAt(uint2 xy)
 {
     return GetCellAt(xy + int2(-1, -1)) +

@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {
@@ -13,12 +12,12 @@ namespace CAGraph.Editors
 
         protected override void OnNodeEnable()
         {
-            _Matrix01Out            = serializedObject.FindProperty("_Matrix01Out");
-            _MatrixContinuousOut    = serializedObject.FindProperty("_MatrixContinuousOut");
-            _MatrixUIntOut          = serializedObject.FindProperty("_MatrixUIntOut");
-            _MatrixWidth            = serializedObject.FindProperty("_MatrixWidth");
-            _MatrixHeight           = serializedObject.FindProperty("_MatrixHeight");
-            _MatrixType           = serializedObject.FindProperty("_MatrixType");
+            _Matrix01Out         = serializedObject.FindProperty("_Matrix01Out");
+            _MatrixContinuousOut = serializedObject.FindProperty("_MatrixContinuousOut");
+            _MatrixUIntOut       = serializedObject.FindProperty("_MatrixUIntOut");
+            _MatrixWidth         = serializedObject.FindProperty("_MatrixWidth");
+            _MatrixHeight        = serializedObject.FindProperty("_MatrixHeight");
+            _MatrixType          = serializedObject.FindProperty("_MatrixType");
         }
 
         protected override void NodeInputGUI()

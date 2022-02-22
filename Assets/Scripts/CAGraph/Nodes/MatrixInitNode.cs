@@ -4,18 +4,21 @@ using XNode;
 
 namespace CAGraph.Nodes
 {
-    [CreateNodeMenu("Input/Matrix", 0)]
+    /// <summary> Constant node representing a Matrix input. </summary>
+    [CreateNodeMenu("Constants/Matrix", 0)]
     public class MatrixInitNode : BaseNode
     {
         [SerializeField, Output] private Types.Matrix01 _Matrix01Out;
         [SerializeField, Output] private Types.MatrixContinuous _MatrixContinuousOut;
         [SerializeField, Output] private Types.MatrixUInt _MatrixUIntOut;
 
+        /// <summary> Bounds of the matrix being initialized. </summary>
         [SerializeField, Range(2, Types.Matrix01.maxMatrixSize)]
         private int _MatrixWidth = 100, _MatrixHeight = 100;
 
         public enum MatrixType { Boolean, Continuous, Integer }
-        [SerializeField]
+        /// <summary> Which implementation of Matrix to output. </summary>
+        [SerializeField, NodeEnum]
         private MatrixType _MatrixType = MatrixType.Boolean;
 
         private Types.Matrix _MatrixBuffer;
@@ -27,20 +30,13 @@ namespace CAGraph.Nodes
 
         public override object GetValue(NodePort port)
         {
-            if (port.fieldName == "_Matrix01Out" && _MatrixType == MatrixType.Boolean)
+            // Return the matrix only if the port name matches the expected output type
+            if (port.fieldName == "_Matrix01Out" && _MatrixType == MatrixType.Boolean ||
+                port.fieldName == "_MatrixContinuousOut" && _MatrixType == MatrixType.Continuous ||
+                port.fieldName == "_MatrixUIntOut" && _MatrixType == MatrixType.Integer)
             {
                 UpdateMatrix();
-                return (Types.Matrix01) _MatrixBuffer;
-            }
-            else if (port.fieldName == "_MatrixContinuousOut" && _MatrixType == MatrixType.Continuous)
-            {
-                UpdateMatrix();
-                return (Types.MatrixContinuous) _MatrixBuffer;
-            }
-            else if (port.fieldName == "_MatrixUIntOut" && _MatrixType == MatrixType.Integer)
-            {
-                UpdateMatrix();
-                return (Types.MatrixUInt) _MatrixBuffer;
+                return _MatrixBuffer;
             }
             return null;
         }

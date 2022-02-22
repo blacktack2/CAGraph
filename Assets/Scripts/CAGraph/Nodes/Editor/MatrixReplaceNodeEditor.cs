@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {

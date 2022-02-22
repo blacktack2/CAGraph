@@ -1,18 +1,16 @@
 using UnityEditor;
 using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.FloatNode))]
     public class FloatNodeEditor : BaseNodeEditor<Nodes.FloatNode>
     {
-        private SerializedProperty _FloatOut, _FloatOutBuffer;
+        private SerializedProperty _FloatOut;
 
         protected override void OnNodeEnable()
         {
-            _FloatOut       = serializedObject.FindProperty("_FloatOut");
-            _FloatOutBuffer = serializedObject.FindProperty("_FloatOutBuffer");
+            _FloatOut = serializedObject.FindProperty("_FloatOut");
         }
 
         protected override void NodeInputGUI()
@@ -22,7 +20,7 @@ namespace CAGraph.Editors
 
         protected override void NodeBodyGUI()
         {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_FloatOutBuffer, new GUIContent("value"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_FloatOut, new GUIContent("value"));
         }
     }
 }

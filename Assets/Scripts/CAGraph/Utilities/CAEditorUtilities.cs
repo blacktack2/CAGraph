@@ -4,11 +4,15 @@ using XNodeEditor;
 
 namespace CAGraph.Utilities
 {
+    /// <summary> Utility class for general Node Editor operations. </summary>
     public class CAEditorUtilities
     {
         private Texture2D _NullPreview;
+        /// <summary> Default preview to show if no other image can be
+        /// obtained/generated </summary>
         public Texture2D nullPreview {get {return _NullPreview;}}
 
+        /// <summary> Image size of all node previews. </summary>
         public static readonly int previewWidth = 150;
 
         public void Enable()
@@ -16,6 +20,9 @@ namespace CAGraph.Utilities
             InitNullPreview();
         }
 
+        /// <summary> Create a <c>NodeEditorGUILayout.PropertyField</c> with
+        /// the label width set to match the size of the label text </summary>
+        /// <seealso cref="NodeEditorGUILayout.PropertyField(SerializedProperty port, GUIContent label)" />
         public void PortFieldMinLabel(SerializedProperty port, GUIContent label = null, bool includeChildren = true, params GUILayoutOption[] options)
         {
             if (label == null)
@@ -31,6 +38,9 @@ namespace CAGraph.Utilities
             EditorGUIUtility.labelWidth = 0;
         }
 
+        /// <summary> Create a <c>EditorGUILayout.PropertyField</c> with
+        /// the label width set to match the size of the label text </summary>
+        /// <seealso cref="EditorGUILayout.PropertyField(SerializedProperty port, GUIContent label)" />
         public void PropertyFieldMinLabel(SerializedProperty property, GUIContent label = null, bool includeChildren = true, params GUILayoutOption[] options)
         {
             if (label == null)
@@ -46,11 +56,14 @@ namespace CAGraph.Utilities
             EditorGUIUtility.labelWidth = 0;
         }
 
+        /// <summary> Set label width to match the width of the text in
+        /// <paramref name="label" /> </summary>
         public void SetLabelWidthToText(string label)
         {
             SetLabelWidthToText(new GUIContent(label));
         }
-
+        /// <summary> Set label width to match the width of the text in
+        /// <paramref name="label" /> </summary>
         public void SetLabelWidthToText(GUIContent label)
         {
             EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(label).x;

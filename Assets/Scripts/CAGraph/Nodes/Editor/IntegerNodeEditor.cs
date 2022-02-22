@@ -1,18 +1,16 @@
 using UnityEditor;
 using UnityEngine;
-using XNodeEditor;
 
 namespace CAGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.IntegerNode))]
     public class IntegerNodeEditor : BaseNodeEditor<Nodes.IntegerNode>
     {
-        private SerializedProperty _IntegerOut, _IntegerOutBuffer;
+        private SerializedProperty _IntegerOut;
 
         protected override void OnNodeEnable()
         {
-            _IntegerOut       = serializedObject.FindProperty("_IntegerOut");
-            _IntegerOutBuffer = serializedObject.FindProperty("_IntegerOutBuffer");
+            _IntegerOut = serializedObject.FindProperty("_IntegerOut");
         }
 
         protected override void NodeInputGUI()
@@ -22,7 +20,7 @@ namespace CAGraph.Editors
 
         protected override void NodeBodyGUI()
         {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_IntegerOutBuffer, new GUIContent("value"));
+            graph.CAEditorUtilities.PropertyFieldMinLabel(_IntegerOut, new GUIContent("value"));
         }
     }
 }
