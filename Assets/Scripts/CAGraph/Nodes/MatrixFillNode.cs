@@ -9,11 +9,9 @@ namespace CAGraph.Nodes
     public class MatrixFillNode : BaseNode
     {
         [SerializeField, Input] private Types.Matrix01 _MatrixIn;
-        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
-
         /// <summary> Value to fill the matrix with. </summary>
-        [SerializeField]
-        private int _FillValue = 0;
+        [SerializeField, Input] private int _FillValue = 0;
+        [SerializeField, Output] private Types.Matrix01 _MatrixOut;
 
         private int _CurrentFillValue = -1;
 
@@ -32,9 +30,13 @@ namespace CAGraph.Nodes
                 GetMatrixInput(
                     "_MatrixIn", "_MatrixOut",
                     ref _MatrixOutBuffer, ref _MatrixInIDBuffer,
-                    _FillValue != _CurrentFillValue
+                    GetFillValue() != _CurrentFillValue
                 );
                 return _MatrixOutBuffer;
+            }
+            else if (port.fieldName == "_FillValue")
+            {
+                return GetFillValue();
             }
             return null;
         }
@@ -43,9 +45,14 @@ namespace CAGraph.Nodes
         {
             if (portName == "_MatrixOut")
             {
-                _CurrentFillValue = _FillValue;
-                Utilities.MatrixOperations.FillMatrix(_MatrixOutBuffer, _FillValue);
+                _CurrentFillValue = GetFillValue();
+                Utilities.MatrixOperations.FillMatrix(_MatrixOutBuffer, _CurrentFillValue);
             }
+        }
+
+        private int GetFillValue()
+        {
+            return GetInputValue<int>("_FillValue", _FillValue);
         }
     }
 }

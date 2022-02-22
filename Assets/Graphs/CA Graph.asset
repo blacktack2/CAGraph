@@ -153,6 +153,7 @@ MonoBehaviour:
     keys:
     - _MatrixIn
     - _MatrixOut
+    - _FillValue
     values:
     - _fieldName: _MatrixIn
       _node: {fileID: -4035289444777717791}
@@ -178,15 +179,27 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _FillValue
+      _node: {fileID: -4035289444777717791}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _IntegerOut
+        node: {fileID: 1032208675868097698}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   _MatrixIn:
     width: 0
     height: 0
     _Cells: 
+  _FillValue: 0
   _MatrixOut:
     width: 0
     height: 0
     _Cells: 
-  _FillValue: 0
 --- !u!114 &-2929671622791551394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +427,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 01000000
   _Replacement: 1
-  toReplaceChanged: 1
+  toReplaceChanged: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,11 +479,14 @@ MonoBehaviour:
       - fieldName: _Seed
         node: {fileID: -7409981092686690784}
         reroutePoints: []
+      - fieldName: _FillValue
+        node: {fileID: -4035289444777717791}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _IntegerOut: 0
+  _IntegerOut: 1
 --- !u!114 &1348431619762717489
 MonoBehaviour:
   m_ObjectHideFlags: 0

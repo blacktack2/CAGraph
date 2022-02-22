@@ -6,13 +6,13 @@ namespace CAGraph.Editors
     [CustomNodeEditor(typeof(Nodes.MatrixFillNode))]
     public class MatrixFillNodeEditor : BaseNodeEditor<Nodes.MatrixFillNode>
     {
-        private SerializedProperty _MatrixIn, _MatrixOut, _FillValue;
+        private SerializedProperty _MatrixIn, _FillValue, _MatrixOut;
 
         protected override void OnNodeEnable()
         {
             _MatrixIn  = serializedObject.FindProperty("_MatrixIn");
-            _MatrixOut = serializedObject.FindProperty("_MatrixOut");
             _FillValue = serializedObject.FindProperty("_FillValue");
+            _MatrixOut = serializedObject.FindProperty("_MatrixOut");
 
             AddPreview("_MatrixOut");
         }
@@ -25,11 +25,12 @@ namespace CAGraph.Editors
             graph.CAEditorUtilities.PortFieldMinLabel(_MatrixOut);
 
             EditorGUILayout.EndHorizontal();
+
+            graph.CAEditorUtilities.PortFieldMinLabel(_FillValue, new GUIContent("fill value"));
         }
 
         protected override void NodeBodyGUI()
         {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_FillValue, new GUIContent("fill value"));
         }
     }
 }
