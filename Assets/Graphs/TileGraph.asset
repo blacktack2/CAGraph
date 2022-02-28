@@ -1,0 +1,626 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7409981092686690784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b3b8916f465eb45b89f15ba3f602dd, type: 3}
+  m_Name: Randomize Matrix
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -136}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    - _Seed
+    - _Chance
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixOut
+        node: {fileID: -4035289444777717791}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixIn
+        node: {fileID: 1348431619762717489}
+        reroutePoints: []
+      - fieldName: _MatrixIn
+        node: {fileID: -755127166778291337}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _IntegerOut
+        node: {fileID: 1032208675868097698}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Chance
+      _node: {fileID: -7409981092686690784}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _FloatOut
+        node: {fileID: 7229963197556105936}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _Seed: 0
+  _Chance: 0.6
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+--- !u!114 &-4687547964778506056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430c9804fe8d7e54d836bfc7ee1ab225, type: 3}
+  m_Name: Lifelike CA
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 632, y: -136}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: -4687547964778506056}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixOut
+        node: {fileID: 1348431619762717489}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: -4687547964778506056}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixIn
+        node: {fileID: -2929671622791551394}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _Rules: 000000000000000000000000000101010101
+  _Iterations: 10
+--- !u!114 &-4035289444777717791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04ed28a97f49e745926e4e9cec7cf27, type: 3}
+  m_Name: Fill Matrix
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -136}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    - _FillValue
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: -4035289444777717791}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _Matrix01Out
+        node: {fileID: -2642628780387726296}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: -4035289444777717791}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixIn
+        node: {fileID: -7409981092686690784}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _FillValue
+      _node: {fileID: -4035289444777717791}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _IntegerOut
+        node: {fileID: 1032208675868097698}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _FillValue: 0
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+--- !u!114 &-2929671622791551394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430c9804fe8d7e54d836bfc7ee1ab225, type: 3}
+  m_Name: Lifelike CA
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 888, y: -136}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: -2929671622791551394}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixOut
+        node: {fileID: -4687547964778506056}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: -2929671622791551394}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _Rules: 000101000000000000000000000100000000
+  _Iterations: 1
+--- !u!114 &-2642628780387726296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Matrix
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -136}
+  ports:
+    keys:
+    - _Matrix01Out
+    - _MatrixContinuousOut
+    - _MatrixUIntOut
+    values:
+    - _fieldName: _Matrix01Out
+      _node: {fileID: -2642628780387726296}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixIn
+        node: {fileID: -4035289444777717791}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixContinuousOut
+      _node: {fileID: -2642628780387726296}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixUIntOut
+      _node: {fileID: -2642628780387726296}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _Matrix01Out:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixContinuousOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _MatrixUIntOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixWidth: 100
+  _MatrixHeight: 100
+  _MatrixType: 0
+--- !u!114 &-2518878697661280479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Matrix
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -456}
+  ports:
+    keys:
+    - _Matrix01Out
+    - _MatrixContinuousOut
+    - _MatrixUIntOut
+    values:
+    - _fieldName: _Matrix01Out
+      _node: {fileID: -2518878697661280479}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixContinuousOut
+      _node: {fileID: -2518878697661280479}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixUIntOut
+      _node: {fileID: -2518878697661280479}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _Matrix01Out:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixContinuousOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _MatrixUIntOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixWidth: 100
+  _MatrixHeight: 100
+  _MatrixType: 1
+--- !u!114 &-755127166778291337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8e7d7648098834894fa9ad37b42abc, type: 3}
+  m_Name: Replace Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: 184}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: -755127166778291337}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixOut
+        node: {fileID: -7409981092686690784}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: -755127166778291337}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _ToReplace: 01000000
+  _Replacement: 1
+  toReplaceChanged: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b12ff5801c363d40879d73792f4094a, type: 3}
+  m_Name: TileGraph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1348431619762717489}
+  - {fileID: -4687547964778506056}
+  - {fileID: -2929671622791551394}
+  - {fileID: 1032208675868097698}
+  - {fileID: 7229963197556105936}
+  - {fileID: -4035289444777717791}
+  - {fileID: 5628496037280025773}
+  - {fileID: -2518878697661280479}
+  - {fileID: -2642628780387726296}
+  - {fileID: -7409981092686690784}
+  - {fileID: -755127166778291337}
+  _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
+--- !u!114 &1032208675868097698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c330f766f01ed042b6e00be9066cddb, type: 3}
+  m_Name: Integer
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: 184}
+  ports:
+    keys:
+    - _IntegerOut
+    values:
+    - _fieldName: _IntegerOut
+      _node: {fileID: 1032208675868097698}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _IntegerOut: 1
+--- !u!114 &1348431619762717489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430c9804fe8d7e54d836bfc7ee1ab225, type: 3}
+  m_Name: Lifelike CA
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: -136}
+  ports:
+    keys:
+    - _MatrixIn
+    - _MatrixOut
+    values:
+    - _fieldName: _MatrixIn
+      _node: {fileID: 1348431619762717489}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixOut
+        node: {fileID: -7409981092686690784}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixOut
+      _node: {fileID: 1348431619762717489}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _MatrixIn
+        node: {fileID: -4687547964778506056}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _MatrixIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _Rules: 000000000001010101000000000001010101
+  _Iterations: 4
+--- !u!114 &5628496037280025773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Matrix
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -776}
+  ports:
+    keys:
+    - _Matrix01Out
+    - _MatrixContinuousOut
+    - _MatrixUIntOut
+    values:
+    - _fieldName: _Matrix01Out
+      _node: {fileID: 5628496037280025773}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixContinuousOut
+      _node: {fileID: 5628496037280025773}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _MatrixUIntOut
+      _node: {fileID: 5628496037280025773}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _Matrix01Out:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixContinuousOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _MatrixUIntOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _MatrixWidth: 100
+  _MatrixHeight: 100
+  _MatrixType: 2
+--- !u!114 &7229963197556105936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e50e3a1e8f47546a28e2216e58a5a9, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: 312}
+  ports:
+    keys:
+    - _FloatOut
+    values:
+    - _fieldName: _FloatOut
+      _node: {fileID: 7229963197556105936}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _FloatOut: 0.6
