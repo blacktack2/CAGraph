@@ -49,7 +49,6 @@ namespace TileGraph.Types
         /// of the TileMap. </summary>
         public void UpdatePreview()
         {
-            Debug.Log("Updating");
             Texture2D preview = new Texture2D(width, height);
             Color[] pixels = preview.GetPixels(0);
 
