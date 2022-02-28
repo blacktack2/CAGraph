@@ -49,8 +49,6 @@ namespace TileGraph.Editors
                 _TileMapHeight, new GUIContent("height:"), true, GUILayout.Width(contentWidth / 2));
             
             EditorGUILayout.EndHorizontal();
-            
-            _Node.UpdateTileMap();
         }
 
         private void SetPreview()

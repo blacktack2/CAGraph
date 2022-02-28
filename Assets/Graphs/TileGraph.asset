@@ -103,7 +103,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &-4663337543498750292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,7 +730,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _FillValue: 0
+  _FillValue: 5
   _TileMapOut:
     width: 0
     height: 0

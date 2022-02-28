@@ -9,6 +9,8 @@ namespace TileGraph.Types
     [Serializable]
     public abstract class TileMap
     {
+        private static long _IDCounter = 0;
+
         /// <summary> Maximum width/height of the TileMap (the max number of
         /// total elements will be <paramref name="maxTileMapSize" /> *
         /// <paramref name="maxTileMapSize" />) </summary>
@@ -29,6 +31,7 @@ namespace TileGraph.Types
             this.height = height;
 
             Reset();
+            UpdateID();
         }
 
         /// <summary> Re-initialize the TileMap and call for a preview update.
@@ -46,6 +49,7 @@ namespace TileGraph.Types
         /// of the TileMap. </summary>
         public void UpdatePreview()
         {
+            Debug.Log("Updating");
             Texture2D preview = new Texture2D(width, height);
             Color[] pixels = preview.GetPixels(0);
 
@@ -111,7 +115,7 @@ namespace TileGraph.Types
         /// </summary>
         public void UpdateID()
         {
-            _ID = DateTime.Now.Ticks;
+            _ID = _IDCounter++;
         }
 
         /// <returns> Color representation of the value in the flattened TileMap
