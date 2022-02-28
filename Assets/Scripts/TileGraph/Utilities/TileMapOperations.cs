@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace TileGraph.Utilities
@@ -22,6 +23,43 @@ namespace TileGraph.Utilities
             int[] cells = tileMap.GetCells();
             for (int c = 0; c < cells.Length; c++)
                 cells[c] = Random.value < chance ? 1 : 0;
+            tileMap.SetCells(cells);
+
+            Random.state = state;
+        }
+        /// <summary> Populate <paramref name="tileMap" /> with randomly
+        /// distributed 0-1 values. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapCont" /> to randomize. </param>
+        /// </param>
+        /// <param name="seed"> Seed value to initialize the random number
+        /// generator at. </param>
+        public static void RandomizeTileMapCont(Types.TileMapCont tileMap, int seed)
+        {
+            Random.State state = Random.state;
+            Random.InitState(seed);
+
+            float[] cells = tileMap.GetCells();
+            for (int c = 0; c < cells.Length; c++)
+                cells[c] = Random.value;
+            tileMap.SetCells(cells);
+
+            Random.state = state;
+        }
+        /// <summary> Populate <paramref name="tileMap" /> with randomly
+        /// distributed 0-1 values. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapUint" /> to randomize. </param>
+        /// <param name="max"> Maximum value to insert.
+        /// </param>
+        /// <param name="seed"> Seed value to initialize the random number
+        /// generator at. </param>
+        public static void RandomizeTileMapUint(Types.TileMapUint tileMap, uint max, int seed)
+        {
+            Random.State state = Random.state;
+            Random.InitState(seed);
+
+            uint[] cells = tileMap.GetCells();
+            for (int c = 0; c < cells.Length; c++)
+                cells[c] = (uint) Mathf.RoundToInt(Random.Range(0, max));
             tileMap.SetCells(cells);
 
             Random.state = state;
