@@ -5,22 +5,22 @@ namespace TileGraph.Nodes
 {
     /// <summary> Operation node for filling a <paramref name="TileMap" /> with
     /// a single value. </summary>
-    [CreateNodeMenu("Operations/TileMap/Fill", 10)]
-    public class TileMapFillNode : BaseNode
+    [CreateNodeMenu("Operations/TileMap/Integer/Fill", 10)]
+    public class TileMapUintFillNode : BaseNode
     {
-        [SerializeField, Input] private Types.TileMapBool _TileMapIn;
+        [SerializeField, Input] private Types.TileMapUint _TileMapIn;
         /// <summary> Value to fill the TileMap with. </summary>
-        [SerializeField, Input] private int _FillValue = 0;
-        [SerializeField, Output] private Types.TileMapBool _TileMapOut;
+        [SerializeField, Input] private uint _FillValue = 0;
+        [SerializeField, Output] private Types.TileMapUint _TileMapOut;
 
-        private int _CurrentFillValue = -1;
+        private uint _CurrentFillValue = 0;
 
         private long _TileMapInIDBuffer = 0L;
-        private Types.TileMapBool _TileMapOutBuffer;
+        private Types.TileMapUint _TileMapOutBuffer;
 
         private void Reset()
         {
-            name = "Fill Tile-Map";
+            name = "Fill Tile-Map Integer";
         }
 
         public override object GetValue(NodePort port)
@@ -50,9 +50,9 @@ namespace TileGraph.Nodes
             }
         }
 
-        private int GetFillValue()
+        private uint GetFillValue()
         {
-            return GetInputValue<int>("_FillValue", _FillValue);
+            return GetInputValue<uint>("_FillValue", _FillValue);
         }
     }
 }

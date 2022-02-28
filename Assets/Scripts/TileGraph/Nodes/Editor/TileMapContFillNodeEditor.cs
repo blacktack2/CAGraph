@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace TileGraph.Editors
 {
-    [CustomNodeEditor(typeof(Nodes.TileMapFillNode))]
-    public class TileMapFillNodeEditor : BaseNodeEditor<Nodes.TileMapFillNode>
+    [CustomNodeEditor(typeof(Nodes.TileMapContFillNode))]
+    public class TileMapContFillNodeEditor : BaseNodeEditor<Nodes.TileMapContFillNode>
     {
         private SerializedProperty _TileMapIn, _FillValue, _TileMapOut;
 
