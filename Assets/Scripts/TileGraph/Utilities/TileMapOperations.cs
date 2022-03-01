@@ -96,5 +96,76 @@ namespace TileGraph.Utilities
                     cells[c] = replaceWith;
             tileMap.SetCells(cells);
         }
+
+        public static Types.TileMapCont CastBoolToCont(Types.TileMapBool tileMap)
+        {
+            int[] cells = tileMap.GetCells();
+            float[] newCells = new float[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                newCells[i] = (float) cells[i];
+            Types.TileMapCont newTileMap = new Types.TileMapCont(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
+        public static Types.TileMapUint CastBoolToUint(Types.TileMapBool tileMap)
+        {
+            int[] cells = tileMap.GetCells();
+            uint[] newCells = new uint[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                newCells[i] = (uint) cells[i];
+            Types.TileMapUint newTileMap = new Types.TileMapUint(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
+        public static Types.TileMapBool CastContToBool(Types.TileMapCont tileMap, float threshold = 0.5f)
+        {
+            float[] cells = tileMap.GetCells();
+            int[] newCells = new int[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (cells[i] < threshold)
+                    newCells[i] = 0;
+                else
+                    newCells[i] = 1;
+            }
+            Types.TileMapBool newTileMap = new Types.TileMapBool(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
+        public static Types.TileMapUint CastContToUint(Types.TileMapCont tileMap, uint max = 1)
+        {
+            float[] cells = tileMap.GetCells();
+            uint[] newCells = new uint[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                newCells[i] = (uint) Mathf.Round(cells[i] * max);
+            Types.TileMapUint newTileMap = new Types.TileMapUint(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
+        public static Types.TileMapBool CastUintToBool(Types.TileMapUint tileMap, uint threshold = 1)
+        {
+            uint[] cells = tileMap.GetCells();
+            int[] newCells = new int[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (cells[i] < threshold)
+                    newCells[i] = 0;
+                else
+                    newCells[i] = 1;
+            }
+            Types.TileMapBool newTileMap = new Types.TileMapBool(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
+        public static Types.TileMapCont CastUintToCont(Types.TileMapUint tileMap, uint max = 1)
+        {
+            uint[] cells = tileMap.GetCells();
+            float[] newCells = new float[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                newCells[i] = Mathf.Clamp01((float) cells[i] / (float) max);
+            Types.TileMapCont newTileMap = new Types.TileMapCont(tileMap.width, tileMap.height);
+            newTileMap.SetCells(newCells);
+            return newTileMap;
+        }
     }
 }

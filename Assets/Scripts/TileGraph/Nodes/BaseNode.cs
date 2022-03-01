@@ -1,3 +1,4 @@
+using UnityEngine;
 using XNode;
 
 namespace TileGraph.Nodes
@@ -28,13 +29,62 @@ namespace TileGraph.Nodes
         /// ID of the input TileMap. </param>
         /// <param name="parameterChanged"> <c>true</c> if a value relevant to
         /// the output has been changed, otherwise <c>false</c>. </param>
-        /// <typeparam name="MType"> Type of TileMap being operated on.
+        /// <typeparam name="MTypeIn"> Type of TileMap being operated on.
+        /// <param name="setOutBuffer"> <c>true</c> if
+        /// <paramref name="outBuffer" /> should be automatically reset,
+        /// otherwise <c>false</c> if <paramref name="outBuffer" /> should not
+        /// be changed. </param>
         /// </typeparam>
-        protected void GetTileMapInput<MType>(string inputPortName, string outputPortName,
-                                      ref MType outBuffer, ref long inBuffer, bool parameterChanged)
-            where MType : Types.TileMap
+        protected void GetTileMapInput<MTypeIn>(string inputPortName, string outputPortName,
+                                                ref MTypeIn outBuffer, ref long inBuffer,
+                                                bool parameterChanged = false)
+            where MTypeIn : Types.TileMap
         {
-            MType tileMap = GetInputValue<MType>(inputPortName);
+            MTypeIn tileMap = GetInputValue<MTypeIn>(inputPortName);
+            if (tileMap == null)
+            {
+                Debug.Log("NULL: " + name);
+                inBuffer = 0L;
+                outBuffer = null;
+            }
+            else if (outBuffer == null || tileMap.GetID() != inBuffer)
+            {
+                inBuffer = tileMap.GetID();
+                outBuffer = (MTypeIn) tileMap.Clone();
+                UpdateTileMapOutput(outputPortName);
+            }
+            else if (parameterChanged)
+            {
+                outBuffer = (MTypeIn) tileMap.Clone();
+                UpdateTileMapOutput(outputPortName);
+            }
+        }
+        /// <summary> Check the input value at
+        /// <paramref name="inputPortName" /> then update the given buffers and
+        /// call <code>UpdateTileMapOutput(outputPortname)</code> if any values
+        /// have been modified since the last change. </summary>
+        /// <param name="inputPortName"> Name of the input port receiving the
+        /// input value TileMap. </param>
+        /// <param name="outputPortName"> Name of the port the output TileMap is
+        /// to be sent to. </param>
+        /// <param name="outBuffer"> Reference to the buffer used to store the
+        /// output TileMap. </param>
+        /// <param name="inBuffer"> Reference to the buffer used to store the
+        /// ID of the input TileMap. </param>
+        /// <param name="parameterChanged"> <c>true</c> if a value relevant to
+        /// the output has been changed, otherwise <c>false</c>. </param>
+        /// <typeparam name="MTypeIn"> Type of TileMap being operated on.
+        /// <param name="setOutBuffer"> <c>true</c> if
+        /// <paramref name="outBuffer" /> should be automatically reset,
+        /// otherwise <c>false</c> if <paramref name="outBuffer" /> should not
+        /// be changed. </param>
+        /// </typeparam>
+        protected void GetTileMapInput<MTypeIn, MTypeOut>(string inputPortName, string outputPortName,
+                                                ref MTypeOut outBuffer, ref long inBuffer,
+                                                bool parameterChanged = false)
+            where MTypeIn : Types.TileMap where MTypeOut : Types.TileMap
+        {
+            MTypeIn tileMap = GetInputValue<MTypeIn>(inputPortName);
             if (tileMap == null)
             {
                 inBuffer = 0L;
@@ -43,12 +93,10 @@ namespace TileGraph.Nodes
             else if (outBuffer == null || tileMap.GetID() != inBuffer)
             {
                 inBuffer = tileMap.GetID();
-                outBuffer = (MType) tileMap.Clone();
                 UpdateTileMapOutput(outputPortName);
             }
             else if (parameterChanged)
             {
-                outBuffer = (MType) tileMap.Clone();
                 UpdateTileMapOutput(outputPortName);
             }
         }
