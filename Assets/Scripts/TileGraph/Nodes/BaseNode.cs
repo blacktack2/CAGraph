@@ -43,7 +43,6 @@ namespace TileGraph.Nodes
             MTypeIn tileMap = GetInputValue<MTypeIn>(inputPortName);
             if (tileMap == null)
             {
-                Debug.Log("NULL: " + name);
                 inBuffer = 0L;
                 outBuffer = null;
             }

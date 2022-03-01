@@ -37,14 +37,6 @@ namespace TileGraph.Nodes
                 );
                 return _TileMapOutBuffer;
             }
-            else if (port.fieldName == "_Seed")
-            {
-                return GetSeed();
-            }
-            else if (port.fieldName == "_Chance")
-            {
-                return GetChance();
-            }
             return null;
         }
 

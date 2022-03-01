@@ -34,10 +34,6 @@ namespace TileGraph.Nodes
                 );
                 return _TileMapOutBuffer;
             }
-            else if (port.fieldName == "_FillValue")
-            {
-                return GetFillValue();
-            }
             return null;
         }
         

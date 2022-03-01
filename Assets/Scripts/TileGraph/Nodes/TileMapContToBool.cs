@@ -27,7 +27,7 @@ namespace TileGraph.Nodes
                 GetTileMapInput<Types.TileMapCont, Types.TileMapBool>(
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
-                    _CurrentThreshold != _Threshold
+                    _CurrentThreshold != GetThreshold()
                 );
                 return _TileMapOutBuffer;
             }
@@ -36,9 +36,17 @@ namespace TileGraph.Nodes
 
         protected override void UpdateTileMapOutput(string portName)
         {
-            _CurrentThreshold = _Threshold;
-            Types.TileMapCont matrixIn = GetInputValue<Types.TileMapCont>("_TileMapIn");
-            _TileMapOutBuffer = Utilities.TileMapOperations.CastContToBool(matrixIn, _Threshold);
+            if (portName == "_TileMapOut")
+            {
+                _CurrentThreshold = GetThreshold();
+                Types.TileMapCont matrixIn = GetInputValue<Types.TileMapCont>("_TileMapIn");
+                _TileMapOutBuffer = Utilities.TileMapOperations.CastContToBool(matrixIn, _Threshold);
+            }
+        }
+
+        private float GetThreshold()
+        {
+            return GetInputValue<float>("_Threshold", _Threshold);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace TileGraph.Nodes
                 GetTileMapInput<Types.TileMapCont, Types.TileMapUint>(
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
-                    _CurrentMax != _Max
+                    _CurrentMax != GetMax()
                 );
                 return _TileMapOutBuffer;
             }
@@ -36,9 +36,17 @@ namespace TileGraph.Nodes
 
         protected override void UpdateTileMapOutput(string portName)
         {
-            _CurrentMax = _Max;
-            Types.TileMapCont matrixIn = GetInputValue<Types.TileMapCont>("_TileMapIn");
-            _TileMapOutBuffer = Utilities.TileMapOperations.CastContToUint(matrixIn, _Max);
+            if (portName == "_TileMapOut")
+            {
+                _CurrentMax = GetMax();
+                Types.TileMapCont matrixIn = GetInputValue<Types.TileMapCont>("_TileMapIn");
+                _TileMapOutBuffer = Utilities.TileMapOperations.CastContToUint(matrixIn, _Max);
+            }
+        }
+
+        private uint GetMax()
+        {
+            return GetInputValue<uint>("_Max", _Max);
         }
     }
 }
