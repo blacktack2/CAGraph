@@ -3,6 +3,7 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
+    /// <summary> Type cast node for converting from Uint to Bool. </summary>
     [CreateNodeMenu("Convert/Integer-Boolean", 0)]
     public class TileMapUintToBoolNode : BaseNode
     {

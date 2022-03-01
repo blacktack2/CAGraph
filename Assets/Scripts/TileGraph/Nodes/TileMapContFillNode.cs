@@ -3,8 +3,8 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Operation node for filling a <paramref name="TileMap" /> with
-    /// a single value. </summary>
+    /// <summary> Operation node for filling a <paramref name="TileMapCont" />
+    /// with a single value. </summary>
     [CreateNodeMenu("Operations/TileMap/Continuous/Fill", 10)]
     public class TileMapContFillNode : BaseNode
     {

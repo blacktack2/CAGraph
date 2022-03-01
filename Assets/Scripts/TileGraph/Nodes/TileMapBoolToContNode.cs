@@ -3,6 +3,7 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
+    /// <summary> Type cast node for converting from Bool to Cont. </summary>
     [CreateNodeMenu("Convert/Boolean-Continuous", 0)]
     public class TileMapBoolToContNode : BaseNode
     {

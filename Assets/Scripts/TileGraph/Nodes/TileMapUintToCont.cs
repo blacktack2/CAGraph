@@ -3,6 +3,7 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
+    /// <summary> Type cast node for converting from Uint to Cont. </summary>
     [CreateNodeMenu("Convert/Integer-Continuous", 0)]
     public class TileMapUintToContNode : BaseNode
     {

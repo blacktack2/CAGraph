@@ -4,7 +4,7 @@ using XNode;
 namespace TileGraph.Nodes
 {
     /// <summary> Operation node for randomizing the values of a
-    /// <paramref name="TileMap" />.</summary>
+    /// <paramref name="TileMapBool" />.</summary>
     [CreateNodeMenu("Operations/TileMap/Bool/Randomize", 20)]
     public class TileMapBoolRandomizeNode : BaseNode
     {

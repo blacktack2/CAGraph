@@ -3,14 +3,14 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Operation node for filling a <paramref name="TileMap" /> with
-    /// a single value. </summary>
+    /// <summary> Operation node for filling a <paramref name="TileMapBool" />
+    /// with a single value. </summary>
     [CreateNodeMenu("Operations/TileMap/Bool/Fill", 10)]
     public class TileMapBoolFillNode : BaseNode
     {
         [SerializeField, Input] private Types.TileMapBool _TileMapIn;
         /// <summary> Value to fill the TileMap with. </summary>
-        [SerializeField, Input] private int _FillValue = 0;
+        [SerializeField, Input, Range(0, 1)] private int _FillValue = 0;
         [SerializeField, Output] private Types.TileMapBool _TileMapOut;
 
         private int _CurrentFillValue = 0;

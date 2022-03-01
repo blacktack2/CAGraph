@@ -8,9 +8,10 @@ namespace TileGraph.Utilities
     /// <summary> Utility class for general operations on matrices. </summary>
     public class TileMapOperations
     {
-        /// <summary> Populate <paramref name="tileMap" /> with randomly
-        /// distributed 0-1 values. </summary>
-        /// <param name="tileMap"> <paramref name="TileMapBool" /> to randomize. </param>
+        /// <summary> Randomly assign either 0 or 1 to all cells in
+        /// <paramref name="tileMap" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapBool" /> to
+        /// randomize. </param>
         /// <param name="chance"> Probability for each value to be a 1.
         /// </param>
         /// <param name="seed"> Seed value to initialize the random number
@@ -27,9 +28,10 @@ namespace TileGraph.Utilities
 
             Random.state = state;
         }
-        /// <summary> Populate <paramref name="tileMap" /> with randomly
-        /// distributed 0-1 values. </summary>
-        /// <param name="tileMap"> <paramref name="TileMapCont" /> to randomize. </param>
+        /// <summary> Randomly assign a value between 0-1 (inclusive) to all
+        /// cells in <paramref name="tileMap" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapCont" /> to
+        /// randomize. </param>
         /// </param>
         /// <param name="seed"> Seed value to initialize the random number
         /// generator at. </param>
@@ -45,9 +47,10 @@ namespace TileGraph.Utilities
 
             Random.state = state;
         }
-        /// <summary> Populate <paramref name="tileMap" /> with randomly
-        /// distributed 0-1 values. </summary>
-        /// <param name="tileMap"> <paramref name="TileMapUint" /> to randomize. </param>
+        /// <summary> Randomly assign values between 0-<paramref name="max" />
+        /// (inclusive) to all cells in <paramref name="tileMap" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapUint" /> to
+        /// randomize. </param>
         /// <param name="max"> Maximum value to insert.
         /// </param>
         /// <param name="seed"> Seed value to initialize the random number
@@ -97,6 +100,10 @@ namespace TileGraph.Utilities
             tileMap.SetCells(cells);
         }
 
+        /// <summary> Cast a <paramref name="TileMapBool" /> to a
+        /// <paramref name="TileMapCont" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapBool" /> to cast.
+        /// </param>
         public static Types.TileMapCont CastBoolToCont(Types.TileMapBool tileMap)
         {
             int[] cells = tileMap.GetCells();
@@ -107,6 +114,10 @@ namespace TileGraph.Utilities
             newTileMap.SetCells(newCells);
             return newTileMap;
         }
+        /// <summary> Cast a <paramref name="TileMapBool" /> to a
+        /// <paramref name="TileMapUint" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapBool" /> to cast.
+        /// </param>
         public static Types.TileMapUint CastBoolToUint(Types.TileMapBool tileMap)
         {
             int[] cells = tileMap.GetCells();
@@ -117,6 +128,14 @@ namespace TileGraph.Utilities
             newTileMap.SetCells(newCells);
             return newTileMap;
         }
+        /// <summary> Cast a <paramref name="TileMapCont" /> to a
+        /// <paramref name="TileMapBool" />. Values from
+        /// 0-<paramref name="threshold" /> will become 0, and values from
+        /// <paramref name="TileMapCont" />-1 will become 1 </summary>
+        /// <param name="tileMap"> <paramref name="TileMapCont" /> to cast.
+        /// </param>
+        /// <param name="threshold"> Threshold value, below which all values
+        /// are cast to 0. </param>
         public static Types.TileMapBool CastContToBool(Types.TileMapCont tileMap, float threshold = 0.5f)
         {
             float[] cells = tileMap.GetCells();
@@ -132,6 +151,12 @@ namespace TileGraph.Utilities
             newTileMap.SetCells(newCells);
             return newTileMap;
         }
+        /// <summary> Cast a <paramref name="TileMapCont" /> to a
+        /// <paramref name="TileMapUint" />. Values will be normalized from 0-1
+        /// to 0-<paramref name="max" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapCont" /> to cast.
+        /// </param>
+        /// <param name="max"> Maximum value to normalize to. </param>
         public static Types.TileMapUint CastContToUint(Types.TileMapCont tileMap, uint max = 1)
         {
             float[] cells = tileMap.GetCells();
@@ -142,6 +167,14 @@ namespace TileGraph.Utilities
             newTileMap.SetCells(newCells);
             return newTileMap;
         }
+        /// <summary> Cast a <paramref name="TileMapUint" /> to a
+        /// <paramref name="TileMapBool" />. Values will be converted to 0 and
+        /// 1 based on <paramref name="threshold" />. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapUint" /> to cast.
+        /// </param>
+        /// <param name="threshold"> Lowest value in
+        /// <paramref name="tileMap" /> to be considered a 1. All other values
+        /// will become 0. </param>
         public static Types.TileMapBool CastUintToBool(Types.TileMapUint tileMap, uint threshold = 1)
         {
             uint[] cells = tileMap.GetCells();
@@ -157,6 +190,14 @@ namespace TileGraph.Utilities
             newTileMap.SetCells(newCells);
             return newTileMap;
         }
+        /// <summary> Cast a <paramref name="TileMapUint" /> to a
+        /// <paramref name="TileMapCont" />. Values will be normalized from
+        /// 0-<paramref name="max" /> to 0-1. </summary>
+        /// <param name="tileMap"> <paramref name="TileMapUint" /> to cast.
+        /// </param>
+        /// <param name="max"> Maximum uint value to expect from
+        /// <paramref name="tileMap" />. Values greater than
+        /// <paramref name="max" /> will be clamped at 1. </param>
         public static Types.TileMapCont CastUintToCont(Types.TileMapUint tileMap, uint max = 1)
         {
             uint[] cells = tileMap.GetCells();
