@@ -44,7 +44,7 @@ namespace TileGraph
             bool alreadyExists = false;
             for (int i = 0; i < nodes.Count; i++)
             {
-                if (nodes[i] != node && nodes[i] is Nodes.IOutputNode && ((Nodes.IOutputNode) nodes[i]).GetName() == outputName)
+                if (!ReferenceEquals(nodes[i], node) && nodes[i] is Nodes.IOutputNode && ((Nodes.IOutputNode) nodes[i]).GetName() == outputName)
                 {
                     alreadyExists = true;
                     break;
