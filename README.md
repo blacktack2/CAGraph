@@ -1,35 +1,48 @@
-# CAGraph
+# TileGraph
 
 ## About
 
-CAGraph is a work-in-progress graph based procedural generation tool using Unity's graph editor. This makes use of the GPU via compute shaders to run operations on 2D arrays faster.
+TileGraph is a work-in-progress graph based procedural generation tool using Unity's graph editor. This makes use of the GPU via compute shaders to run operations on 2D arrays faster.
+
+This README will be updated with more formalized documentation at a later date when this project is less volatile in it's changes.
 
 ### Nodes
 
 #### Input
 
-##### Matrix
+##### TileMap Boolean
 
-2D array of integers. Used for input into CA nodes.
+2D array of booleans (stored as integers to allow transfer to compute shaders).
+
+##### TileMap Continuous
+
+2D array of floats clamped between 0 and 1 (inclusive).
+
+##### TileMap Integer
+
+2D array of unsigned integers.
 
 #### Operations
 
 ##### Fill
 
-Set all elements of a given matrix to a single specified value (0 by default)
+Set all elements of a given tile-map to a single specified value.
 
-##### Randomizer
+##### Replace
 
-Set all elements of a given matrix to either zero or one based on a given random chance
+Replace all instances of one value in an tile-map with another.
+
+##### Randomize
+
+Set all elements of a given tile-map to a randomly assigned value.
 
 ##### Lifelike CA
 
-Apply a life-like CA (see: [Cellular Automata](https://conwaylife.com/wiki/Cellular_automaton#Life-like_cellular_automata)) with custom rules for a set number of iterations to a matrix.
+Apply a life-like Cellular Automata (CA) (see: [Cellular Automata](https://conwaylife.com/wiki/Cellular_automaton#Life-like_cellular_automata)) with custom rules for a set number of iterations to a matrix.
 
 ## TODO
 
 - Create new nodes
-  - Replace node
   - Set points node
 - Expand CA shader to include more types of CA
   - Generation based CA
