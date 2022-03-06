@@ -92,7 +92,7 @@ namespace TileGraph
                         return node.GetOutput<T>();
                 }
             }
-            throw new System.ArgumentException(string.Format("No output port with name '{}' and type '{}' found.",
+            throw new System.ArgumentException(string.Format("No output port with name '{0}' and type '{1}' found.",
                                                              name, typeof(T).Name));
         }
     }
