@@ -47,7 +47,9 @@ namespace TileGraph.Editors
 
             EditorGUILayout.EndHorizontal();
 
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_Iterations, new GUIContent("Iterations"));
+            graph.CAEditorUtilities.SetLabelWidthToText("Iterations");
+            _Iterations.intValue = Mathf.Clamp(EditorGUILayout.IntField(new GUIContent("Iterations"), _Iterations.intValue), 0, Nodes.LifeCANode.maxIterations);
+            EditorGUIUtility.labelWidth = 0;
         }
 
         private void SetRuleFromNotation(string born, string survive)

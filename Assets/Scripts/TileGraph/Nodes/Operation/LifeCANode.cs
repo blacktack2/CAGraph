@@ -5,9 +5,11 @@ namespace TileGraph.Nodes
 {
     /// <summary> Operation node for applying a life-like Cellular Automata
     /// to a <paramref name="TileMapBool" />. </summary>
-    [CreateNodeMenu("Operations/TileMap/Lifelike CA", 5)]
+    [CreateNodeMenu("Operations/TileMap/Bool/Lifelike CA", 5)]
     public class LifeCANode : BaseNode
     {
+        public const int maxIterations = 5000;
+
         [SerializeField, Input] private Types.TileMapBool _TileMapIn;
         [SerializeField, Output] private Types.TileMapBool _TileMapOut;
 
@@ -16,7 +18,7 @@ namespace TileGraph.Nodes
         [SerializeField, HideInInspector]
         private bool[] _Rules = new bool[18];
         /// <summary> Number of iterations to run the CA for. </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField, HideInInspector, Range(0, maxIterations)]
         private int _Iterations = 1;
 
         private bool _RulesChanged = false;
