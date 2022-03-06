@@ -88,6 +88,19 @@ namespace TileGraph.Types
         /// <returns> The cells as a flattened TileMap cast to <c>IConvertible</c>. </returns>
         protected abstract IConvertible[] GetConvertibleCells();
 
+        /// <returns> The cell at the 2D position
+        /// <paramref name="x" />,<paramref name="y" />. </returns>
+        /// <remarks> Overwritten by child implementations for type
+        /// contravariance </remarks>
+        public IConvertible GetCellAt(int x, int y)
+        {
+            return GetConvertibleCellAt(x, y);
+        }
+        /// <returns> The cell at the 2D position
+        /// <paramref name="x" />,<paramref name="y" /> cast to
+        /// <c>IConvertible</c>. </returns>
+        protected abstract IConvertible GetConvertibleCellAt(int x, int y);
+
         /// <summary> Set the TileMap to match <paramref name="cells" /> casted
         /// to this implementations data type, and reset the TileMap ID.
         /// </summary>

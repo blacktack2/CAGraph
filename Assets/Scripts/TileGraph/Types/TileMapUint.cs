@@ -38,6 +38,18 @@ namespace TileGraph.Types
             return conCells;
         }
 
+        /// <returns> The cell at the 2D position
+        /// <paramref name="x" />,<paramref name="y" /> as an unsigned integer.
+        /// </returns>
+        public new uint GetCellAt(int x, int y)
+        {
+            return _Cells[x + y * width];
+        }
+        protected override IConvertible GetConvertibleCellAt(int x, int y)
+        {
+            return (IConvertible) GetCellAt(x, y);
+        }
+
         /// <summary> Set the TileMap to match <paramref name="cells" />.
         /// </summary>
         /// <seealso cref="base.SetCells(IConvertible[] cells)" />
