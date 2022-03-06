@@ -141,7 +141,7 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _Seed: 0
-  _Max: 1
+  _Max: 10
   _TileMapOut:
     width: 0
     height: 0

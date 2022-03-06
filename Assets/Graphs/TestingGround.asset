@@ -104,13 +104,7 @@ MonoBehaviour:
       _node: {fileID: -7266727426746187772}
       _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _TileMapIn
-        node: {fileID: 7088624274236928638}
-        reroutePoints: []
-      - fieldName: _TileMapIn
-        node: {fileID: 6319879886868461092}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -227,7 +221,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &-4666385158960886868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -699,9 +693,6 @@ MonoBehaviour:
       - fieldName: _TileMapIn
         node: {fileID: -3799896867797653077}
         reroutePoints: []
-      - fieldName: _TileMapIn
-        node: {fileID: -8301220961684233726}
-        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -799,10 +790,10 @@ MonoBehaviour:
   - {fileID: 2977948590872729745}
   - {fileID: -4175001835594473331}
   - {fileID: -4510751602889768554}
-  - {fileID: 6319879886868461092}
-  - {fileID: 7088624274236928638}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: -3799896867797653077}
-  - {fileID: -8301220961684233726}
+  - {fileID: 0}
   - {fileID: 1165785128233310207}
   - {fileID: -4666385158960886868}
   - {fileID: -2196727178909149565}

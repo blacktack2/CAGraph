@@ -3,8 +3,8 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Constant node representing a Float input. </summary>
-    [CreateNodeMenu("Constants/Float", 1)]
+    /// <summary> Input node representing a Float input. </summary>
+    [CreateNodeMenu("Input/Float", 1)]
     public class FloatNode : BaseNode
     {
         [SerializeField, Output] private float _FloatOut = 0f;

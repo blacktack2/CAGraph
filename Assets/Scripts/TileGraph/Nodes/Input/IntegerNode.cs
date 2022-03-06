@@ -3,8 +3,8 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Constant node representing an Integer input. </summary>
-    [CreateNodeMenu("Constants/Integer", 1)]
+    /// <summary> Input node representing an Integer input. </summary>
+    [CreateNodeMenu("Input/Integer", 1)]
     public class IntegerNode : BaseNode
     {
         [SerializeField, Output] private int _IntegerOut = 0;

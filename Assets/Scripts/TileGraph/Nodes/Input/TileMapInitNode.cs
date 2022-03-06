@@ -4,8 +4,8 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Constant node representing a TileMap input. </summary>
-    [CreateNodeMenu("Constants/TileMap", 0)]
+    /// <summary> Input node representing a TileMap input. </summary>
+    [CreateNodeMenu("Input/TileMap", 0)]
     public class TileMapInitNode : BaseNode
     {
         [SerializeField, Output] private Types.TileMapBool _TileMapBoolOut;
