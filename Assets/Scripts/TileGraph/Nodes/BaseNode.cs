@@ -15,6 +15,19 @@ namespace TileGraph.Nodes
             _Graph = (TileGraph) graph;
         }
 
+        public override void OnCreateConnection(NodePort from, NodePort to)
+        {
+            if (ReferenceEquals(to.node, this) && from.ValueType != to.ValueType)
+            {
+                to.ClearConnections();
+                Debug.LogWarning(
+                    string.Format("Output type '{0}' does not match expected input type '{1}'",
+                                  from.ValueType.Name,
+                                  to.ValueType.Name)
+                );
+            }
+        }
+
         /// <summary> Check the given parameters to identify if a change has
         /// been made requiring an update to the output TileMap. If a change
         /// has been detected in the TileMap at
