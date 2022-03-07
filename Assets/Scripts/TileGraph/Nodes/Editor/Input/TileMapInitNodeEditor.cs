@@ -6,49 +6,48 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapInitNode))]
     public class TileMapInitNodeEditor : BaseNodeEditor<Nodes.TileMapInitNode>
     {
-        private SerializedProperty _TileMapBoolOut, _TileMapContOut, _TileMapUintOut, _TileMapWidth, _TileMapHeight, _TileMapType;
+        private SerializedProperty _TileMapWidth, _TileMapHeight, _TileMapBoolOut, _TileMapContOut, _TileMapUintOut, _TileMapType;
 
         private string _CurrentPreview;
 
         protected override void OnNodeEnable()
         {
+            _TileMapWidth   = serializedObject.FindProperty("_TileMapWidth");
+            _TileMapHeight  = serializedObject.FindProperty("_TileMapHeight");
             _TileMapBoolOut = serializedObject.FindProperty("_TileMapBoolOut");
             _TileMapContOut = serializedObject.FindProperty("_TileMapContOut");
             _TileMapUintOut = serializedObject.FindProperty("_TileMapUintOut");
-            _TileMapWidth   = serializedObject.FindProperty("_TileMapWidth");
-            _TileMapHeight  = serializedObject.FindProperty("_TileMapHeight");
             _TileMapType    = serializedObject.FindProperty("_TileMapType");
         }
 
         protected override void NodeInputGUI()
         {
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.BeginVertical();
+            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapWidth, new GUIContent("width "));
+            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapHeight, new GUIContent("height"));
+            EditorGUILayout.EndVertical();
+
             switch ((Nodes.TileMapInitNode.TileMapType) _TileMapType.enumValueIndex)
             {
                 case Nodes.TileMapInitNode.TileMapType.Boolean:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapBoolOut);
+                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapBoolOut, new GUIContent("tilemap out"));
                     break;
                 case Nodes.TileMapInitNode.TileMapType.Continuous:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapContOut);
+                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapContOut, new GUIContent("tilemap out"));
                     break;
                 case Nodes.TileMapInitNode.TileMapType.Integer:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapUintOut);
+                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapUintOut, new GUIContent("tilemap out"));
                     break;
             }
+            EditorGUILayout.EndHorizontal();
         }
 
         protected override void NodeBodyGUI()
         {
             graph.CAEditorUtilities.PropertyFieldMinLabel(_TileMapType, new GUIContent("type:"));
             SetPreview();
-
-            EditorGUILayout.BeginHorizontal();
-            
-            graph.CAEditorUtilities.PropertyFieldMinLabel(
-                _TileMapWidth, new GUIContent("width:"), true, GUILayout.Width(contentWidth / 2));
-            graph.CAEditorUtilities.PropertyFieldMinLabel(
-                _TileMapHeight, new GUIContent("height:"), true, GUILayout.Width(contentWidth / 2));
-            
-            EditorGUILayout.EndHorizontal();
         }
 
         private void SetPreview()

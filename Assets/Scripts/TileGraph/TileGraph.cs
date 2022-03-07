@@ -36,15 +36,20 @@ namespace TileGraph
             _CAHandler.Disable();
         }
 
-        public string CheckOutputName(string outputName, Nodes.IOutputNode node)
+        public string CheckInOutName(string outputName, Nodes.IInputOutputNode node)
         {
             if (outputName == "" || outputName == null)
-                return GenerateOutputName();
+            {
+                if (node is Nodes.IInputNode)
+                    return GenerateInOutName("Input");
+                else if (node is Nodes.IOutputNode)
+                    return GenerateInOutName("Output");
+            }
             
             bool alreadyExists = false;
             for (int i = 0; i < nodes.Count; i++)
             {
-                if (!ReferenceEquals(nodes[i], node) && nodes[i] is Nodes.IOutputNode && ((Nodes.IOutputNode) nodes[i]).GetName() == outputName)
+                if (!ReferenceEquals(nodes[i], node) && nodes[i] is Nodes.IInputOutputNode && ((Nodes.IInputOutputNode) nodes[i]).GetName() == outputName)
                 {
                     alreadyExists = true;
                     break;
@@ -58,10 +63,10 @@ namespace TileGraph
             while (prefix.Length > 0 && char.IsNumber(prefix, prefix.Length - 1))
                 prefix = prefix.Substring(0, prefix.Length - 1);
             
-            return GenerateOutputName(prefix);
+            return GenerateInOutName(prefix);
         }
 
-        public string GenerateOutputName(string prefix = "Output")
+        public string GenerateInOutName(string prefix)
         {
             Regex formatRegex = new Regex("^" + prefix + "([0-9]+)$");
             List<int> existing = new List<int>();
@@ -92,8 +97,27 @@ namespace TileGraph
                         return node.GetOutput<T>();
                 }
             }
-            throw new System.ArgumentException(string.Format("No output port with name '{0}' and type '{1}' found.",
-                                                             name, typeof(T).Name));
+            throw new System.ArgumentException(
+                string.Format("No output port with name '{0}' and type '{1}' found.", name, typeof(T).Name));
+        }
+
+        public void SetInputValue<T>(string name, T value)
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i] is Nodes.IInputNode)
+                {
+                    Nodes.IInputNode node = nodes[i] as Nodes.IInputNode;
+                    string nodeName = node.GetName();
+                    if (nodeName == name)
+                    {
+                        node.SetInput(value);
+                        return;
+                    }
+                }
+            }
+            throw new System.ArgumentException(
+                string.Format("No input port with the name '{0}' and type '{1}' found.", name, typeof(T).Name));
         }
     }
 }

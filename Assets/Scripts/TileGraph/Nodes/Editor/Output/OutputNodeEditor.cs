@@ -3,28 +3,7 @@ using UnityEngine;
 
 namespace TileGraph.Editors
 {
-    public abstract class OutputNodeEditor<OutT> : BaseNodeEditor<OutT> where OutT : Nodes.BaseNode
+    public abstract class OutputNodeEditor<NodeT> : InputOutputNodeEditor<NodeT> where NodeT : Nodes.BaseNode, Nodes.IInputOutputNode
     {
-        private SerializedProperty _In, _OutputName;
-
-        protected override void OnNodeEnable()
-        {
-            _In         = serializedObject.FindProperty("_In");
-            _OutputName = serializedObject.FindProperty("_OutputName");
-        }
-
-        protected override void NodeInputGUI()
-        {
-            graph.CAEditorUtilities.PortFieldMinLabel(_In);
-        }
-
-        protected override void NodeBodyGUI()
-        {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_OutputName);
-
-            serializedObject.ApplyModifiedProperties();
-
-            _OutputName.stringValue = graph.CheckOutputName(_OutputName.stringValue, (Nodes.IOutputNode) _Node);
-        }
     }
 }

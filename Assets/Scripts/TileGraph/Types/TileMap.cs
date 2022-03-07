@@ -127,7 +127,7 @@ namespace TileGraph.Types
         /// </summary>
         public void UpdateID()
         {
-            _ID = _IDCounter++;
+            _ID = (long) Time.unscaledTime;
         }
 
         /// <returns> Color representation of the value in the flattened TileMap

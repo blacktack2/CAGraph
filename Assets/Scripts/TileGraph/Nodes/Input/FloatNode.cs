@@ -4,8 +4,8 @@ using XNode;
 namespace TileGraph.Nodes
 {
     /// <summary> Input node representing a Float input. </summary>
-    [CreateNodeMenu("Input/Float", 1)]
-    public class FloatNode : BaseNode
+    [CreateNodeMenu("Input/Float", 2)]
+    public class FloatNode : InputNode<float>
     {
         [SerializeField, Output] private float _FloatOut = 0f;
         

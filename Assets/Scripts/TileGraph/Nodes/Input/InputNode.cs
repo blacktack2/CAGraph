@@ -4,10 +4,11 @@ using XNode;
 
 namespace TileGraph.Nodes
 {
-    /// <summary> Base output node for sending values to a script. </summary>
-    public abstract class OutputNode<OutT> : BaseNode, IOutputNode
+    /// <summary> Base input node for sending values from a script to a graph.
+    /// </summary>
+    public abstract class InputNode<InT> : BaseNode, IInputNode
     {
-        [SerializeField, Input] private OutT _Value;
+        [SerializeField, Output] private InT _Value;
         [SerializeField]
         private string _Name;
 
@@ -15,11 +16,13 @@ namespace TileGraph.Nodes
         {
             base.Init();
             if (_Name == null)
-                _Name = _Graph.GenerateInOutName("Output");
+                _Name = _Graph.GenerateInOutName("Input");
         }
 
         public override object GetValue(NodePort port)
         {
+            if (port.fieldName == "_Value")
+                return _Value;
             return null;
         }
 
@@ -28,12 +31,12 @@ namespace TileGraph.Nodes
             return _Name;
         }
 
-        public T GetOutput<T>()
+        public void SetInput<T>(T input)
         {
-            if (typeof(T) != typeof(OutT))
+            if (typeof(T) != typeof(InT))
                 throw new ArgumentException(string.Format("Type '{0}' does not match expected type '{1}'",
-                                                          typeof(T).Name, typeof(OutT).Name));
-            return GetInputPort("_Value").GetInputValue<T>();
+                                                          typeof(T).Name, typeof(InT).Name));
+            _Value = (InT) ((object) input);
         }
     }
 }

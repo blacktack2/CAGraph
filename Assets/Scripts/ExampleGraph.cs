@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using TileGraph.Types;
@@ -12,25 +10,24 @@ public class ExampleGraph : MonoBehaviour
     [SerializeField]
     private GameObject _TilePrefab;
 
+    [SerializeField]
+    private int _Width = 100, _Height = 100, _Seed = 0;
+
     private Transform _TileMapBool, _TileMapCont, _TileMapUint;
 
-    private void Awake()
+    private void OnEnable()
     {
-        _TileMapBool = new GameObject("TileMap Boolean").transform;
-        _TileMapBool.SetParent(transform);
-        _TileMapBool.position = new Vector3(-100, 0, 0);
+        if (_TileMapBool != null)
+            Destroy(_TileMapBool.gameObject);
+        if (_TileMapCont != null)
+            Destroy(_TileMapCont.gameObject);
+        if (_TileMapUint != null)
+            Destroy(_TileMapUint.gameObject);
 
-        _TileMapCont = new GameObject("TileMap Continuous").transform;
-        _TileMapCont.SetParent(transform);
-        _TileMapCont.position = new Vector3(0, 0, 0);
+        _ExampleGraph.SetInputValue<int>("TMWidth", _Width);
+        _ExampleGraph.SetInputValue<int>("TMHeight", _Height);
+        _ExampleGraph.SetInputValue<int>("Seed", _Seed);
 
-        _TileMapUint = new GameObject("TileMap Integer").transform;
-        _TileMapUint.SetParent(transform);
-        _TileMapUint.position = new Vector3(100, 0, 0);
-    }
-
-    private void Start()
-    {
         GenerateTileMapBool(_ExampleGraph.GetOutputValue<TileMapBool>("TMBoolOut"));
         GenerateTileMapCont(_ExampleGraph.GetOutputValue<TileMapCont>("TMContOut"));
         GenerateTileMapUint(_ExampleGraph.GetOutputValue<TileMapUint>("TMUintOut"));
@@ -38,6 +35,10 @@ public class ExampleGraph : MonoBehaviour
 
     private void GenerateTileMapBool(TileMapBool tileMap)
     {
+        _TileMapBool = new GameObject("TileMap Boolean").transform;
+        _TileMapBool.SetParent(transform);
+        _TileMapBool.position = new Vector3(-_Width, 0, 0);
+
         for (int x = 0; x < tileMap.width; x++)
         {
             for (int y = 0; y < tileMap.height; y++)
@@ -55,6 +56,10 @@ public class ExampleGraph : MonoBehaviour
 
     private void GenerateTileMapCont(TileMapCont tileMap)
     {
+        _TileMapCont = new GameObject("TileMap Continuous").transform;
+        _TileMapCont.SetParent(transform);
+        _TileMapCont.position = new Vector3(0, 0, 0);
+
         for (int x = 0; x < tileMap.width; x++)
         {
             for (int y = 0; y < tileMap.height; y++)
@@ -72,6 +77,10 @@ public class ExampleGraph : MonoBehaviour
 
     private void GenerateTileMapUint(TileMapUint tileMap)
     {
+        _TileMapUint = new GameObject("TileMap Integer").transform;
+        _TileMapUint.SetParent(transform);
+        _TileMapUint.position = new Vector3(_Width, 0, 0);
+
         for (int x = 0; x < tileMap.width; x++)
         {
             for (int y = 0; y < tileMap.height; y++)

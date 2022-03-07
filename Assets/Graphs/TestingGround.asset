@@ -104,7 +104,13 @@ MonoBehaviour:
       _node: {fileID: -7266727426746187772}
       _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: 6319879886868461092}
+        reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: 7088624274236928638}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -221,7 +227,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 1
+  toReplaceChanged: 0
 --- !u!114 &-4666385158960886868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,6 +699,9 @@ MonoBehaviour:
       - fieldName: _TileMapIn
         node: {fileID: -3799896867797653077}
         reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: -8301220961684233726}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -759,7 +768,7 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _Rules: 000000000000000000000000000101010101
-  _Iterations: 10
+  _Iterations: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,16 +799,16 @@ MonoBehaviour:
   - {fileID: 2977948590872729745}
   - {fileID: -4175001835594473331}
   - {fileID: -4510751602889768554}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: -3799896867797653077}
-  - {fileID: 0}
   - {fileID: 1165785128233310207}
   - {fileID: -4666385158960886868}
   - {fileID: -2196727178909149565}
   - {fileID: 1519330140453936617}
   - {fileID: -7266727426746187772}
   - {fileID: -884156821854156011}
+  - {fileID: 6319879886868461092}
+  - {fileID: 7088624274236928638}
+  - {fileID: -8301220961684233726}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
 --- !u!114 &214212154403782581
 MonoBehaviour:
@@ -1236,7 +1245,7 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _Rules: 000101000000000000000000000100000000
-  _Iterations: 1
+  _Iterations: 5000
 --- !u!114 &4523876499924004165
 MonoBehaviour:
   m_ObjectHideFlags: 0

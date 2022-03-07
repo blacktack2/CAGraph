@@ -5,16 +5,14 @@ using XNode;
 namespace TileGraph.Nodes
 {
     /// <summary> Input node representing a TileMap input. </summary>
-    [CreateNodeMenu("Input/TileMap", 0)]
+    [CreateNodeMenu("TileMap", 0)]
     public class TileMapInitNode : BaseNode
     {
+        [SerializeField, Input, Range(2, Types.TileMapBool.maxTileMapSize)] private int _TileMapWidth = 100;
+        [SerializeField, Input, Range(2, Types.TileMapBool.maxTileMapSize)] private int _TileMapHeight = 100;
         [SerializeField, Output] private Types.TileMapBool _TileMapBoolOut;
         [SerializeField, Output] private Types.TileMapCont _TileMapContOut;
         [SerializeField, Output] private Types.TileMapUint _TileMapUintOut;
-
-        /// <summary> Bounds of the TileMap being initialized. </summary>
-        [SerializeField, Range(2, Types.TileMapBool.maxTileMapSize)]
-        private int _TileMapWidth = 100, _TileMapHeight = 100;
 
         public enum TileMapType { Boolean, Continuous, Integer }
         /// <summary> Which implementation of TileMap to output. </summary>
@@ -47,22 +45,31 @@ namespace TileGraph.Nodes
             {
                 case TileMapType.Boolean:
                     if (TileMapChanged<Types.TileMapBool>(_TileMapBuffer))
-                        _TileMapBuffer = new Types.TileMapBool(_TileMapWidth, _TileMapHeight);
+                        _TileMapBuffer = new Types.TileMapBool(GetTileMapWidth(), GetTileMapHeight());
                     break;
                 case TileMapType.Continuous:
                     if (TileMapChanged<Types.TileMapCont>(_TileMapBuffer))
-                        _TileMapBuffer = new Types.TileMapCont(_TileMapWidth, _TileMapHeight);
+                        _TileMapBuffer = new Types.TileMapCont(GetTileMapWidth(), GetTileMapHeight());
                     break;
                 case TileMapType.Integer:
                     if (TileMapChanged<Types.TileMapUint>(_TileMapBuffer))
-                        _TileMapBuffer = new Types.TileMapUint(_TileMapWidth, _TileMapHeight);
+                        _TileMapBuffer = new Types.TileMapUint(GetTileMapWidth(), GetTileMapHeight());
                     break;
             }
         }
-
+ 
         private bool TileMapChanged<T>(Types.TileMap tileMap) where T : Types.TileMap
         {
-            return tileMap == null || !(tileMap is T) || _TileMapWidth != tileMap.width || _TileMapHeight != tileMap.height;
+            return tileMap == null || !(tileMap is T) || GetTileMapWidth() != tileMap.width || GetTileMapHeight() != tileMap.height;
+        }
+
+        private int GetTileMapWidth()
+        {
+            return Mathf.Clamp(GetInputValue<int>("_TileMapWidth", _TileMapWidth), 2, Types.TileMapBool.maxTileMapSize);
+        }
+        private int GetTileMapHeight()
+        {
+            return Mathf.Clamp(GetInputValue<int>("_TileMapHeight", _TileMapHeight), 2, Types.TileMapBool.maxTileMapSize);
         }
     }
 }

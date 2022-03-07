@@ -9,7 +9,7 @@ namespace TileGraph.Nodes
     {
         private void Reset()
         {
-            name = "Output Tile-Map Continuous";
+            name = "Output Tile-Map Integer";
         }
     }
 }

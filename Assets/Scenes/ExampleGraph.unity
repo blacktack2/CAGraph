@@ -387,6 +387,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ExampleGraph: {fileID: 11400000, guid: 4e4741f9fcb12ca4bb0a92d68ed730c2, type: 2}
   _TilePrefab: {fileID: 9193282123510380288, guid: 01b3c242f4bbb3b4aa38daef7de5e088, type: 3}
+  _Width: 50
+  _Height: 50
+  _Seed: 0
 --- !u!4 &1458652625
 Transform:
   m_ObjectHideFlags: 0
