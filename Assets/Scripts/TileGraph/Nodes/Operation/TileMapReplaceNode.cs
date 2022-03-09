@@ -63,7 +63,7 @@ namespace TileGraph.Nodes
                 List<IConvertible> toReplace = new List<IConvertible>();
                 foreach (int v in _ToReplace)
                     toReplace.Add(v);
-                Utilities.TileMapOperations.ReplaceTileMapValues(_TileMapOutBuffer, toReplace, _Replacement);
+                _Graph.functionLibrary.tileMapOperations.ReplaceTileMapValues(_TileMapOutBuffer, toReplace, _Replacement);
             }
         }
 

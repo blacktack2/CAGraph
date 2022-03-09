@@ -106,10 +106,10 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _TileMapIn
-        node: {fileID: 6319879886868461092}
+        node: {fileID: -420143625066265144}
         reroutePoints: []
       - fieldName: _TileMapIn
-        node: {fileID: 7088624274236928638}
+        node: {fileID: 6735193270223423599}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -247,6 +247,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: -4666385158960886868}
@@ -278,6 +280,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -4666385158960886868}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -4666385158960886868}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 20
+  _TileMapHeight: 20
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -290,8 +312,6 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 1
 --- !u!114 &-4663337543498750292
 MonoBehaviour:
@@ -312,6 +332,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: -4663337543498750292}
@@ -343,6 +365,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -4663337543498750292}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -4663337543498750292}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 100
+  _TileMapHeight: 100
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -355,8 +397,6 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 0
 --- !u!114 &-4510751602889768554
 MonoBehaviour:
@@ -594,6 +634,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: -2196727178909149565}
@@ -625,6 +667,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -2196727178909149565}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -2196727178909149565}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 20
+  _TileMapHeight: 20
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -637,8 +699,6 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 2
 --- !u!114 &-884156821854156011
 MonoBehaviour:
@@ -700,7 +760,7 @@ MonoBehaviour:
         node: {fileID: -3799896867797653077}
         reroutePoints: []
       - fieldName: _TileMapIn
-        node: {fileID: -8301220961684233726}
+        node: {fileID: 7316948954124433502}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -712,6 +772,65 @@ MonoBehaviour:
     _Cells: 
   _Seed: 0
   _Max: 10
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
+--- !u!114 &-420143625066265144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Tile-Map (Continuous-Boolean)
+  m_EditorClassIdentifier: Assembly-CSharp:TileGraph.Nodes:TileMapContToBoolNode
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -2056}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Threshold
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -420143625066265144}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -7266727426746187772}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Threshold
+      _node: {fileID: -420143625066265144}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -420143625066265144}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Threshold: 0.5
   _TileMapOut:
     width: 0
     height: 0
@@ -806,6 +925,9 @@ MonoBehaviour:
   - {fileID: 1519330140453936617}
   - {fileID: -7266727426746187772}
   - {fileID: -884156821854156011}
+  - {fileID: -420143625066265144}
+  - {fileID: 6735193270223423599}
+  - {fileID: 7316948954124433502}
   - {fileID: 6319879886868461092}
   - {fileID: 7088624274236928638}
   - {fileID: -8301220961684233726}
@@ -847,10 +969,7 @@ MonoBehaviour:
       _node: {fileID: 214212154403782581}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: _IntegerOut
-        node: {fileID: 1915535034347467443}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -911,6 +1030,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: 1165785128233310207}
@@ -942,6 +1063,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: 1165785128233310207}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: 1165785128233310207}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 20
+  _TileMapHeight: 20
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -954,8 +1095,6 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 0
 --- !u!114 &1519330140453936617
 MonoBehaviour:
@@ -1049,21 +1188,19 @@ MonoBehaviour:
   position: {x: -136, y: 184}
   ports:
     keys:
-    - _IntegerOut
+    - _Value
     values:
-    - _fieldName: _IntegerOut
+    - _fieldName: _Value
       _node: {fileID: 1915535034347467443}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: _Seed
-        node: {fileID: 214212154403782581}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _IntegerOut: 1
+  _Value: 0
+  _Name: Input1
 --- !u!114 &2977948590872729745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1265,6 +1402,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: 4523876499924004165}
@@ -1296,6 +1435,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: 4523876499924004165}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: 4523876499924004165}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 100
+  _TileMapHeight: 100
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -1308,8 +1467,6 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 2
 --- !u!114 &4875745968382873828
 MonoBehaviour:
@@ -1432,6 +1589,65 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &6735193270223423599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Tile-Map (Continuous-Integer)
+  m_EditorClassIdentifier: Assembly-CSharp:TileGraph.Nodes:TileMapContToUintNode
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -1736}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Max
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 6735193270223423599}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -7266727426746187772}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: 6735193270223423599}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 6735193270223423599}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Max: 10
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
 --- !u!114 &7088624274236928638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,6 +1707,65 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &7316948954124433502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Tile-Map (Integer-Continuous)
+  m_EditorClassIdentifier: Assembly-CSharp:TileGraph.Nodes:TileMapUintToContNode
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -2376}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Max
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 7316948954124433502}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -884156821854156011}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: 7316948954124433502}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 7316948954124433502}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _Max: 10
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
 --- !u!114 &7717094702920464699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,6 +1842,7 @@ MonoBehaviour:
   ports:
     keys:
     - _FloatOut
+    - _Value
     values:
     - _fieldName: _FloatOut
       _node: {fileID: 8427059916148414371}
@@ -1580,6 +1856,17 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _Value
+      _node: {fileID: 8427059916148414371}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _Value: 0
+  _Name: Input1
   _FloatOut: 0.6
 --- !u!114 &9178318360205335164
 MonoBehaviour:
@@ -1600,6 +1887,8 @@ MonoBehaviour:
     - _TileMapBoolOut
     - _TileMapContOut
     - _TileMapUintOut
+    - _TileMapWidth
+    - _TileMapHeight
     values:
     - _fieldName: _TileMapBoolOut
       _node: {fileID: 9178318360205335164}
@@ -1631,6 +1920,26 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: _TileMapWidth
+      _node: {fileID: 9178318360205335164}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: 9178318360205335164}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _TileMapWidth: 100
+  _TileMapHeight: 100
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -1643,6 +1952,4 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _TileMapWidth: 100
-  _TileMapHeight: 100
   _TileMapType: 1

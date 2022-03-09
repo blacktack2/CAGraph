@@ -42,7 +42,7 @@ namespace TileGraph.Nodes
             if (portName == "_TileMapOut")
             {
                 _CurrentSeed = GetSeed();
-                Utilities.TileMapOperations.RandomizeTileMapCont(_TileMapOutBuffer, _CurrentSeed);
+                _Graph.functionLibrary.tileMapOperations.RandomizeTileMapCont(_TileMapOutBuffer, _CurrentSeed);
             }
         }
 

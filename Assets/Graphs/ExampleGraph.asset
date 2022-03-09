@@ -74,7 +74,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _Value: 100
+  _Value: 10
   _Name: TMWidth
 --- !u!114 &-4609954857099780979
 MonoBehaviour:

@@ -35,7 +35,7 @@ namespace TileGraph.Nodes
         protected override void UpdateTileMapOutput(string portName)
         {
             Types.TileMapBool matrixIn = GetInputValue<Types.TileMapBool>("_TileMapIn");
-            _TileMapOutBuffer = Utilities.TileMapOperations.CastBoolToCont(matrixIn);
+            _TileMapOutBuffer = _Graph.functionLibrary.tileMapCast.CastBoolToCont(matrixIn);
         }
     }
 }

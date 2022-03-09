@@ -46,7 +46,7 @@ namespace TileGraph.Nodes
             {
                 _CurrentSeed = GetSeed();
                 _CurrentMax = GetMax();
-                Utilities.TileMapOperations.RandomizeTileMapUint(_TileMapOutBuffer, _CurrentMax, _CurrentSeed);
+                _Graph.functionLibrary.tileMapOperations.RandomizeTileMapUint(_TileMapOutBuffer, _CurrentMax, _CurrentSeed);
             }
         }
 

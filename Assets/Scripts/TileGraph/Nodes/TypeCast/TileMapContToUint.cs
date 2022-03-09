@@ -41,7 +41,7 @@ namespace TileGraph.Nodes
             {
                 _CurrentMax = GetMax();
                 Types.TileMapCont matrixIn = GetInputValue<Types.TileMapCont>("_TileMapIn");
-                _TileMapOutBuffer = Utilities.TileMapOperations.CastContToUint(matrixIn, _Max);
+                _TileMapOutBuffer = _Graph.functionLibrary.tileMapCast.CastContToUint(matrixIn, _Max);
             }
         }
 

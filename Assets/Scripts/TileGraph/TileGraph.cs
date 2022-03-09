@@ -12,28 +12,29 @@ namespace TileGraph
         private ComputeShader _ComputeShader;
         public ComputeShader computeShader {get {return _ComputeShader;}}
 
-        private Utilities.CAHandler _CAHandler;
-        public Utilities.CAHandler CAHandler {get {return _CAHandler;}}
+        private Utilities.FunctionLibrary _FunctionLibrary;
+        public Utilities.FunctionLibrary functionLibrary {get {return _FunctionLibrary;}}
+
         private Utilities.EditorUtilities _CAEditorUtilities;
         public Utilities.EditorUtilities CAEditorUtilities {get {return _CAEditorUtilities;}}
 
         void OnEnable()
         {
-            _CAHandler = new Utilities.CAHandler(_ComputeShader); 
+            _FunctionLibrary = new Utilities.FunctionLibrary(_ComputeShader);
             _CAEditorUtilities = new Utilities.EditorUtilities();
-            _CAHandler.Enable();
+            _FunctionLibrary.Enable();
             _CAEditorUtilities.Enable();
         }
 
         void OnDisable()
         {
-            _CAHandler.Disable();
+            _FunctionLibrary.Disable();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            _CAHandler.Disable();
+            _FunctionLibrary.Disable();
         }
 
         public string CheckInOutName(string outputName, Nodes.IInputOutputNode node)
