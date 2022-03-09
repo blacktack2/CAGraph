@@ -29,8 +29,8 @@ namespace TileGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapIn);
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapOut);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapIn);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapOut);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -38,7 +38,7 @@ namespace TileGraph.Editors
         protected override void NodeBodyGUI()
         {
             _ToReplaceList.DoLayoutList();            
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_Replacement, new GUIContent("with:"));
+            graph.editorUtilities.PropertyFieldMinLabel(_Replacement, new GUIContent("with:"));
         }
 
         private void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)

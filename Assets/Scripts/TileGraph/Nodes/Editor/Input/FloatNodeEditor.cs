@@ -15,12 +15,12 @@ namespace TileGraph.Editors
 
         protected override void NodeInputGUI()
         {
-            graph.CAEditorUtilities.PortFieldMinLabel(_FloatOut);
+            graph.editorUtilities.PortFieldMinLabel(_FloatOut);
         }
 
         protected override void NodeBodyGUI()
         {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_FloatOut, new GUIContent("value"));
+            graph.editorUtilities.PropertyFieldMinLabel(_FloatOut, new GUIContent("value"));
         }
     }
 }

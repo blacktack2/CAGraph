@@ -20,8 +20,8 @@ namespace TileGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapIn);
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapOut);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapIn);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapOut);
 
             EditorGUILayout.EndHorizontal();
         }

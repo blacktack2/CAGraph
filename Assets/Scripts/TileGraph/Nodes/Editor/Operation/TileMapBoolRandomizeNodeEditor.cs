@@ -21,14 +21,14 @@ namespace TileGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapIn);
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapOut);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapIn);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapOut);
 
             EditorGUILayout.EndHorizontal();
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_Seed);
+            graph.editorUtilities.PortFieldMinLabel(_Seed);
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_Chance);
+            graph.editorUtilities.PortFieldMinLabel(_Chance);
         }
 
         protected override void NodeBodyGUI()

@@ -34,7 +34,7 @@ namespace TileGraph.Editors
         {
             _Node = target as T;
             graph = (TileGraph) _Node.graph;
-            _EditorUtils = graph.CAEditorUtilities;
+            _EditorUtils = graph.editorUtilities;
             _TileMapPreviews = new List<Preview>();
 
             _PreviewStyle = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};

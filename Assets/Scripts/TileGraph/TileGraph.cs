@@ -15,15 +15,15 @@ namespace TileGraph
         private Utilities.FunctionLibrary _FunctionLibrary;
         public Utilities.FunctionLibrary functionLibrary {get {return _FunctionLibrary;}}
 
-        private Utilities.EditorUtilities _CAEditorUtilities;
-        public Utilities.EditorUtilities CAEditorUtilities {get {return _CAEditorUtilities;}}
+        private Utilities.EditorUtilities _EditorUtilities;
+        public Utilities.EditorUtilities editorUtilities {get {return _EditorUtilities;}}
 
         void OnEnable()
         {
             _FunctionLibrary = new Utilities.FunctionLibrary(_ComputeShader);
-            _CAEditorUtilities = new Utilities.EditorUtilities();
+            _EditorUtilities = new Utilities.EditorUtilities();
             _FunctionLibrary.Enable();
-            _CAEditorUtilities.Enable();
+            _EditorUtilities.Enable();
         }
 
         void OnDisable()

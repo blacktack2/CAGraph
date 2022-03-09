@@ -25,20 +25,20 @@ namespace TileGraph.Editors
             EditorGUILayout.BeginHorizontal();
 
             EditorGUILayout.BeginVertical();
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapWidth, new GUIContent("width "));
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapHeight, new GUIContent("height"));
+            graph.editorUtilities.PortFieldMinLabel(_TileMapWidth, new GUIContent("width "));
+            graph.editorUtilities.PortFieldMinLabel(_TileMapHeight, new GUIContent("height"));
             EditorGUILayout.EndVertical();
 
             switch ((Nodes.TileMapInitNode.TileMapType) _TileMapType.enumValueIndex)
             {
                 case Nodes.TileMapInitNode.TileMapType.Boolean:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapBoolOut, new GUIContent("tilemap out"));
+                    graph.editorUtilities.PortFieldMinLabel(_TileMapBoolOut, new GUIContent("tilemap out"));
                     break;
                 case Nodes.TileMapInitNode.TileMapType.Continuous:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapContOut, new GUIContent("tilemap out"));
+                    graph.editorUtilities.PortFieldMinLabel(_TileMapContOut, new GUIContent("tilemap out"));
                     break;
                 case Nodes.TileMapInitNode.TileMapType.Integer:
-                    graph.CAEditorUtilities.PortFieldMinLabel(_TileMapUintOut, new GUIContent("tilemap out"));
+                    graph.editorUtilities.PortFieldMinLabel(_TileMapUintOut, new GUIContent("tilemap out"));
                     break;
             }
             EditorGUILayout.EndHorizontal();
@@ -46,7 +46,7 @@ namespace TileGraph.Editors
 
         protected override void NodeBodyGUI()
         {
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_TileMapType, new GUIContent("type:"));
+            graph.editorUtilities.PropertyFieldMinLabel(_TileMapType, new GUIContent("type:"));
             SetPreview();
         }
 

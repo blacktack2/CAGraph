@@ -23,8 +23,8 @@ namespace TileGraph.Editors
         {
             EditorGUILayout.BeginHorizontal();
 
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapIn);
-            graph.CAEditorUtilities.PortFieldMinLabel(_TileMapOut);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapIn);
+            graph.editorUtilities.PortFieldMinLabel(_TileMapOut);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -37,7 +37,7 @@ namespace TileGraph.Editors
             EditorGUILayout.BeginHorizontal();
 
             // Display rules in conventional B/S notation (e.g. Conway's Game of Life should be notated B3S23 or 3/23)
-            graph.CAEditorUtilities.SetLabelWidthToText("B");
+            graph.editorUtilities.SetLabelWidthToText("B");
             string born    = EditorGUILayout.TextField("B", rules[0]);
             string survive = EditorGUILayout.TextField("S", rules[1]);
             EditorGUIUtility.labelWidth = 0;
@@ -47,7 +47,7 @@ namespace TileGraph.Editors
 
             EditorGUILayout.EndHorizontal();
 
-            graph.CAEditorUtilities.SetLabelWidthToText("Iterations");
+            graph.editorUtilities.SetLabelWidthToText("Iterations");
             _Iterations.intValue = Mathf.Clamp(EditorGUILayout.IntField(new GUIContent("Iterations"), _Iterations.intValue), 0, Nodes.LifeCANode.maxIterations);
             EditorGUIUtility.labelWidth = 0;
         }

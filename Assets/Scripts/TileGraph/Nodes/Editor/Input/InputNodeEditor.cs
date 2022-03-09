@@ -8,7 +8,7 @@ namespace TileGraph.Editors
         protected override void NodeBodyGUI()
         {
             base.NodeBodyGUI();
-            graph.CAEditorUtilities.PropertyFieldMinLabel(_Value, new GUIContent("value"));
+            graph.editorUtilities.PropertyFieldMinLabel(_Value, new GUIContent("value"));
         }
     }
 }
