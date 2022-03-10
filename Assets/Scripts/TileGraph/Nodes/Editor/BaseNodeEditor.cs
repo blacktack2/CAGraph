@@ -23,12 +23,16 @@ namespace TileGraph.Editors
         protected T _Node;
         protected Utilities.EditorUtilities _EditorUtils;
 
-        protected GUIStyle _PreviewToggleStyle;
-        protected GUIStyle _PreviewStyle;
+        protected GUIStyle _PreviewToggleStyle, _PreviewStyle, _SquareButtonStyle;
+        protected GUIContent _GPUActiveIcon, _GPUInactiveIcon, _CPUActiveIcon, _CPUInactiveIcon, _ReloadIcon;
+
+        public static readonly float squareButtonSize = EditorGUIUtility.singleLineHeight * 2;
 
         protected int contentWidth {get {return GetWidth() - (GetBodyStyle().padding.left + GetBodyStyle().padding.right);}}
 
         private List<Preview> _TileMapPreviews;
+
+        protected virtual bool GPUToggleable => false;
 
         public override void OnCreate()
         {
@@ -39,6 +43,13 @@ namespace TileGraph.Editors
 
             _PreviewStyle = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
             _PreviewToggleStyle = new GUIStyle("Foldout") {alignment = TextAnchor.MiddleCenter};
+            _SquareButtonStyle = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleRight};
+
+            _GPUActiveIcon = new GUIContent(Resources.Load<Texture>("Icons/gpu_active"));
+            _GPUInactiveIcon = new GUIContent(Resources.Load<Texture>("Icons/gpu_inactive"));
+            _CPUActiveIcon = new GUIContent(Resources.Load<Texture>("Icons/cpu_active"));
+            _CPUInactiveIcon = new GUIContent(Resources.Load<Texture>("Icons/cpu_inactive"));
+            _ReloadIcon = new GUIContent(Resources.Load<Texture>("Icons/reload"));
 
             OnNodeEnable();
         }
@@ -46,10 +57,18 @@ namespace TileGraph.Editors
         public override void OnBodyGUI()
         {
             serializedObject.Update();
+
             NodeInputGUI();
             NodeBodyGUI();
+
             serializedObject.ApplyModifiedProperties();
+
             RenderPreviews();
+
+            if (GPUToggleable)
+            {
+                RenderGPUToggle();
+            }
         }
 
         private void RenderPreviews()
@@ -87,6 +106,37 @@ namespace TileGraph.Editors
                 }
                 EditorGUIUtility.labelWidth = 0;
                 _TileMapPreviews[i] = preview;
+            }
+        }
+
+        private void RenderGPUToggle()
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button(_ReloadIcon, _SquareButtonStyle, GUILayout.Width(squareButtonSize), GUILayout.Height(squareButtonSize)))
+                _Node.ResetGPUEnabled();
+            if (GUILayout.Button(GetGPUToggleIcon(), _SquareButtonStyle, GUILayout.Width(squareButtonSize), GUILayout.Height(squareButtonSize)))
+                _Node.ToggleGPUEnabled();
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private GUIContent GetGPUToggleIcon()
+        {
+            if (_Node.isGPUOverriden)
+            {
+                if (_Node.isGPUEnabled)
+                    return _GPUActiveIcon;
+                else
+                    return _CPUActiveIcon;
+            }
+            else
+            {
+                if (graph.GPUEnabledGlobal)
+                    return _GPUInactiveIcon;
+                else
+                    return _CPUInactiveIcon;
             }
         }
 

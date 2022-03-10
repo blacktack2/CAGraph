@@ -7,6 +7,29 @@ namespace TileGraph.Nodes
     /// to all CAGraph nodes. </summary>
     public abstract class BaseNode : Node
     {
+        protected struct GPUOption
+        {
+            public bool isEnabled;
+            public bool isOverridden;
+        }
+        private GPUOption _GPUEnabled = new GPUOption {isEnabled = true, isOverridden = false};
+        protected bool GPUEnabled
+        {
+            get
+            {
+                if (_GPUEnabled.isOverridden)
+                    return _GPUEnabled.isEnabled;
+                else
+                    return _Graph.GPUEnabledGlobal;
+            }
+            set {
+                _GPUEnabled.isEnabled = value;
+                _GPUEnabled.isOverridden = true;
+            }
+        }
+        public bool isGPUEnabled {get {return _GPUEnabled.isEnabled;}}
+        public bool isGPUOverriden {get {return _GPUEnabled.isOverridden;}}
+
         protected TileGraph _Graph;
 
         protected override void Init()
@@ -125,6 +148,15 @@ namespace TileGraph.Nodes
         protected virtual void UpdateTileMapOutput(string portName)
         {
             
+        }
+
+        public void ToggleGPUEnabled()
+        {
+            GPUEnabled = !GPUEnabled;
+        }
+        public void ResetGPUEnabled()
+        {
+            _GPUEnabled.isOverridden = false;
         }
     }
 }

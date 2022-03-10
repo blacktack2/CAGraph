@@ -18,6 +18,12 @@ namespace TileGraph
         private Utilities.EditorUtilities _EditorUtilities;
         public Utilities.EditorUtilities editorUtilities {get {return _EditorUtilities;}}
 
+        private bool _GPUEnabledGlobal = true;
+        public bool GPUEnabledGlobal {get {return _GPUEnabledGlobal;}}
+
+        [ContextMenu("Toggle Default GPU")]
+        public void ToggleGPUDefault() => _GPUEnabledGlobal = ! _GPUEnabledGlobal;
+
         void OnEnable()
         {
             _FunctionLibrary = new Utilities.FunctionLibrary(_ComputeShader);
