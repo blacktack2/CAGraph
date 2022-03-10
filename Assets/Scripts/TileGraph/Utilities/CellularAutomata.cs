@@ -26,6 +26,98 @@ namespace TileGraph.Utilities
             /// else run using CPU. (Not yet implemented, does nothing) </param>
             public void LifeLikeCA(Types.TileMapBool tileMap, int[] rules, int iterations, bool useGPU = true)
             {
+                if (useGPU)
+                    LifeLikeCAGPU(tileMap, rules, iterations);
+                else
+                    LifeLikeCACPU(tileMap, rules, iterations);
+            }
+
+            private void LifeLikeCACPU(Types.TileMapBool tileMap, int[] rules, int iterations)
+            {
+                Debug.Log("Running CPU");
+                bool bufferFlag = false;
+                int[] cells0 = tileMap.GetCells();
+                int[] cells1 = new int[cells0.Length];
+
+                for (int i = 0; i < iterations; i++)
+                {
+                    bufferFlag = !bufferFlag;
+                    // Alternate read/write operations between cells0 and cells1
+                    if (bufferFlag)
+                    {
+                        for (int c = 0, x = 0, y = 0; c < cells0.Length; c++, x++)
+                        {
+                            if (x >= tileMap.width)
+                            {
+                                x = 0;
+                                y++;
+                            }
+                            int neighbours = 0;
+                            if (y > 0)
+                            {
+                                if (x > 0)
+                                    neighbours += cells0[c - 1 - tileMap.width];
+                                neighbours += cells0[c - tileMap.width];
+                                if (x < tileMap.width - 1)
+                                    neighbours += cells0[c + 1 - tileMap.width];
+                            }
+                            if (x > 0)
+                                neighbours += cells0[c - 1];
+                            if (x < tileMap.width - 1)
+                                neighbours += cells0[c + 1];
+                            if (y < tileMap.height - 1)
+                            {
+                                if (x > 0)
+                                    neighbours += cells0[c - 1 + tileMap.width];
+                                neighbours += cells0[c + tileMap.width];
+                                if (x < tileMap.width - 1)
+                                    neighbours += cells0[c + 1 + tileMap.width];
+                            }
+                            cells1[c] = rules[cells0[c] * 9 + neighbours];
+                        }
+                    }
+                    else
+                    {
+                        for (int c = 0, x = 0, y = 0; c < cells1.Length; c++, x++)
+                        {
+                            if (x >= tileMap.width)
+                            {
+                                x = 0;
+                                y++;
+                            }
+                            int neighbours = 0;
+                            if (y > 0)
+                            {
+                                if (x > 0)
+                                    neighbours += cells1[c - 1 - tileMap.width];
+                                neighbours += cells1[c - tileMap.width];
+                                if (x < tileMap.width - 1)
+                                    neighbours += cells1[c + 1 - tileMap.width];
+                            }
+                            if (x > 0)
+                                neighbours += cells1[c - 1];
+                            if (x < tileMap.width - 1)
+                                neighbours += cells1[c + 1];
+                            if (y < tileMap.height - 1)
+                            {
+                                if (x > 0)
+                                    neighbours += cells1[c - 1 + tileMap.width];
+                                neighbours += cells1[c + tileMap.width];
+                                if (x < tileMap.width - 1)
+                                    neighbours += cells1[c + 1 + tileMap.width];
+                            }
+                            cells0[c] = rules[cells1[c] * 9 + neighbours];
+                        }
+                    }
+                }
+                if (bufferFlag)
+                    tileMap.SetCells(cells0);
+                else
+                    tileMap.SetCells(cells1);
+            }
+            private void LifeLikeCAGPU(Types.TileMapBool tileMap, int[] rules, int iterations)
+            {
+                Debug.Log("Running GPU");
                 int kernelIndex = (int) FunctionLibrary.FunctionKernels.LifeLikeCA;
                 bool bufferFlag = false;
 

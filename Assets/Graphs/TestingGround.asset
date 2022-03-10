@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: Replace Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 184}
+  position: {x: 376, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -960,7 +960,10 @@ MonoBehaviour:
       _node: {fileID: 214212154403782581}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: _Value
+        node: {fileID: 1915535034347467443}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -983,10 +986,10 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _TileMapIn
-        node: {fileID: -7188690481454486858}
+        node: {fileID: -5952752644616989140}
         reroutePoints: []
       - fieldName: _TileMapIn
-        node: {fileID: -5952752644616989140}
+        node: {fileID: -7188690481454486858}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -1185,7 +1188,10 @@ MonoBehaviour:
       _node: {fileID: 1915535034347467443}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: _Seed
+        node: {fileID: 214212154403782581}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
