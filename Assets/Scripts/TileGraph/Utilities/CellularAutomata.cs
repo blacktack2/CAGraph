@@ -34,7 +34,6 @@ namespace TileGraph.Utilities
 
             private void LifeLikeCACPU(Types.TileMapBool tileMap, int[] rules, int iterations)
             {
-                Debug.Log("Running CPU");
                 bool bufferFlag = false;
                 int[] cells0 = tileMap.GetCells();
                 int[] cells1 = new int[cells0.Length];
@@ -117,7 +116,6 @@ namespace TileGraph.Utilities
             }
             private void LifeLikeCAGPU(Types.TileMapBool tileMap, int[] rules, int iterations)
             {
-                Debug.Log("Running GPU");
                 int kernelIndex = (int) FunctionLibrary.FunctionKernels.LifeLikeCA;
                 bool bufferFlag = false;
 
