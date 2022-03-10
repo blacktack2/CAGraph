@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using XNode;
 
@@ -7,11 +8,13 @@ namespace TileGraph.Nodes
     /// to all CAGraph nodes. </summary>
     public abstract class BaseNode : Node
     {
+        [Serializable]
         protected struct GPUOption
         {
             public bool isEnabled;
             public bool isOverridden;
         }
+        [SerializeField, HideInInspector]
         private GPUOption _GPUEnabled = new GPUOption {isEnabled = true, isOverridden = false};
         protected bool GPUEnabled
         {

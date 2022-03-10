@@ -18,6 +18,7 @@ namespace TileGraph
         private Utilities.EditorUtilities _EditorUtilities;
         public Utilities.EditorUtilities editorUtilities {get {return _EditorUtilities;}}
 
+        [SerializeField, HideInInspector]
         private bool _GPUEnabledGlobal = true;
         public bool GPUEnabledGlobal {get {return _GPUEnabledGlobal;}}
 
