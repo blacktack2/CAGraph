@@ -14,7 +14,9 @@ namespace TileGraph.Utilities
             /// <paramref name="TileMapCont" />. </summary>
             /// <param name="tileMap"> <paramref name="TileMapBool" /> to cast.
             /// </param>
-            public Types.TileMapCont CastBoolToCont(Types.TileMapBool tileMap)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapCont CastBoolToCont(Types.TileMapBool tileMap, bool useGPU = true)
             {
                 int[] cells = tileMap.GetCells();
                 float[] newCells = new float[cells.Length];
@@ -28,7 +30,9 @@ namespace TileGraph.Utilities
             /// <paramref name="TileMapUint" />. </summary>
             /// <param name="tileMap"> <paramref name="TileMapBool" /> to cast.
             /// </param>
-            public Types.TileMapUint CastBoolToUint(Types.TileMapBool tileMap)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapUint CastBoolToUint(Types.TileMapBool tileMap, bool useGPU = true)
             {
                 int[] cells = tileMap.GetCells();
                 uint[] newCells = new uint[cells.Length];
@@ -46,7 +50,9 @@ namespace TileGraph.Utilities
             /// </param>
             /// <param name="threshold"> Threshold value, below which all values
             /// are cast to 0. </param>
-            public Types.TileMapBool CastContToBool(Types.TileMapCont tileMap, float threshold = 0.5f)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapBool CastContToBool(Types.TileMapCont tileMap, float threshold = 0.5f, bool useGPU = true)
             {
                 float[] cells = tileMap.GetCells();
                 int[] newCells = new int[cells.Length];
@@ -67,7 +73,9 @@ namespace TileGraph.Utilities
             /// <param name="tileMap"> <paramref name="TileMapCont" /> to cast.
             /// </param>
             /// <param name="max"> Maximum value to normalize to. </param>
-            public Types.TileMapUint CastContToUint(Types.TileMapCont tileMap, uint max = 1)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapUint CastContToUint(Types.TileMapCont tileMap, uint max = 1, bool useGPU = true)
             {
                 float[] cells = tileMap.GetCells();
                 uint[] newCells = new uint[cells.Length];
@@ -85,7 +93,9 @@ namespace TileGraph.Utilities
             /// <param name="threshold"> Lowest value in
             /// <paramref name="tileMap" /> to be considered a 1. All other values
             /// will become 0. </param>
-            public Types.TileMapBool CastUintToBool(Types.TileMapUint tileMap, uint threshold = 1)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapBool CastUintToBool(Types.TileMapUint tileMap, uint threshold = 1, bool useGPU = true)
             {
                 uint[] cells = tileMap.GetCells();
                 int[] newCells = new int[cells.Length];
@@ -108,7 +118,9 @@ namespace TileGraph.Utilities
             /// <param name="max"> Maximum uint value to expect from
             /// <paramref name="tileMap" />. Values greater than
             /// <paramref name="max" /> will be clamped at 1. </param>
-            public Types.TileMapCont CastUintToCont(Types.TileMapUint tileMap, uint max = 1)
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public Types.TileMapCont CastUintToCont(Types.TileMapUint tileMap, uint max = 1, bool useGPU = true)
             {
                 uint[] cells = tileMap.GetCells();
                 float[] newCells = new float[cells.Length];

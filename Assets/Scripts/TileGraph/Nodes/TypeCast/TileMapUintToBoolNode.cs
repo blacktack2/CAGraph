@@ -41,7 +41,7 @@ namespace TileGraph.Nodes
             {
                 _CurrentThreshold = GetThreshold();
                 Types.TileMapUint matrixIn = GetInputValue<Types.TileMapUint>("_TileMapIn");
-                _TileMapOutBuffer = _Graph.functionLibrary.tileMapCast.CastUintToBool(matrixIn, _Threshold);
+                _TileMapOutBuffer = _Graph.functionLibrary.tileMapCast.CastUintToBool(matrixIn, _Threshold, GPUEnabled);
             }
         }
 

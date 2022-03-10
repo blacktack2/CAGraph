@@ -9,6 +9,8 @@ namespace TileGraph.Editors
     {
         private SerializedProperty _TileMapIn, _TileMapOut, _ToReplace, _Replacement;
 
+        protected override bool GPUToggleable => true;
+
         private ReorderableList _ToReplaceList;
 
         protected override void OnNodeEnable()

@@ -42,7 +42,7 @@ namespace TileGraph.Nodes
             if (portName == "_TileMapOut")
             {
                 _CurrentFillValue = GetFillValue();
-                _Graph.functionLibrary.tileMapOperations.FillTileMap(_TileMapOutBuffer, _CurrentFillValue);
+                _Graph.functionLibrary.tileMapOperations.FillTileMap(_TileMapOutBuffer, _CurrentFillValue, GPUEnabled);
             }
         }
 

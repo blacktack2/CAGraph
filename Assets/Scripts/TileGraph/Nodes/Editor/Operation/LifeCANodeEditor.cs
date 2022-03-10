@@ -9,6 +9,8 @@ namespace TileGraph.Editors
     {
         private SerializedProperty _TileMapIn, _TileMapOut, _Rules, _Iterations;
 
+        protected override bool GPUToggleable => true;
+
         protected override void OnNodeEnable()
         {
             _TileMapIn  = serializedObject.FindProperty("_TileMapIn");

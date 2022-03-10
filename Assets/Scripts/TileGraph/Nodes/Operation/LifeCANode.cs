@@ -57,7 +57,7 @@ namespace TileGraph.Nodes
                 for (int i = 0; i < rules.Length; i++)
                     rules[i] = _Rules[i] ? 1 : 0;
 
-                _Graph.functionLibrary.cellularAutomata.LifeLikeCA(_TileMapOutBuffer, rules, _Iterations);
+                _Graph.functionLibrary.cellularAutomata.LifeLikeCA(_TileMapOutBuffer, rules, _Iterations, GPUEnabled);
             }
         }
 

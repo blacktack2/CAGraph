@@ -46,7 +46,7 @@ namespace TileGraph.Nodes
             {
                 _CurrentSeed = GetSeed();
                 _CurrentChance = GetChance();
-                _Graph.functionLibrary.tileMapOperations.RandomizeTileMapBool(_TileMapOutBuffer, _CurrentChance, _CurrentSeed);
+                _Graph.functionLibrary.tileMapOperations.RandomizeTileMapBool(_TileMapOutBuffer, _CurrentChance, _CurrentSeed, GPUEnabled);
             }
         }
 

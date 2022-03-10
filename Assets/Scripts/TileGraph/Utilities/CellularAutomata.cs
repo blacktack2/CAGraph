@@ -18,10 +18,13 @@ namespace TileGraph.Utilities
             /// <param name="rules"> Array of 18 0-1 integers representing the
             /// lifelike CA rules. Indexes 0-8 represent the birth rules for a
             /// number of neighbours corresponding to each index. Likewise with
-            /// indexes 9-17 representing the survival rules. 0 will die/stay dead,
-            /// 1 will survive/be born </param>
-            /// <param name="iterations"> Number of iterations to run the simulation for. </param>
-            public void LifeLikeCA(Types.TileMapBool tileMap, int[] rules, int iterations)
+            /// indexes 9-17 representing the survival rules. 0: will die/stay
+            /// dead, 1: will survive/be born </param>
+            /// <param name="iterations"> Number of iterations to run the
+            /// simulation for. </param>
+            /// <param name="useGPU"> If <c>true</c>, run using compute shaders
+            /// else run using CPU. (Not yet implemented, does nothing) </param>
+            public void LifeLikeCA(Types.TileMapBool tileMap, int[] rules, int iterations, bool useGPU = true)
             {
                 int kernelIndex = (int) FunctionLibrary.FunctionKernels.LifeLikeCA;
                 bool bufferFlag = false;
