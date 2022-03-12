@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
-  _Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 3}
+  _Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   _Material: {fileID: 2100000, guid: 5623b62e053ccd04ba73f93d5d5c54f1, type: 2}
   _InitMode: 2
   _InitialCellPositions:

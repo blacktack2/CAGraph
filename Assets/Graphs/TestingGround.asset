@@ -233,7 +233,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &-4666385158960886868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,8 +909,8 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _GPUEnabled:
-    isEnabled: 0
-    isOverridden: 1
+    isEnabled: 1
+    isOverridden: 0
   _TileMapIn:
     width: 0
     height: 0

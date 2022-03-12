@@ -1,0 +1,16 @@
+#pragma kernel IterateLifeCells
+
+// Flattened matrices of integers
+RWStructuredBuffer<int> _Cells0;
+RWStructuredBuffer<int> _Cells1;
+
+RWStructuredBuffer<int> _LifeRules;
+
+// Flag used to swap between using _Cells0 and _Cells1
+// (false = read 0, write 1 | true = read 1, write 0)
+bool _BufferFlag = false;
+
+uint _ScaleX;
+uint _ScaleY;
+
+#include "CellularAutomata.compute"
