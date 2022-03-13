@@ -116,19 +116,19 @@ namespace TileGraph.Utilities
             }
             private void LifeLikeCAGPU(Types.TileMapBool tileMap, int[] rules, int iterations)
             {
-                int kernelIndex = (int) FunctionLibrary.FunctionKernels.LifeLikeCA;
+                const int kernelIndex = (int) FunctionLibrary.FunctionKernels.IterateLifeCells;
                 bool bufferFlag = false;
 
                 int[] cells = tileMap.GetCells();
 
-                _FunctionLibrary._Cells0Buffer.SetData(cells);
-                _FunctionLibrary._Cells1Buffer.SetData(cells);
+                _FunctionLibrary._TileMapBool0Buffer.SetData(cells);
+                _FunctionLibrary._TileMapBool1Buffer.SetData(cells);
                 _FunctionLibrary._LifeRulesBuffer.SetData(rules);
 
                 _FunctionLibrary._ComputeShader.SetInt(_ScaleXID, tileMap.width);
                 _FunctionLibrary._ComputeShader.SetInt(_ScaleYID, tileMap.height);
-                _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _Cells0ID, _FunctionLibrary._Cells0Buffer);
-                _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _Cells1ID, _FunctionLibrary._Cells1Buffer);
+                _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapBool0ID, _FunctionLibrary._TileMapBool0Buffer);
+                _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapBool1ID, _FunctionLibrary._TileMapBool1Buffer);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _LifeRulesID, _FunctionLibrary._LifeRulesBuffer);
 
                 int groupsX = Mathf.CeilToInt(tileMap.width / 8f);
@@ -142,9 +142,9 @@ namespace TileGraph.Utilities
                 }
 
                 if (bufferFlag)
-                    _FunctionLibrary._Cells0Buffer.GetData(cells);
+                    _FunctionLibrary._TileMapBool0Buffer.GetData(cells);
                 else
-                    _FunctionLibrary._Cells1Buffer.GetData(cells);
+                    _FunctionLibrary._TileMapBool1Buffer.GetData(cells);
                 tileMap.SetCells(cells);
             }
         }

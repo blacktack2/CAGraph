@@ -5,23 +5,34 @@ namespace TileGraph.Utilities
     public partial class FunctionLibrary
     {
         private static readonly int
-            _Cells0ID = Shader.PropertyToID("_Cells0"),
-            _Cells1ID = Shader.PropertyToID("_Cells1"),
-            _LifeRulesID = Shader.PropertyToID("_LifeRules"),
+            _TileMapBool0ID = Shader.PropertyToID("_TileMapBool0"),
+            _TileMapBool1ID = Shader.PropertyToID("_TileMapBool1"),
+            _TileMapCont0ID = Shader.PropertyToID("_TileMapCont0"),
+            _TileMapCont1ID = Shader.PropertyToID("_TileMapCont1"),
+            _TileMapUint0ID = Shader.PropertyToID("_TileMapUint0"),
+            _TileMapUint1ID = Shader.PropertyToID("_TileMapUint1"),
             _BufferFlagID = Shader.PropertyToID("_BufferFlag"),
             _ScaleXID = Shader.PropertyToID("_ScaleX"),
-            _ScaleYID = Shader.PropertyToID("_ScaleY");
+            _ScaleYID = Shader.PropertyToID("_ScaleY"),
+            _LifeRulesID = Shader.PropertyToID("_LifeRules"),
+            _MagnitudeID = Shader.PropertyToID("_Magnitude");
         
-        private enum FunctionKernels { LifeLikeCA }
+        private enum FunctionKernels { IterateLifeCells, PerlinNoise1D, PerlinNoise2D, PerlinNoise3D }
 
         private ComputeShader _ComputeShader;
             
-        private ComputeBuffer _Cells0Buffer;
-        private ComputeBuffer _Cells1Buffer;
+        private ComputeBuffer _TileMapBool0Buffer;
+        private ComputeBuffer _TileMapBool1Buffer;
+        private ComputeBuffer _TileMapCont0Buffer;
+        private ComputeBuffer _TileMapCont1Buffer;
+        private ComputeBuffer _TileMapUint0Buffer;
+        private ComputeBuffer _TileMapUint1Buffer;
         private ComputeBuffer _LifeRulesBuffer;
 
         private CellularAutomata _CellularAutomata;
         public CellularAutomata cellularAutomata {get {return _CellularAutomata;}}
+        private Noise _Noise;
+        public Noise noise {get {return _Noise;}}
         private TileMapOperations _TileMapOperations;
         public TileMapOperations tileMapOperations {get {return _TileMapOperations;}}
         private TileMapCast _TileMapCast;
@@ -32,25 +43,30 @@ namespace TileGraph.Utilities
             _ComputeShader = computeShader;
 
             _CellularAutomata = new CellularAutomata(this);
+            _Noise = new Noise(this);
             _TileMapOperations = new TileMapOperations(this);
             _TileMapCast = new TileMapCast(this);
         }
 
         public void Enable()
         {
-            _Cells0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
-            _Cells1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
+            _TileMapBool0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
+            _TileMapBool1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
+            _TileMapCont0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(float));
+            _TileMapCont1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(float));
+            _TileMapCont0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
+            _TileMapCont1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
             _LifeRulesBuffer = new ComputeBuffer(18, sizeof(int));
         }
 
         public void Disable()
         {
-            _Cells0Buffer.Dispose();
-            _Cells1Buffer.Dispose();
+            _TileMapBool0Buffer.Dispose();
+            _TileMapBool1Buffer.Dispose();
             _LifeRulesBuffer.Dispose();
 
-            _Cells0Buffer = null;
-            _Cells1Buffer = null;
+            _TileMapBool0Buffer = null;
+            _TileMapBool1Buffer = null;
             _LifeRulesBuffer = null;
         }
     }
