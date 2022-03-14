@@ -26,6 +26,8 @@ RWStructuredBuffer<int> _LifeRules;
 // Noise scale
 float3 _Magnitude;
 
+float3 _Offset;
+
 /**
  * Return the value of the tile at xy in the currently buffered array
  */
@@ -260,18 +262,18 @@ float PerlinNoise(float3 pos)
 [numthreads(8, 1, 1)]
 void PerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Magnitude.x) / 2);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Magnitude.x + _Offset.x) / 2);
 }
 
 [numthreads(8, 8, 1)]
 void PerlinNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Magnitude.xy) / 2);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Magnitude.xy + _Offset.xy) / 2);
 }
 
 [numthreads(8, 8, 8)]
 void PerlinNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Magnitude) / 2.0);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Magnitude + _Offset) / 2.0);
 }
  

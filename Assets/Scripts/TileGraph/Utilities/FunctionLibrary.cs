@@ -15,7 +15,8 @@ namespace TileGraph.Utilities
             _ScaleXID = Shader.PropertyToID("_ScaleX"),
             _ScaleYID = Shader.PropertyToID("_ScaleY"),
             _LifeRulesID = Shader.PropertyToID("_LifeRules"),
-            _MagnitudeID = Shader.PropertyToID("_Magnitude");
+            _MagnitudeID = Shader.PropertyToID("_Magnitude"),
+            _OffsetID = Shader.PropertyToID("_Offset");
         
         private enum FunctionKernels { IterateLifeCells, PerlinNoise1D, PerlinNoise2D, PerlinNoise3D }
 
