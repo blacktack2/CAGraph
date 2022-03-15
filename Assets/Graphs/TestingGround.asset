@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: Lifelike CA
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: -136}
+  position: {x: 376, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: Replace Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 248}
+  position: {x: 376, y: 632}
   ports:
     keys:
     - _TileMapIn
@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Name: Tile-Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -392, y: -136}
+  position: {x: -392, y: 248}
   ports:
     keys:
     - _TileMapBoolOut
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Name: Fill Tile-Map Continuous
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: -456}
+  position: {x: -136, y: -264}
   ports:
     keys:
     - _TileMapIn
@@ -577,6 +577,68 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
+--- !u!114 &-3976021060203263860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Tile-Map (Continuous-Integer)
+  m_EditorClassIdentifier: Assembly-CSharp:TileGraph.Nodes:TileMapContToUintNode
+  graph: {fileID: 11400000}
+  position: {x: 632, y: -264}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Max
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -3976021060203263860}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 2657122245761717667}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: -3976021060203263860}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -3976021060203263860}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Max: 20
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
 --- !u!114 &-3799896867797653077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,7 +940,7 @@ MonoBehaviour:
   m_Name: Lifelike CA
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 632, y: -136}
+  position: {x: 632, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -965,6 +1027,7 @@ MonoBehaviour:
   - {fileID: 7316948954124433502}
   - {fileID: -8301220961684233726}
   - {fileID: 2657122245761717667}
+  - {fileID: -3976021060203263860}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
@@ -980,7 +1043,7 @@ MonoBehaviour:
   m_Name: Randomize Tile-Map Bool
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -136}
+  position: {x: 120, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -1232,7 +1295,7 @@ MonoBehaviour:
   m_Name: Integer
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: 184}
+  position: {x: -136, y: 568}
   ports:
     keys:
     - _Value
@@ -1267,11 +1330,15 @@ MonoBehaviour:
   m_Name: Noise
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: -456}
+  position: {x: 376, y: -264}
   ports:
     keys:
     - _TileMapIn
     - _TileMapOut
+    - _NoiseScaleX
+    - _NoiseScaleY
+    - _OffsetX
+    - _OffsetY
     values:
     - _fieldName: _TileMapIn
       _node: {fileID: 2657122245761717667}
@@ -1289,8 +1356,47 @@ MonoBehaviour:
       _node: {fileID: 2657122245761717667}
       _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -3976021060203263860}
+        reroutePoints: []
       _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _NoiseScaleX
+      _node: {fileID: 2657122245761717667}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _NoiseScaleY
+      _node: {fileID: 2657122245761717667}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _OffsetX
+      _node: {fileID: 2657122245761717667}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _OffsetY
+      _node: {fileID: 2657122245761717667}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
@@ -1301,10 +1407,20 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
+  _NoiseScaleX: 10
+  _NoiseScaleY: 10
+  _OffsetX: -5
+  _OffsetY: -5
   _TileMapOut:
     width: 0
     height: 0
     _Cells: []
+  _RelativeScale: 1
+  _Detail: 3
+  _Octaves: 10
+  _Lacunarity: 0.5
+  _Persistence: 0.59
+  _Advanced: 1
 --- !u!114 &2977948590872729745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1391,7 +1507,7 @@ MonoBehaviour:
   m_Name: Fill Tile-Map Bool
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: -136}
+  position: {x: -136, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -1456,7 +1572,7 @@ MonoBehaviour:
   m_Name: Lifelike CA
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 888, y: -136}
+  position: {x: 888, y: 248}
   ports:
     keys:
     - _TileMapIn
@@ -1910,7 +2026,7 @@ MonoBehaviour:
   m_Name: Randomize Tile-Map Continuous
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -456}
+  position: {x: 120, y: -264}
   ports:
     keys:
     - _TileMapIn
@@ -1975,7 +2091,7 @@ MonoBehaviour:
   m_Name: Float
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: 312}
+  position: {x: -136, y: 696}
   ports:
     keys:
     - _FloatOut
@@ -2021,7 +2137,7 @@ MonoBehaviour:
   m_Name: Tile-Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -392, y: -456}
+  position: {x: -392, y: -264}
   ports:
     keys:
     - _TileMapBoolOut

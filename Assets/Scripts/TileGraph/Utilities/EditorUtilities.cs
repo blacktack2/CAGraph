@@ -58,15 +58,19 @@ namespace TileGraph.Utilities
 
         /// <summary> Set label width to match the width of the text in
         /// <paramref name="label" /> </summary>
-        public void SetLabelWidthToText(string label)
+        /// <returns> Width value being set. </returns>
+        public float SetLabelWidthToText(string label)
         {
-            SetLabelWidthToText(new GUIContent(label));
+            return SetLabelWidthToText(new GUIContent(label));
         }
         /// <summary> Set label width to match the width of the text in
         /// <paramref name="label" /> </summary>
-        public void SetLabelWidthToText(GUIContent label)
+        /// <returns> Width value being set. </returns>
+        public float SetLabelWidthToText(GUIContent label)
         {
-            EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(label).x;
+            float width = GUI.skin.label.CalcSize(label).x;
+            EditorGUIUtility.labelWidth = width;
+            return width;
         }
 
         private void InitNullPreview()

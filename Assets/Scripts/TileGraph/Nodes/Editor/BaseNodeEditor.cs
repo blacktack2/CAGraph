@@ -13,6 +13,7 @@ namespace TileGraph.Editors
     /// </code></example> </typeparam>
     public abstract class BaseNodeEditor<T> : NodeEditor where T : Nodes.BaseNode
     {
+        protected const int _ListWidth = 150;
         private struct Preview
         {
             public string portName;

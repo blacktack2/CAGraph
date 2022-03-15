@@ -1,7 +1,10 @@
 #pragma kernel IterateLifeCells
 #pragma kernel PerlinNoise1D
 #pragma kernel PerlinNoise2D
-#pragma kernel PerlinNoise3D 
+#pragma kernel PerlinNoise3D
+#pragma kernel FractalPerlinNoise1D
+#pragma kernel FractalPerlinNoise2D
+#pragma kernel FractalPerlinNoise3D
 
 // Flattened tilemaps of integers with values 0 and 1 only
 RWStructuredBuffer<int>   _TileMapBool0;
@@ -27,6 +30,10 @@ RWStructuredBuffer<int> _LifeRules;
 float3 _Magnitude;
 
 float3 _Offset;
+
+// Fractal Noise parameters
+uint _Octaves;
+RWStructuredBuffer<float> _Lacunarity, _Persistence;
 
 /**
  * Return the value of the tile at xy in the currently buffered array
@@ -262,18 +269,53 @@ float PerlinNoise(float3 pos)
 [numthreads(8, 1, 1)]
 void PerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Magnitude.x + _Offset.x) / 2);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Magnitude.x + _Offset.x) * 0.5);
 }
 
 [numthreads(8, 8, 1)]
 void PerlinNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Magnitude.xy + _Offset.xy) / 2);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Magnitude.xy + _Offset.xy) * 0.5);
 }
 
 [numthreads(8, 8, 8)]
 void PerlinNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Magnitude + _Offset) / 2.0);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Magnitude + _Offset) * 0.5);
 }
- 
+
+[numthreads(8, 1, 1)]
+void FractalPerlinNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    float pos = id.x * _Magnitude.x + _Offset.x;
+    float value = PerlinNoise(pos);
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + value * 0.5);
+}
+
+[numthreads(8, 8, 1)]
+void FractalPerlinNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    float value = PerlinNoise(pos);
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + value * 0.5);
+}
+
+[numthreads(8, 8, 8)]
+void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    float3 pos = id * _Magnitude + _Offset;
+    float value = PerlinNoise(pos);
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + value * 0.5);
+}
