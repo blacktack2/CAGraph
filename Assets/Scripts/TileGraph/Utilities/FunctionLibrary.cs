@@ -24,7 +24,8 @@ namespace TileGraph.Utilities
         private enum FunctionKernels {
             IterateLifeCells,
             PerlinNoise1D, PerlinNoise2D, PerlinNoise3D,
-            FractalPerlinNoise1D, FractalPerlinNoise2D, FractalPerlinNoise3D
+            FractalPerlinNoise1D, FractalPerlinNoise2D, FractalPerlinNoise3D,
+            VoronoiNoise2D
         }
 
         private ComputeShader _ComputeShader;

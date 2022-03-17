@@ -5,6 +5,7 @@
 #pragma kernel FractalPerlinNoise1D
 #pragma kernel FractalPerlinNoise2D
 #pragma kernel FractalPerlinNoise3D
+#pragma kernel VoronoiNoise2D
 
 // Flattened tilemaps of integers with values 0 and 1 only
 RWStructuredBuffer<int>   _TileMapBool0;
@@ -22,6 +23,9 @@ bool _BufferFlag = false;
 
 // Bounds of the current tilemap
 uint _ScaleX, _ScaleY;
+
+// Seed for random number generation
+int _Seed;
 
 // Ruleset for Lifelike Cellular Automata
 RWStructuredBuffer<int> _LifeRules;
@@ -127,6 +131,45 @@ void SetUintTileAt(uint2 xy, uint value)
         else
             _TileMapUint1[xy.x + xy.y * _ScaleX] = value;
     }
+}
+
+uint RandomPCG(uint v)
+{
+    uint state = v * 74779640u + 2891336453u;
+    uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    return (word >> 22u) ^ word;
+}
+int2 RandomPCG(int2 v)
+{
+    v = v * 1664525u + 1013904223u;
+    
+    v.x += v.y * 1664525u;
+    v.y += v.x * 1664525u;
+
+    v ^= v >> 16u;
+    
+    v.x += v.y * 1664525u;
+    v.y += v.x * 1664525u;
+
+    v ^= v >> 16u;
+
+    return v;
+}
+uint3 RandomPCG(uint3 v)
+{
+    v = v * 1664525u + 1013904223u;
+
+    v.x += v.y * v.z;
+    v.y += v.z * v.x;
+    v.z += v.x * v.y;
+
+    v ^= v >> 16u;
+
+    v.x += v.y * v.z;
+    v.y += v.z * v.x;
+    v.z += v.x * v.y;
+
+    return v;
 }
 
 // #include "CellularAutomata.compute"
@@ -318,4 +361,29 @@ void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
         value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
     }
     SetContTileAt(id.xy, 0.5 + value * 0.5);
+}
+
+[numthreads(8, 8, 1)]
+void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    int2 ipos = floor(pos);
+    float2 fpos = frac(pos);
+
+    float minDist = 1.0;
+    for (int x = -1; x <= 1; x++)
+    {
+        for (int y = -1; y <= 1; y++)
+        {
+            int2 neighbour = int2(x, y);
+            
+            float2 p = frac((float2) RandomPCG(ipos + neighbour) / 2147483648.0);
+            float2 diff = neighbour + p - fpos;
+            float dist = length(diff);
+
+            minDist = min(minDist, dist);
+        }
+    }
+
+    SetContTileAt(id.xy, minDist);
 }
