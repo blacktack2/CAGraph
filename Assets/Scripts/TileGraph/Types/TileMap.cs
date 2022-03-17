@@ -9,8 +9,6 @@ namespace TileGraph.Types
     [Serializable]
     public abstract class TileMap
     {
-        private static long _IDCounter = 0;
-
         /// <summary> Maximum width/height of the TileMap (the max number of
         /// total elements will be <paramref name="maxTileMapSize" /> *
         /// <paramref name="maxTileMapSize" />) </summary>
@@ -127,7 +125,7 @@ namespace TileGraph.Types
         /// </summary>
         public void UpdateID()
         {
-            _ID = (long) Time.unscaledTime;
+            _ID = (long) (Time.time * 1000f);
         }
 
         /// <returns> Color representation of the value in the flattened TileMap
