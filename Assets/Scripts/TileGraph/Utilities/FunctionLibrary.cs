@@ -15,7 +15,7 @@ namespace TileGraph.Utilities
             _ScaleXID = Shader.PropertyToID("_ScaleX"),
             _ScaleYID = Shader.PropertyToID("_ScaleY"),
             _LifeRulesID = Shader.PropertyToID("_LifeRules"),
-            _FrequencyID = Shader.PropertyToID("_Frequency"),
+            _FrequencyID = Shader.PropertyToID("_Frequency"), 
             _OffsetID = Shader.PropertyToID("_Offset"),
             _OctavesID = Shader.PropertyToID("_Octaves"),
             _LacunarityID = Shader.PropertyToID("_Lacunarity"),

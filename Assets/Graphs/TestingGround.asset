@@ -79,7 +79,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _RelativeScale: 1
+  _RelativeFrequency: 1
   _Algorithm: 1
   _Detail: 4.17
   _Octaves: 5
@@ -379,7 +379,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _RelativeScale: 1
+  _RelativeFrequency: 1
 --- !u!114 &-5952752644616989140
 MonoBehaviour:
   m_ObjectHideFlags: 0
