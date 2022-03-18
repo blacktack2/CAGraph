@@ -5,6 +5,12 @@
 #pragma kernel FractalPerlinNoise1D
 #pragma kernel FractalPerlinNoise2D
 #pragma kernel FractalPerlinNoise3D
+#pragma kernel SimplexNoise1D
+#pragma kernel SimplexNoise2D
+#pragma kernel SimplexNoise3D
+#pragma kernel FractalSimplexNoise1D
+#pragma kernel FractalSimplexNoise2D
+#pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
 
 // Flattened tilemaps of integers with values 0 and 1 only
@@ -231,6 +237,10 @@ static const int p[512] = {
     138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
     61, 156, 180
 };
+static const float F2 = 0.366025403;
+static const float G2 = 0.211324865;
+static const float F3 = 0.333333333;
+static const float G3 = 0.166666667;
 
 float Fade(float t)
 {
@@ -248,13 +258,18 @@ float3 Fade(float3 t)
 float Grad(int seed, float pos)
 {
     int h = seed & 15;
-    return ((h & 1) == 0 ? pos : -pos);
+    float grad = 1.0 + (h & 7);
+    if ((h & 8) != 0)
+        grad = -grad;
+    return grad * pos;
 }
 
 float Grad(int seed, float2 pos)
 {
-    int h = seed & 15;
-    return ((h & 1) ? pos.x : -pos.x) + ((h & 2) ? pos.y : -pos.y);
+    int h = seed & 7;
+    float u = h < 4 ? pos.x : pos.y;
+    float v = h < 4 ? pos.y : pos.x;
+    return ((h & 1) ? u : -u) + ((h & 2) ? 2.0 * v : -2.0 * v);
 }
 
 float Grad(int seed, float3 pos)
@@ -285,6 +300,7 @@ float PerlinNoise(float2 pos)
                      Grad(p[B + 1], coords + float2(-1, -1)), curves.x), curves.y);
 }
 
+// https://mrl.cs.nyu.edu/~perlin/noise/
 float PerlinNoise(float3 pos)
 {
     int3 icoords = (int3) floor(pos) & 255;
@@ -307,6 +323,102 @@ float PerlinNoise(float3 pos)
                           Grad(p[BA + 1], coords + float3(-1,  0, -1)), curves.x),
                      lerp(Grad(p[AB + 1], coords + float3( 0, -1, -1)),
                           Grad(p[BB + 1], coords + float3(-1, -1, -1)), curves.x), curves.y), curves.z);
+}
+
+// https://github.com/WardBenjamin/SimplexNoise/blob/master/SimplexNoise/Noise.cs
+float SimplexNoise(float pos)
+{
+    int i0 = floor(pos);
+    int i1 = i0 + 1;
+    float x0 = pos - i0;
+    float x1 = x0 - 1.0;
+
+    float t0 = 1.0 - x0 * x0;
+    t0 *= t0;
+    float n0 = t0 * t0 * Grad(p[i0 & 255], x0);
+
+    float t1 = 1.0 - x1 * x1;
+    t1 *= t1;
+    float n1 = t1 * t1 * Grad(p[i1 & 255], x1);
+
+    return 0.395 * (n0 + n1);
+}
+
+float SimplexNoise(float2 pos)
+{
+    float n0, n1, n2;
+
+    float s = (pos.x + pos.y) * F2;
+    float xs = pos.x + s;
+    float ys = pos.y + s;
+    int i = floor(xs);
+    int j = floor(ys);
+
+    float t = (i + j) * G2;
+    float X0 = i - t;
+    float Y0 = j - t;
+    float x0 = pos.x - X0;
+    float y0 = pos.y - Y0;
+
+    int i1, j1;
+    if (x0 > y0)
+    {
+        i1 = 1;
+        j1 = 0;
+    }
+    else
+    {
+        i1 = 0;
+        j1 = 1;
+    }
+
+    float x1 = x0 - i1 + G2;
+    float y1 = y0 - j1 + G2;
+    float x2 = x0 - 1.0 + 2.0 * G2;
+    float y2 = y0 - 1.0 + 2.0 * G2;
+
+    int ii = i & 255;
+    int jj = j & 255;
+
+    float t0 = 0.5 - x0 * x0 - y0 * y0;
+    if (t0 < 0.0)
+    {
+        n0 = 0.0;
+    }
+    else
+    {
+        t0 *= t0;
+        n0 = t0 * t0 * Grad(p[ii + p[jj]], float2(x0, y0));
+    }
+
+    float t1 = 0.5 - x1 * x1 - y1 * y1;
+    if (t1 < 0.0)
+    {
+        n1 = 0.0;
+    }
+    else
+    {
+        t1 *= t1;
+        n1 = t1 * t1 * Grad(p[ii + i1 + p[jj + j1]], float2(x1, y1));
+    }
+
+    float t2 = 0.5 - x2 * x2 - y2 * y2;
+    if (t2 < 0.0)
+    {
+        n2 = 0.0;
+    }
+    else
+    {
+        t2 *= t2;
+        n2 = t2 * t2 * Grad(p[ii + 1 + p[jj + 1]], float2(x2, y2));
+    }
+
+    return 40.0 * (n0 + n1 + n2);
+}
+
+float SimplexNoise(float3 pos)
+{
+    return 0.5f;
 }
 
 [numthreads(8, 1, 1)]
@@ -332,11 +444,13 @@ void FractalPerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
     float pos = id.x * _Magnitude.x + _Offset.x;
     float value = PerlinNoise(pos);
+    float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
     {
         value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
     }
-    SetContTileAt(id.xy, 0.5 + value * 0.5);
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
 }
 
 [numthreads(8, 8, 1)]
@@ -344,11 +458,13 @@ void FractalPerlinNoise2D(uint3 id: SV_DispatchThreadID)
 {
     float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
     float value = PerlinNoise(pos);
+    float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
     {
         value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
     }
-    SetContTileAt(id.xy, 0.5 + value * 0.5);
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
 }
 
 [numthreads(8, 8, 8)]
@@ -356,11 +472,73 @@ void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
 {
     float3 pos = id * _Magnitude + _Offset;
     float value = PerlinNoise(pos);
+    float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
     {
         value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
     }
-    SetContTileAt(id.xy, 0.5 + value * 0.5);
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
+}
+
+[numthreads(8, 1, 1)]
+void SimplexNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.x * _Magnitude.x + _Offset.x) * 0.5);
+}
+
+[numthreads(8, 8, 1)]
+void SimplexNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.xy * _Magnitude.xy + _Offset.xy) * 0.5);
+}
+
+[numthreads(8, 8, 8)]
+void SimplexNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id * _Magnitude + _Offset) * 0.5);
+}
+
+[numthreads(8, 1, 1)]
+void FractalSimplexNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    float pos = id.x * _Magnitude.x + _Offset.x;
+    float value = SimplexNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
+}
+
+[numthreads(8, 8, 1)]
+void FractalSimplexNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    float value = SimplexNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
+}
+
+[numthreads(8, 8, 8)]
+void FractalSimplexNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    float3 pos = id * _Magnitude + _Offset;
+    float value = SimplexNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
 }
 
 [numthreads(8, 8, 1)]

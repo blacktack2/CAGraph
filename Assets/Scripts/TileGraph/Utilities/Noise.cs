@@ -6,12 +6,15 @@ namespace TileGraph.Utilities
     {
         public class Noise : SubLibrary
         {
+            public enum Algorithm { Perlin, Simplex }
+
             public Noise(FunctionLibrary functionLibrary) : base(functionLibrary)
             {
             }
 
-            public void PerlinNoise2D(Types.TileMapCont tileMap, Vector2? magnitude = null, Vector2? offset = null,
-                                      uint octaves = 1, float[] lacunarity = null, float[] persistence = null, bool useGPU = true)
+            public void GradientNoise2D(Types.TileMapCont tileMap, Vector2? magnitude = null, Vector2? offset = null,
+                                        uint octaves = 1, float[] lacunarity = null, float[] persistence = null,
+                                        Algorithm algorithm = Algorithm.Simplex, bool useGPU = true)
             {
                 if (magnitude == null)
                     magnitude = new Vector2(0.1f, 0.1f);
@@ -24,25 +27,34 @@ namespace TileGraph.Utilities
                 if (octaves <= 1)
                 {
                     if (useGPU)
-                        PerlinNoise2DGPU(tileMap, (Vector2) magnitude, (Vector2) offset);
+                        GradientNoise2DGPU(tileMap, (Vector2) magnitude, (Vector2) offset, algorithm);
                     else
-                        PerlinNoise2DCPU(tileMap, (Vector2) magnitude, (Vector2) offset);
+                        GradientNoise2DCPU(tileMap, (Vector2) magnitude, (Vector2) offset, algorithm);
                 }
                 else
                 {
                     if (useGPU)
-                        FractalPerlinNoise2DGPU(tileMap, (Vector2) magnitude, (Vector2) offset, octaves, lacunarity, persistence);
+                        FractalGradientNoise2DGPU(tileMap, (Vector2) magnitude, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
                     else
-                        PerlinNoise2DCPU(tileMap, (Vector2) magnitude, (Vector2) offset);
+                        GradientNoise2DCPU(tileMap, (Vector2) magnitude, (Vector2) offset, algorithm);
                 }
             }
-            private void PerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset)
+            private void GradientNoise2DCPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset, Algorithm algorithm)
             {
                 
             }
-            private void PerlinNoise2DGPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset)
+            private void GradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset, Algorithm algorithm)
             {
-                const int kernelIndex = (int) FunctionLibrary.FunctionKernels.PerlinNoise2D;
+                int kernelIndex;
+                switch (algorithm)
+                {
+                    case Algorithm.Perlin:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.PerlinNoise2D;
+                        break;
+                    case Algorithm.Simplex: default:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.SimplexNoise2D;
+                        break;
+                }
 
                 float[] cells = new float[tileMap.width * tileMap.height];
 
@@ -65,10 +77,19 @@ namespace TileGraph.Utilities
                 _FunctionLibrary._TileMapCont1Buffer.GetData(cells);
                 tileMap.SetCells(cells);
             }
-            private void FractalPerlinNoise2DGPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset,
-                                                 uint octaves, float[] lacunarity, float[] persistence)
+            private void FractalGradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 magnitude, Vector2 offset,
+                                                 uint octaves, float[] lacunarity, float[] persistence, Algorithm algorithm)
             {
-                const int kernelIndex = (int) FunctionLibrary.FunctionKernels.FractalPerlinNoise2D;
+                int kernelIndex;
+                switch (algorithm)
+                {
+                    case Algorithm.Perlin:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.FractalPerlinNoise2D;
+                        break;
+                    case Algorithm.Simplex: default:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.FractalSimplexNoise2D;
+                        break;
+                }
 
                 float[] cells = new float[tileMap.width * tileMap.height];
 

@@ -10,8 +10,9 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapContNoiseNode))]
     public class TileMapContNoiseNodeEditor : BaseNodeEditor<Nodes.TileMapContNoiseNode>
     {
-        private SerializedProperty _TileMapIn, _NoiseScaleX, _NoiseScaleY, _OffsetX, _OffsetY, _TileMapOut, _RelativeScale,
-                                   _Advanced, _Detail, _Octaves, _Lacunarity, _Persistence;
+        private SerializedProperty _TileMapIn, _NoiseScaleX, _NoiseScaleY, _OffsetX, _OffsetY, _TileMapOut,
+                                   _RelativeScale, _Algorithm, _Advanced,
+                                   _Detail, _Octaves, _Lacunarity, _Persistence;
 
         protected override bool GPUToggleable => true;
 
@@ -30,7 +31,9 @@ namespace TileGraph.Editors
             _TileMapOut    = serializedObject.FindProperty("_TileMapOut");
 
             _RelativeScale = serializedObject.FindProperty("_RelativeScale");
+            _Algorithm     = serializedObject.FindProperty("_Algorithm");
             _Advanced      = serializedObject.FindProperty("_Advanced");
+
             _Detail        = serializedObject.FindProperty("_Detail");
             _Octaves       = serializedObject.FindProperty("_Octaves");
             _Lacunarity    = serializedObject.FindProperty("_Lacunarity");
@@ -67,6 +70,7 @@ namespace TileGraph.Editors
         protected override void NodeBodyGUI()
         {
             graph.editorUtilities.PropertyFieldMinLabel(_RelativeScale, new GUIContent("Relative Scale"));
+            graph.editorUtilities.PropertyFieldMinLabel(_Algorithm, new GUIContent("Algorithm"));
             graph.editorUtilities.PropertyFieldMinLabel(_Advanced, new GUIContent("Advanced"));
             serializedObject.ApplyModifiedProperties();
             if (_Advanced.boolValue)

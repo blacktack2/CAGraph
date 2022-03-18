@@ -1,5 +1,6 @@
 using UnityEngine;
 using XNode;
+using static TileGraph.Utilities.FunctionLibrary.Noise;
 
 namespace TileGraph.Nodes
 {
@@ -15,6 +16,9 @@ namespace TileGraph.Nodes
 
         [SerializeField]
         private bool _RelativeScale = false;
+
+        [SerializeField, NodeEnum]
+        private Algorithm _Algorithm = Algorithm.Simplex;
 
         [SerializeField, Range(1, 20)]
         private float _Detail = 0f;
@@ -32,6 +36,7 @@ namespace TileGraph.Nodes
         private float _CurrentNoiseScaleX = 0f, _CurrentNoiseScaleY = 0f;
         private float _CurrentOffsetX = 0f, _CurrentOffsetY = 0f;
         private bool _CurrentRelativeScale = false;
+        private Algorithm _CurrentAlgorithm = Algorithm.Simplex;
         private bool _CurrentAdvanced = false;
         private float _CurrentDetail = 0f;
         private uint _CurrentOctaves = 1;
@@ -102,8 +107,19 @@ namespace TileGraph.Nodes
                 else
                     magnitude = new Vector2(_NoiseScaleX, _NoiseScaleY);
 
-                _Graph.functionLibrary.noise.PerlinNoise2D(_TileMapOutBuffer, magnitude, new Vector2(_OffsetX, _OffsetY),
-                                                           _CurrentOctaves, _CurrentLacunarity, _CurrentPersistence, GPUEnabled);
+                _CurrentAlgorithm = _Algorithm;
+                switch (_Algorithm)
+                {
+                    case Algorithm.Perlin:
+                        name = "Perlin Noise";
+                        break;
+                    case Algorithm.Simplex:
+                        name = "Simplex Noise";
+                        break;
+                }
+                _Graph.functionLibrary.noise.GradientNoise2D(_TileMapOutBuffer, magnitude, new Vector2(_OffsetX, _OffsetY),
+                                                             _CurrentOctaves, _CurrentLacunarity, _CurrentPersistence,
+                                                             _Algorithm, GPUEnabled);
             }
         }
 
@@ -112,6 +128,7 @@ namespace TileGraph.Nodes
             if (_CurrentNoiseScaleX != _NoiseScaleX || _CurrentNoiseScaleY != _NoiseScaleY
                 || _CurrentOffsetX != _OffsetX || _CurrentOffsetY != _OffsetY
                 || _CurrentRelativeScale != _RelativeScale
+                || _CurrentAlgorithm != _Algorithm
                 || _CurrentAdvanced != _Advanced)
                 return true;
             if (_Advanced)

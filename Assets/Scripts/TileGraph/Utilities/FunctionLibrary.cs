@@ -25,6 +25,8 @@ namespace TileGraph.Utilities
             IterateLifeCells,
             PerlinNoise1D, PerlinNoise2D, PerlinNoise3D,
             FractalPerlinNoise1D, FractalPerlinNoise2D, FractalPerlinNoise3D,
+            SimplexNoise1D, SimplexNoise2D, SimplexNoise3D,
+            FractalSimplexNoise1D, FractalSimplexNoise2D, FractalSimplexNoise3D,
             VoronoiNoise2D
         }
 
