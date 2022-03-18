@@ -17,10 +17,8 @@ MonoBehaviour:
   ports:
     keys:
     - _TileMapIn
-    - _NoiseScaleX
-    - _NoiseScaleY
-    - _OffsetX
-    - _OffsetY
+    - _Offset
+    - _Frequency
     - _TileMapOut
     values:
     - _fieldName: _TileMapIn
@@ -35,37 +33,19 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: _NoiseScaleX
+    - _fieldName: _Offset
       _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: _NoiseScaleY
+    - _fieldName: _Frequency
       _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _OffsetX
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _OffsetY
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
@@ -93,10 +73,8 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _NoiseScaleX: 5
-  _NoiseScaleY: 5
-  _OffsetX: 0
-  _OffsetY: 0
+  _Frequency: {x: 5, y: 5}
+  _Offset: {x: 0, y: 0}
   _TileMapOut:
     width: 0
     height: 0
@@ -345,10 +323,8 @@ MonoBehaviour:
   ports:
     keys:
     - _TileMapIn
-    - _ScaleX
-    - _ScaleY
-    - _OffsetX
-    - _OffsetY
+    - _Offset
+    - _Frequency
     - _TileMapOut
     values:
     - _fieldName: _TileMapIn
@@ -363,37 +339,19 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: _ScaleX
+    - _fieldName: _Offset
       _node: {fileID: -6602391650931841200}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: _ScaleY
+    - _fieldName: _Frequency
       _node: {fileID: -6602391650931841200}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _OffsetX
-      _node: {fileID: -6602391650931841200}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _OffsetY
-      _node: {fileID: -6602391650931841200}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
@@ -415,10 +373,8 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _ScaleX: 5
-  _ScaleY: 5
-  _OffsetX: 0
-  _OffsetY: 0
+  _Frequency: {x: 5, y: 5}
+  _Offset: {x: 0, y: 0}
   _TileMapOut:
     width: 0
     height: 0

@@ -10,8 +10,8 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapContNoiseNode))]
     public class TileMapContNoiseNodeEditor : BaseNodeEditor<Nodes.TileMapContNoiseNode>
     {
-        private SerializedProperty _TileMapIn, _NoiseScaleX, _NoiseScaleY, _OffsetX, _OffsetY, _TileMapOut,
-                                   _RelativeScale, _Algorithm, _Advanced,
+        private SerializedProperty _TileMapIn, _Frequency, _Offset, _TileMapOut,
+                                   _RelativeFrequency, _Algorithm, _Advanced,
                                    _Detail, _Octaves, _Lacunarity, _Persistence;
 
         protected override bool GPUToggleable => true;
@@ -23,21 +23,19 @@ namespace TileGraph.Editors
 
         protected override void OnNodeEnable()
         {
-            _TileMapIn     = serializedObject.FindProperty("_TileMapIn");
-            _NoiseScaleX   = serializedObject.FindProperty("_NoiseScaleX");
-            _NoiseScaleY   = serializedObject.FindProperty("_NoiseScaleY");
-            _OffsetX       = serializedObject.FindProperty("_OffsetX");
-            _OffsetY       = serializedObject.FindProperty("_OffsetY");
-            _TileMapOut    = serializedObject.FindProperty("_TileMapOut");
+            _TileMapIn         = serializedObject.FindProperty("_TileMapIn");
+            _Frequency         = serializedObject.FindProperty("_Frequency");
+            _Offset            = serializedObject.FindProperty("_Offset");
+            _TileMapOut        = serializedObject.FindProperty("_TileMapOut");
 
-            _RelativeScale = serializedObject.FindProperty("_RelativeScale");
-            _Algorithm     = serializedObject.FindProperty("_Algorithm");
-            _Advanced      = serializedObject.FindProperty("_Advanced");
+            _RelativeFrequency = serializedObject.FindProperty("_RelativeFrequency");
+            _Algorithm         = serializedObject.FindProperty("_Algorithm");
+            _Advanced          = serializedObject.FindProperty("_Advanced");
 
-            _Detail        = serializedObject.FindProperty("_Detail");
-            _Octaves       = serializedObject.FindProperty("_Octaves");
-            _Lacunarity    = serializedObject.FindProperty("_Lacunarity");
-            _Persistence   = serializedObject.FindProperty("_Persistence");
+            _Detail            = serializedObject.FindProperty("_Detail");
+            _Octaves           = serializedObject.FindProperty("_Octaves");
+            _Lacunarity        = serializedObject.FindProperty("_Lacunarity");
+            _Persistence       = serializedObject.FindProperty("_Persistence");
 
             _OctaveParams = new List<object>();
             for (int i = 0; i < _Octaves.intValue; i++)
@@ -61,15 +59,13 @@ namespace TileGraph.Editors
 
             EditorGUILayout.EndHorizontal();
 
-            graph.editorUtilities.PortFieldMinLabel(_NoiseScaleX);
-            graph.editorUtilities.PortFieldMinLabel(_NoiseScaleY);
-            graph.editorUtilities.PortFieldMinLabel(_OffsetX);
-            graph.editorUtilities.PortFieldMinLabel(_OffsetY);
+            graph.editorUtilities.PortFieldMinLabel(_Frequency);
+            graph.editorUtilities.PortFieldMinLabel(_Offset);
         }
 
         protected override void NodeBodyGUI()
         {
-            graph.editorUtilities.PropertyFieldMinLabel(_RelativeScale, new GUIContent("Relative Scale"));
+            graph.editorUtilities.PropertyFieldMinLabel(_RelativeFrequency, new GUIContent("Relative Scale"));
             graph.editorUtilities.PropertyFieldMinLabel(_Algorithm, new GUIContent("Algorithm"));
             graph.editorUtilities.PropertyFieldMinLabel(_Advanced, new GUIContent("Advanced"));
             serializedObject.ApplyModifiedProperties();

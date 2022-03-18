@@ -9,16 +9,14 @@ namespace TileGraph.Nodes
     public class TileMapContVoronoiNode : BaseNode
     {
         [SerializeField, Input] private Types.TileMapCont _TileMapIn;
-        [SerializeField, Input] private float _ScaleX = 0.1f, _ScaleY = 0.1f;
-        [SerializeField, Input] private float _OffsetX = 0f, _OffsetY = 0f;
+        [SerializeField, Input] private Vector2 _Frequency = new Vector2(0.1f, 0.1f), _Offset = Vector2.zero;
         [SerializeField, Output] private Types.TileMapCont _TileMapOut;
 
         [SerializeField]
-        private bool _RelativeScale = false;
+        private bool _RelativeFrequency = false;
 
-        private float _CurrentScaleX = 0f, _CurrentScaleY = 0f;
-        private float _CurrentOffsetX = 0f, _CurrentOffsetY = 0f;
-        private bool _CurrentRelativeScale = false;
+        private Vector2 _CurrentFrequency = Vector2.zero, _CurrentOffset = Vector2.zero;
+        private bool _CurrentRelativeFrequency = false;
 
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -35,9 +33,8 @@ namespace TileGraph.Nodes
                 GetTileMapInput(
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
-                    _CurrentScaleX != _ScaleX || _CurrentScaleY != _ScaleY
-                    || _CurrentOffsetX != _OffsetX || _CurrentOffsetY != _OffsetY
-                    || _CurrentRelativeScale != _RelativeScale
+                    _CurrentFrequency != _Frequency || _CurrentOffset != _Offset
+                    || _CurrentRelativeFrequency != _RelativeFrequency
                 );
                 return _TileMapOutBuffer;
             }
@@ -48,19 +45,12 @@ namespace TileGraph.Nodes
         {
             if (portName == "_TileMapOut")
             {
-                _CurrentScaleX = _ScaleX;
-                _CurrentScaleY = _ScaleY;
-                _CurrentOffsetX = _OffsetX;
-                _CurrentOffsetY = _OffsetY;
-                _CurrentRelativeScale = _RelativeScale;
+                _CurrentFrequency = _Frequency;
+                _CurrentOffset = _Offset;
+                _CurrentRelativeFrequency = _RelativeFrequency;
 
-                Vector2 magnitude;
-                if (_RelativeScale)
-                    magnitude = new Vector2(_ScaleX / _TileMapOutBuffer.width, _ScaleY / _TileMapOutBuffer.height);
-                else
-                    magnitude = new Vector2(_ScaleX, _ScaleY);
-
-                _Graph.functionLibrary.noise.VoronoiNoise2D(_TileMapOutBuffer, magnitude, new Vector2(_OffsetX, _OffsetY), GPUEnabled);
+                Vector2 frequency = _Frequency / (_RelativeFrequency ? new Vector2(_TileMapOutBuffer.width, _TileMapOutBuffer.height) : Vector2.one);
+                _Graph.functionLibrary.noise.VoronoiNoise2D(_TileMapOutBuffer, frequency, _Offset, GPUEnabled);
             }
         }
     }

@@ -6,20 +6,18 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapContVoronoiNode))]
     public class TileMapContVoronoiNodeEditor : BaseNodeEditor<Nodes.TileMapContVoronoiNode>
     {
-        private SerializedProperty _TileMapIn, _ScaleX, _ScaleY, _OffsetX, _OffsetY, _TileMapOut, _RelativeScale;
+        private SerializedProperty _TileMapIn, _Frequency, _Offset, _TileMapOut, _RelativeFrequency;
 
         protected override bool GPUToggleable => true;
 
         protected override void OnNodeEnable()
         {
-            _TileMapIn     = serializedObject.FindProperty("_TileMapIn");
-            _ScaleX        = serializedObject.FindProperty("_ScaleX");
-            _ScaleY        = serializedObject.FindProperty("_ScaleY");
-            _OffsetX       = serializedObject.FindProperty("_OffsetX");
-            _OffsetY       = serializedObject.FindProperty("_OffsetY");
-            _TileMapOut    = serializedObject.FindProperty("_TileMapOut");
+            _TileMapIn         = serializedObject.FindProperty("_TileMapIn");
+            _Frequency         = serializedObject.FindProperty("_Frequency");
+            _Offset            = serializedObject.FindProperty("_Offset");
+            _TileMapOut        = serializedObject.FindProperty("_TileMapOut");
 
-            _RelativeScale = serializedObject.FindProperty("_RelativeScale");
+            _RelativeFrequency = serializedObject.FindProperty("_RelativeFrequency");
 
             AddPreview("_TileMapOut");
         }
@@ -33,15 +31,13 @@ namespace TileGraph.Editors
 
             EditorGUILayout.EndHorizontal();
 
-            graph.editorUtilities.PortFieldMinLabel(_ScaleX);
-            graph.editorUtilities.PortFieldMinLabel(_ScaleY);
-            graph.editorUtilities.PortFieldMinLabel(_OffsetX);
-            graph.editorUtilities.PortFieldMinLabel(_OffsetY);
+            graph.editorUtilities.PortFieldMinLabel(_Frequency);
+            graph.editorUtilities.PortFieldMinLabel(_Offset);
         }
 
         protected override void NodeBodyGUI()
         {
-            graph.editorUtilities.PropertyFieldMinLabel(_RelativeScale, new GUIContent("Relative Scale"));
+            graph.editorUtilities.PropertyFieldMinLabel(_RelativeFrequency, new GUIContent("Relative Scale"));
         }
     }
 }

@@ -37,7 +37,7 @@ int _Seed;
 RWStructuredBuffer<int> _LifeRules;
 
 // Noise scale
-float3 _Magnitude;
+float3 _Frequency;
 
 float3 _Offset;
 
@@ -424,25 +424,25 @@ float SimplexNoise(float3 pos)
 [numthreads(8, 1, 1)]
 void PerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Magnitude.x + _Offset.x) * 0.5);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Frequency.x + _Offset.x) * 0.5);
 }
 
 [numthreads(8, 8, 1)]
 void PerlinNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Magnitude.xy + _Offset.xy) * 0.5);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Frequency.xy + _Offset.xy) * 0.5);
 }
 
 [numthreads(8, 8, 8)]
 void PerlinNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Magnitude + _Offset) * 0.5);
+    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Frequency + _Offset) * 0.5);
 }
 
 [numthreads(8, 1, 1)]
 void FractalPerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    float pos = id.x * _Magnitude.x + _Offset.x;
+    float pos = id.x * _Frequency.x + _Offset.x;
     float value = PerlinNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -456,7 +456,7 @@ void FractalPerlinNoise1D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 1)]
 void FractalPerlinNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
     float value = PerlinNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -470,7 +470,7 @@ void FractalPerlinNoise2D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 8)]
 void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    float3 pos = id * _Magnitude + _Offset;
+    float3 pos = id * _Frequency + _Offset;
     float value = PerlinNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -484,25 +484,25 @@ void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 1, 1)]
 void SimplexNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.x * _Magnitude.x + _Offset.x) * 0.5);
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.x * _Frequency.x + _Offset.x) * 0.5);
 }
 
 [numthreads(8, 8, 1)]
 void SimplexNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.xy * _Magnitude.xy + _Offset.xy) * 0.5);
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.xy * _Frequency.xy + _Offset.xy) * 0.5);
 }
 
 [numthreads(8, 8, 8)]
 void SimplexNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id * _Magnitude + _Offset) * 0.5);
+    SetContTileAt(id.xy, 0.5 + SimplexNoise(id * _Frequency + _Offset) * 0.5);
 }
 
 [numthreads(8, 1, 1)]
 void FractalSimplexNoise1D(uint3 id: SV_DispatchThreadID)
 {
-    float pos = id.x * _Magnitude.x + _Offset.x;
+    float pos = id.x * _Frequency.x + _Offset.x;
     float value = SimplexNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -516,7 +516,7 @@ void FractalSimplexNoise1D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 1)]
 void FractalSimplexNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
     float value = SimplexNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -530,7 +530,7 @@ void FractalSimplexNoise2D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 8)]
 void FractalSimplexNoise3D(uint3 id: SV_DispatchThreadID)
 {
-    float3 pos = id * _Magnitude + _Offset;
+    float3 pos = id * _Frequency + _Offset;
     float value = SimplexNoise(pos);
     float totalMax = 1.0;
     for (int octave = 0; octave < (int) _Octaves - 1; octave++)
@@ -544,7 +544,7 @@ void FractalSimplexNoise3D(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 1)]
 void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)
 {
-    float2 pos = id.xy * _Magnitude.xy + _Offset.xy;
+    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
     int2 ipos = floor(pos);
     float2 fpos = frac(pos);
 
