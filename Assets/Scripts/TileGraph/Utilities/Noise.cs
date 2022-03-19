@@ -6,6 +6,45 @@ namespace TileGraph.Utilities
     {
         public class Noise : SubLibrary
         {
+            private static int[] p = new int[] {
+                151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140,
+                36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234,
+                75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237,
+                149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48,
+                27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133, 230, 220, 105,
+                92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73,
+                209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86,
+                164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5, 202, 38,
+                147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189,
+                28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44, 154, 163, 70, 221, 153, 101,
+                155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232,
+                178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12,
+                191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31,
+                181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254,
+                138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
+                61, 156, 180,
+                151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140,
+                36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234,
+                75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237,
+                149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48,
+                27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133, 230, 220, 105,
+                92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73,
+                209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86,
+                164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5, 202, 38,
+                147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189,
+                28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44, 154, 163, 70, 221, 153, 101,
+                155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232,
+                178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12,
+                191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31,
+                181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254,
+                138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
+                61, 156, 180
+            };
+            private const float F2 = 0.366025403f;
+            private const float G2 = 0.211324865f;
+            private const float F3 = 0.333333333f;
+            private const float G3 = 0.166666667f;
+
             public enum Algorithm { Perlin, Simplex }
 
             public Noise(FunctionLibrary functionLibrary) : base(functionLibrary)
@@ -36,12 +75,61 @@ namespace TileGraph.Utilities
                     if (useGPU)
                         FractalGradientNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
                     else
-                        GradientNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, algorithm);
+                        FractalGradientNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
                 }
             }
             private void GradientNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
             {
-                
+                switch (algorithm)
+                {
+                    case Algorithm.Perlin:
+                        PerlinNoise2DCPU(tileMap, frequency, offset);
+                        break;
+                    case Algorithm.Simplex: default:
+                        break;
+                }
+            }
+            private float Grad(int seed, float x, float y)
+            {
+                int h = seed & 7;
+                float u = h < 4 ? x : y;
+                float v = h < 4 ? y : x;
+                return ((h & 1) != 0 ? u : -u) + ((h & 2) != 0 ? 2f * v : -2f * v);
+            }
+            private float Fade(float t)
+            {
+                return t * t * t * (t * (t * 6f - 15f) + 10f);
+            }
+            private void PerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    cells[c] = 0.5f + PerlinNoise2D(x * frequency.x + offset.x, y * frequency.y + offset.y) * 0.5f;
+                }
+                tileMap.SetCells(cells);
+            }
+            private float PerlinNoise2D(float x, float y)
+            {
+                int xi = Mathf.FloorToInt(x) & 255;
+                int yi = Mathf.FloorToInt(y) & 255;
+                float xd = x - xi;
+                float yd = y - yi;
+                float xc = Fade(xd);
+                float yc = Fade(yd);
+
+                int A = p[xi] + yi;
+                int B = p[xi + 1] + yi;
+
+                return Mathf.Lerp(Mathf.Lerp(Grad(p[A    ], xd    , yd    ),
+                                             Grad(p[B    ], xd - 1, yd    ), xc),
+                                  Mathf.Lerp(Grad(p[A + 1], xd    , yd - 1),
+                                             Grad(p[B + 1], xd - 1, yd - 1), xc), yc);
             }
             private void GradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
             {
@@ -75,6 +163,43 @@ namespace TileGraph.Utilities
                 _FunctionLibrary._ComputeShader.Dispatch(kernelIndex, groupsX, groupsY, 1);
 
                 _FunctionLibrary._TileMapCont1Buffer.GetData(cells);
+                tileMap.SetCells(cells);
+            }
+            private void FractalGradientNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+                                                 uint octaves, float[] lacunarity, float[] persistence, Algorithm algorithm)
+            {
+                switch (algorithm)
+                {
+                    case Algorithm.Perlin:
+                        FractalPerlinNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
+                        break;
+                    case Algorithm.Simplex: default:
+                        break;
+                }
+            }
+            private void FractalPerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+                                                 uint octaves, float[] lacunarity, float[] persistence)
+            {
+                
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    float px = x * frequency.x + offset.x;
+                    float py = y * frequency.y + offset.y;
+                    cells[c] = PerlinNoise2D(px, py);
+                    float totalMax = 1f;
+                    for (int o = 0; o < octaves; o++)
+                    {
+                        cells[c] += PerlinNoise2D(px * lacunarity[o], py * lacunarity[o]) * persistence[o];
+                        totalMax += persistence[o];
+                    }
+                    cells[c] = (cells[c] / totalMax) * 0.5f + 0.5f;
+                }
                 tileMap.SetCells(cells);
             }
             private void FractalGradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
