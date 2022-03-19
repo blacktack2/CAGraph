@@ -100,6 +100,9 @@ namespace TileGraph.Nodes
                 _CurrentAlgorithm = _Algorithm;
                 switch (_Algorithm)
                 {
+                    case Algorithm.Value:
+                        name = "Value Noise";
+                        break;
                     case Algorithm.Perlin:
                         name = "Perlin Noise";
                         break;

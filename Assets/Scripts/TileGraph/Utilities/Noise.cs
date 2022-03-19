@@ -45,7 +45,7 @@ namespace TileGraph.Utilities
             private const float F3 = 0.333333333f;
             private const float G3 = 0.166666667f;
 
-            public enum Algorithm { Perlin, Simplex }
+            public enum Algorithm { Value, Perlin, Simplex }
 
             public Noise(FunctionLibrary functionLibrary) : base(functionLibrary)
             {
@@ -223,6 +223,9 @@ namespace TileGraph.Utilities
                 int kernelIndex;
                 switch (algorithm)
                 {
+                    case Algorithm.Value:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.ValueNoise2D;
+                        break;
                     case Algorithm.Perlin:
                         kernelIndex = (int) FunctionLibrary.FunctionKernels.PerlinNoise2D;
                         break;
@@ -319,6 +322,9 @@ namespace TileGraph.Utilities
                 int kernelIndex;
                 switch (algorithm)
                 {
+                    case Algorithm.Value:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.FractalValueNoise2D;
+                        break;
                     case Algorithm.Perlin:
                         kernelIndex = (int) FunctionLibrary.FunctionKernels.FractalPerlinNoise2D;
                         break;

@@ -75,6 +75,38 @@ float Grad(int seed, float3 pos)
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
+float ValueNoise(float pos)
+{
+    int posi = floor(pos);
+    float posr = frac(pos);
+
+    float r0 = frac((float) Random1D(posi    ) / (float) MAXINT);
+    float r1 = frac((float) Random1D(posi + 1) / (float) MAXINT);
+
+    return lerp(r0, r1, Fade(posr));
+}
+
+float ValueNoise(float2 pos)
+{
+    int2 posi = floor(pos);
+    float2 posr = Fade(frac(pos));
+
+    float r00 = frac((float) Random1D(posi               ) / (float) MAXINT);
+    float r10 = frac((float) Random1D(posi + float2(1, 0)) / (float) MAXINT);
+    float r01 = frac((float) Random1D(posi + float2(0, 1)) / (float) MAXINT);
+    float r11 = frac((float) Random1D(posi + float2(1, 1)) / (float) MAXINT);
+
+    float rx0 = lerp(r00, r10, posr.x);
+    float rx1 = lerp(r01, r11, posr.x);
+
+    return lerp(rx0, rx1, posr.y);
+}
+
+float ValueNoise(float3 pos)
+{
+    return 0.5;
+}
+
 float PerlinNoise(float pos)
 {
     return 0.5;
@@ -217,6 +249,66 @@ float SimplexNoise(float3 pos)
 }
 
 [numthreads(8, 1, 1)]
+void ValueNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, ValueNoise(id.x * _Frequency.x + _Offset.x));
+}
+
+[numthreads(8, 8, 1)]
+void ValueNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, ValueNoise(id.xy * _Frequency.xy + _Offset.xy));
+}
+
+[numthreads(8, 8, 8)]
+void ValueNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, ValueNoise(id * _Frequency + _Offset));
+}
+
+[numthreads(8, 1, 1)]
+void FractalValueNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    float pos = id.x * _Frequency.x + _Offset.x;
+    float value = ValueNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, value / totalMax);
+}
+
+[numthreads(8, 8, 1)]
+void FractalValueNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
+    float value = ValueNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, value / totalMax);
+}
+
+[numthreads(8, 8, 8)]
+void FractalValueNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    float3 pos = id * _Frequency + _Offset;
+    float value = ValueNoise(pos);
+    float totalMax = 1.0;
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
+    {
+        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
+        totalMax += _Persistence[octave];
+    }
+    SetContTileAt(id.xy, value / totalMax);
+}
+
+[numthreads(8, 1, 1)]
 void PerlinNoise1D(uint3 id: SV_DispatchThreadID)
 {
     SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Frequency.x + _Offset.x) * 0.5);
@@ -350,7 +442,7 @@ void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)
         {
             int2 neighbour = int2(x, y);
             
-            float2 p = frac((float2) RandomPCG(ipos + neighbour) / 2147483648.0);
+            float2 p = frac((float2) Random2D(ipos + neighbour) / (float) MAXINT);
             float2 diff = neighbour + p - fpos;
             float dist = length(diff);
 

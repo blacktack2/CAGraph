@@ -1,4 +1,10 @@
 #pragma kernel IterateLifeCells
+#pragma kernel ValueNoise1D
+#pragma kernel ValueNoise2D
+#pragma kernel ValueNoise3D
+#pragma kernel FractalValueNoise1D
+#pragma kernel FractalValueNoise2D
+#pragma kernel FractalValueNoise3D
 #pragma kernel PerlinNoise1D
 #pragma kernel PerlinNoise2D
 #pragma kernel PerlinNoise3D
@@ -12,6 +18,8 @@
 #pragma kernel FractalSimplexNoise2D
 #pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
+
+static const int MAXINT = 2147483648;
 
 // Flattened tilemaps of integers with values 0 and 1 only
 RWStructuredBuffer<int>   _TileMapBool0;
@@ -141,43 +149,58 @@ void SetUintTileAt(uint2 xy, uint value)
     }
 }
 
-uint RandomPCG(uint v)
+uint Random1D(uint seed)
 {
-    uint state = v * 74779640u + 2891336453u;
-    uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    uint state = seed * 74779640 + 2891336453;
+    uint word = ((state >> ((state >> 28) + 4)) ^ state) * 277803737;
     return (word >> 22u) ^ word;
 }
-int2 RandomPCG(int2 v)
+uint Random1D(uint2 seed)
 {
-    v = v * 1664525 + 1013904223;
-    
-    v.x += v.y * 1664525;
-    v.y += v.x * 1664525;
-
-    v ^= v >> 16;
-    
-    v.x += v.y * 1664525;
-    v.y += v.x * 1664525;
-
-    v ^= v >> 16;
-
-    return v;
+    return Random1D(seed.x ^ Random1D(seed.y));
 }
-uint3 RandomPCG(uint3 v)
+uint Random1D(uint3 seed)
 {
-    v = v * 1664525u + 1013904223u;
-
-    v.x += v.y * v.z;
-    v.y += v.z * v.x;
-    v.z += v.x * v.y;
-
-    v ^= v >> 16u;
-
-    v.x += v.y * v.z;
-    v.y += v.z * v.x;
-    v.z += v.x * v.y;
-
-    return v;
+    return Random1D(seed.x ^ Random1D(seed.y ^ Random1D(seed.z)));
+}
+uint2 Random2D(uint seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    return uint2(x, y);
+}
+uint2 Random2D(uint2 seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    return uint2(x, y);
+}
+uint2 Random2D(uint3 seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    return uint2(x, y);
+}
+uint3 Random3D(uint seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    uint z = Random1D(y);
+    return uint3(x, y, z);
+}
+uint3 Random3D(uint2 seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    uint z = Random1D(y);
+    return uint3(x, y, z);
+}
+uint3 Random3D(uint3 seed)
+{
+    uint x = Random1D(seed);
+    uint y = Random1D(x);
+    uint z = Random1D(y);
+    return uint3(x, y, z);
 }
 
 #include "CellularAutomata.cginc"

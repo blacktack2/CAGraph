@@ -38,7 +38,7 @@ namespace TileGraph.Editors
             _Persistence       = serializedObject.FindProperty("_Persistence");
 
             _OctaveParams = new List<object>();
-            for (int i = 0; i < _Octaves.intValue; i++)
+            for (int i = 0; i < _Octaves.intValue - 1; i++)
             {
                 _OctaveParams.Add(null);
             }
@@ -78,9 +78,9 @@ namespace TileGraph.Editors
                 EditorGUIUtility.labelWidth = 0;
 
                 serializedObject.ApplyModifiedProperties();
-                while (_Octaves.intValue > _OctaveParamList.list.Count)
+                while (_Octaves.intValue - 1 > _OctaveParamList.list.Count)
                     _OctaveParamList.list.Add(null);
-                while (_Octaves.intValue < _OctaveParamList.list.Count)
+                while (_Octaves.intValue - 1 < _OctaveParamList.list.Count)
                     _OctaveParamList.list.RemoveAt(_OctaveParamList.list.Count - 1);
                 graph.editorUtilities.PropertyFieldMinLabel(_Octaves, new GUIContent(""));
 

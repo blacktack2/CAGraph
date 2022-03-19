@@ -1,131 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8832047986573997939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2000f86ca31743d42917a79cdba14ff7, type: 3}
-  m_Name: Perlin Noise
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 376, y: -328}
-  ports:
-    keys:
-    - _TileMapIn
-    - _Offset
-    - _Frequency
-    - _TileMapOut
-    values:
-    - _fieldName: _TileMapIn
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _TileMapOut
-        node: {fileID: 7717094702920464699}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _Offset
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _Frequency
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _TileMapOut
-      _node: {fileID: -8832047986573997939}
-      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _TileMapIn
-        node: {fileID: -3976021060203263860}
-        reroutePoints: []
-      - fieldName: _TileMapIn
-        node: {fileID: -6602391650931841200}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  _GPUEnabled:
-    isEnabled: 0
-    isOverridden: 0
-  _TileMapIn:
-    width: 0
-    height: 0
-    _Cells: []
-  _Frequency: {x: 5, y: 5}
-  _Offset: {x: 0, y: 0}
-  _TileMapOut:
-    width: 0
-    height: 0
-    _Cells: []
-  _RelativeFrequency: 1
-  _Algorithm: 0
-  _Detail: 4.17
-  _Octaves: 5
-  _Lacunarity:
-  - 2
-  - 4
-  - 8
-  - 16
-  - 32
-  - 64
-  - 128
-  - 256
-  - 512
-  - 1024
-  - 2048
-  - 4096
-  - 8192
-  - 16384
-  - 32768
-  - 65536
-  - 131072
-  - 262144
-  - 524288
-  - 1048576
-  _Persistence:
-  - 0.5
-  - 0.25
-  - 0.125
-  - 0.0625
-  - 0.03125
-  - 0.015625
-  - 0.0078125
-  - 0.00390625
-  - 0.001953125
-  - 0.0009765625
-  - 0.00048828125
-  - 0.00024414062
-  - 0.00012207031
-  - 0.000061035156
-  - 0.000030517578
-  - 0.000015258789
-  - 0.0000076293945
-  - 0.0000038146973
-  - 0.0000019073486
-  - 0.0000009536743
-  _Advanced: 1
 --- !u!114 &-8301220961684233726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +207,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _TileMapOut
-        node: {fileID: -8832047986573997939}
+        node: {fileID: -6535732497149164816}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -368,7 +242,7 @@ MonoBehaviour:
       _dynamic: 0
   _GPUEnabled:
     isEnabled: 0
-    isOverridden: 1
+    isOverridden: 0
   _TileMapIn:
     width: 0
     height: 0
@@ -382,6 +256,132 @@ MonoBehaviour:
   _RelativeFrequency: 1
   _Advanced: 1
   _Threshold: 1.5
+--- !u!114 &-6535732497149164816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2000f86ca31743d42917a79cdba14ff7, type: 3}
+  m_Name: Value Noise
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: -328}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Frequency
+    - _Offset
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -6535732497149164816}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 7717094702920464699}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Frequency
+      _node: {fileID: -6535732497149164816}
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Offset
+      _node: {fileID: -6535732497149164816}
+      _typeQualifiedName: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -6535732497149164816}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -3976021060203263860}
+        reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: -6602391650931841200}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Frequency: {x: 5, y: 5}
+  _Offset: {x: 0, y: 0}
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _RelativeFrequency: 1
+  _Algorithm: 0
+  _Detail: 0
+  _Octaves: 5
+  _Lacunarity:
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  - 512
+  - 1024
+  - 2048
+  - 4096
+  - 8192
+  - 16384
+  - 32768
+  - 65536
+  - 131072
+  - 262144
+  - 524288
+  - 1048576
+  _Persistence:
+  - 0.5
+  - 0.25
+  - 0.125
+  - 0.0625
+  - 0.03125
+  - 0.015625
+  - 0.0078125
+  - 0.00390625
+  - 0.001953125
+  - 0.0009765625
+  - 0.00048828125
+  - 0.00024414062
+  - 0.00012207031
+  - 0.000061035156
+  - 0.000030517578
+  - 0.000015258789
+  - 0.0000076293945
+  - 0.0000038146973
+  - 0.0000019073486
+  - 0.0000009536743
+  _Advanced: 1
 --- !u!114 &-5952752644616989140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -805,7 +805,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _TileMapOut
-        node: {fileID: -8832047986573997939}
+        node: {fileID: -6535732497149164816}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1229,8 +1229,8 @@ MonoBehaviour:
   - {fileID: 7088624274236928638}
   - {fileID: 7316948954124433502}
   - {fileID: -8301220961684233726}
-  - {fileID: -8832047986573997939}
   - {fileID: -6602391650931841200}
+  - {fileID: -6535732497149164816}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
@@ -2159,7 +2159,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _TileMapIn
-        node: {fileID: -8832047986573997939}
+        node: {fileID: -6535732497149164816}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
