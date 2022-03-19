@@ -45,6 +45,8 @@ float3 _Offset;
 uint _Octaves;
 RWStructuredBuffer<float> _Lacunarity, _Persistence;
 
+float _CentroidThreshold;
+
 /**
  * Return the value of the tile at xy in the currently buffered array
  */

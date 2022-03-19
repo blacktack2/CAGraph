@@ -354,7 +354,7 @@ namespace TileGraph.Utilities
                 tileMap.SetCells(cells);
             }
 
-            public void VoronoiNoise2D(Types.TileMapCont tileMap, Vector2? frequency, Vector2? offset, bool useGpu = false)
+            public void VoronoiNoise2D(Types.TileMapCont tileMap, Vector2? frequency, Vector2? offset, float threshold = 1f, bool useGpu = false)
             {
                 if (frequency == null)
                     frequency = new Vector2(0.1f, 0.1f);
@@ -362,12 +362,12 @@ namespace TileGraph.Utilities
                     offset = Vector2.zero;
                 
                 if (useGpu)
-                    VoronoiNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset);
+                    VoronoiNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, threshold);
                 else
-                    VoronoiNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset);
+                    VoronoiNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, threshold);
             }
 
-            private void VoronoiNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            private void VoronoiNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, float threshold)
             {
                 float[] cells = new float[tileMap.width * tileMap.height];
                 for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
@@ -384,7 +384,7 @@ namespace TileGraph.Utilities
                     float xf = xp - xi;
                     float yf = yp - yi;
 
-                    float minDist = 1f;
+                    float minDist = threshold;
                     for (int i = -1; i <= 1; i++)
                     {
                         for (int j = -1; j <= 1; j++)
@@ -405,12 +405,12 @@ namespace TileGraph.Utilities
                         }
                     }
 
-                    cells[c] = minDist;
+                    cells[c] = minDist / threshold;
                 }
                 tileMap.SetCells(cells);
             }
 
-            private void VoronoiNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            private void VoronoiNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, float threshold)
             {
                 const int kernelIndex = (int) FunctionLibrary.FunctionKernels.VoronoiNoise2D;
 
@@ -423,6 +423,7 @@ namespace TileGraph.Utilities
                 _FunctionLibrary._ComputeShader.SetInt(_ScaleYID, tileMap.height);
                 _FunctionLibrary._ComputeShader.SetVector(_FrequencyID, frequency);
                 _FunctionLibrary._ComputeShader.SetVector(_OffsetID, offset);
+                _FunctionLibrary._ComputeShader.SetFloat(_CentroidThresholdID, threshold);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapCont0ID, _FunctionLibrary._TileMapCont0Buffer);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapCont1ID, _FunctionLibrary._TileMapCont1Buffer);
 

@@ -19,7 +19,8 @@ namespace TileGraph.Utilities
             _OffsetID = Shader.PropertyToID("_Offset"),
             _OctavesID = Shader.PropertyToID("_Octaves"),
             _LacunarityID = Shader.PropertyToID("_Lacunarity"),
-            _PersistenceID = Shader.PropertyToID("_Persistence");
+            _PersistenceID = Shader.PropertyToID("_Persistence"),
+            _CentroidThresholdID = Shader.PropertyToID("_CentroidThreshold");
         
         private enum FunctionKernels {
             IterateLifeCells,

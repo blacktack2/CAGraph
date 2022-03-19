@@ -343,7 +343,7 @@ void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)
     int2 ipos = floor(pos);
     float2 fpos = frac(pos);
 
-    float minDist = 1.0;
+    float minDist = _CentroidThreshold;
     for (int x = -1; x <= 1; x++)
     {
         for (int y = -1; y <= 1; y++)
@@ -358,5 +358,5 @@ void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)
         }
     }
 
-    SetContTileAt(id.xy, minDist);
+    SetContTileAt(id.xy, minDist / _CentroidThreshold);
 }

@@ -367,8 +367,8 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _GPUEnabled:
-    isEnabled: 1
-    isOverridden: 0
+    isEnabled: 0
+    isOverridden: 1
   _TileMapIn:
     width: 0
     height: 0
@@ -380,6 +380,8 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _RelativeFrequency: 1
+  _Advanced: 1
+  _Threshold: 1.5
 --- !u!114 &-5952752644616989140
 MonoBehaviour:
   m_ObjectHideFlags: 0

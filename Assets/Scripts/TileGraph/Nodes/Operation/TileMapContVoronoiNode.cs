@@ -15,8 +15,16 @@ namespace TileGraph.Nodes
         [SerializeField]
         private bool _RelativeFrequency = false;
 
+        [SerializeField]
+        private bool _Advanced = false;
+        [SerializeField, Range(0f, 10f)]
+        private float _Threshold = 1f;
+
         private Vector2 _CurrentFrequency = Vector2.zero, _CurrentOffset = Vector2.zero;
         private bool _CurrentRelativeFrequency = false;
+
+        private bool _CurrentAdvanced = false;
+        private float _CurrentThreshold = 1f;
 
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -35,6 +43,7 @@ namespace TileGraph.Nodes
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
                     _CurrentFrequency != _Frequency || _CurrentOffset != _Offset
                     || _CurrentRelativeFrequency != _RelativeFrequency
+                    || _CurrentAdvanced != _Advanced || _Advanced && (_CurrentThreshold != _Threshold)
                 );
                 return _TileMapOutBuffer;
             }
@@ -48,9 +57,11 @@ namespace TileGraph.Nodes
                 _CurrentFrequency = _Frequency;
                 _CurrentOffset = _Offset;
                 _CurrentRelativeFrequency = _RelativeFrequency;
+                _CurrentAdvanced = _Advanced;
+                _CurrentThreshold = _Advanced ? _Threshold : 1f;
 
                 Vector2 frequency = _Frequency / (_RelativeFrequency ? new Vector2(_TileMapOutBuffer.width, _TileMapOutBuffer.height) : Vector2.one);
-                _Graph.functionLibrary.noise.VoronoiNoise2D(_TileMapOutBuffer, frequency, _Offset, GPUEnabled);
+                _Graph.functionLibrary.noise.VoronoiNoise2D(_TileMapOutBuffer, frequency, _Offset, _CurrentThreshold, GPUEnabled);
             }
         }
     }
