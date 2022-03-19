@@ -86,6 +86,7 @@ namespace TileGraph.Utilities
                         PerlinNoise2DCPU(tileMap, frequency, offset);
                         break;
                     case Algorithm.Simplex: default:
+                        SimplexNoise2DCPU(tileMap, frequency, offset);
                         break;
                 }
             }
@@ -99,20 +100,6 @@ namespace TileGraph.Utilities
             private float Fade(float t)
             {
                 return t * t * t * (t * (t * 6f - 15f) + 10f);
-            }
-            private void PerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
-            {
-                float[] cells = new float[tileMap.width * tileMap.height];
-                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
-                {
-                    if (x >= tileMap.width)
-                    {
-                        x = 0;
-                        y++;
-                    }
-                    cells[c] = 0.5f + PerlinNoise2D(x * frequency.x + offset.x, y * frequency.y + offset.y) * 0.5f;
-                }
-                tileMap.SetCells(cells);
             }
             private float PerlinNoise2D(float x, float y)
             {
@@ -130,6 +117,106 @@ namespace TileGraph.Utilities
                                              Grad(p[B    ], xd - 1, yd    ), xc),
                                   Mathf.Lerp(Grad(p[A + 1], xd    , yd - 1),
                                              Grad(p[B + 1], xd - 1, yd - 1), xc), yc);
+            }
+            private void PerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    cells[c] = 0.5f + PerlinNoise2D(x * frequency.x + offset.x, y * frequency.y + offset.y) * 0.5f;
+                }
+                tileMap.SetCells(cells);
+            }
+            
+            private float SimplexNoise2D(float x, float y)
+            {
+                float n0, n1, n2;
+
+                float s = (x + y) * F2;
+                float xs = x + s;
+                float ys = y + s;
+                int i = Mathf.FloorToInt(xs);
+                int j = Mathf.FloorToInt(ys);
+
+                float t = (i + j) * G2;
+                float X0 = i - t;
+                float Y0 = j - t;
+                float x0 = x - X0;
+                float y0 = y - Y0;
+
+                int i1, j1;
+                if (x0 > y0)
+                {
+                    i1 = 1;
+                    j1 = 0;
+                }
+                else
+                {
+                    i1 = 0;
+                    j1 = 1;
+                }
+
+                float x1 = x0 - i1 + G2;
+                float y1 = y0 - j1 + G2;
+                float x2 = x0 - 1f + 2f * G2;
+                float y2 = y0 - 1f + 2f * G2;
+
+                int ii = i & 255;
+                int jj = j & 255;
+
+                float t0 = 0.5f - x0 * x0 - y0 * y0;
+                if (t0 < 0f)
+                {
+                    n0 = 0f;
+                }
+                else
+                {
+                    t0 *= t0;
+                    n0 = t0 * t0 * Grad(p[ii + p[jj]], x0, y0);
+                }
+
+                float t1 = 0.5f - x1 * x1 - y1 * y1;
+                if (t1 < 0f)
+                {
+                    n1 = 0f;
+                }
+                else
+                {
+                    t1 *= t1;
+                    n1 = t1 * t1 * Grad(p[ii + i1 + p[jj + j1]], x1, y1);
+                }
+
+                float t2 = 0.5f - x2 * x2 - y2 * y2;
+                if (t2 < 0.0)
+                {
+                    n2 = 0f;
+                }
+                else
+                {
+                    t2 *= t2;
+                    n2 = t2 * t2 * Grad(p[ii + 1 + p[jj + 1]], x2, y2);
+                }
+
+                return 40f * (n0 + n1 + n2);
+            }
+            private void SimplexNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    cells[c] = 0.5f + SimplexNoise2D(x * frequency.x + offset.x, y * frequency.y + offset.y) * 0.5f;
+                }
+                tileMap.SetCells(cells);
             }
             private void GradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
             {
@@ -174,13 +261,13 @@ namespace TileGraph.Utilities
                         FractalPerlinNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
                         break;
                     case Algorithm.Simplex: default:
+                        FractalSimplexNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
                         break;
                 }
             }
             private void FractalPerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
                                                  uint octaves, float[] lacunarity, float[] persistence)
             {
-                
                 float[] cells = new float[tileMap.width * tileMap.height];
                 for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
                 {
@@ -196,6 +283,30 @@ namespace TileGraph.Utilities
                     for (int o = 0; o < octaves; o++)
                     {
                         cells[c] += PerlinNoise2D(px * lacunarity[o], py * lacunarity[o]) * persistence[o];
+                        totalMax += persistence[o];
+                    }
+                    cells[c] = (cells[c] / totalMax) * 0.5f + 0.5f;
+                }
+                tileMap.SetCells(cells);
+            }
+            private void FractalSimplexNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+                                                 uint octaves, float[] lacunarity, float[] persistence)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    float px = x * frequency.x + offset.x;
+                    float py = y * frequency.y + offset.y;
+                    cells[c] = SimplexNoise2D(px, py);
+                    float totalMax = 1f;
+                    for (int o = 0; o < octaves; o++)
+                    {
+                        cells[c] += SimplexNoise2D(px * lacunarity[o], py * lacunarity[o]) * persistence[o];
                         totalMax += persistence[o];
                     }
                     cells[c] = (cells[c] / totalMax) * 0.5f + 0.5f;
