@@ -323,7 +323,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _GPUEnabled:
-    isEnabled: 1
+    isEnabled: 0
     isOverridden: 0
   _TileMapIn:
     width: 0

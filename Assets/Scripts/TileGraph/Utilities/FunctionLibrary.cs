@@ -100,24 +100,58 @@ namespace TileGraph.Utilities
             _PersistenceBuffer  = null;
         }
 
-        Vector2Int RandomPCG(Vector2Int v)
+        int Random1D(int seed)
         {
-            v.x = v.x * 1664525 + 1013904223;
-            v.y = v.y * 1664525 + 1013904223;
-            
-            v.x += v.y * 1664525;
-            v.y += v.x * 1664525;
-
-            v.x ^= v.x >> 16;
-            v.y ^= v.y >> 16;
-            
-            v.x += v.y * 1664525;
-            v.y += v.x * 1664525;
-
-            v.x ^= v.x >> 16;
-            v.y ^= v.y >> 16;
-
-            return v;
+            int state = (int) (seed * 74779640 + 2891336453);
+            int word = ((state >> ((state >> 28) + 4)) ^ state) * 277803737;
+            return (word >> 22) ^ word;
+        }
+        int Random1D(Vector2Int seed)
+        {
+            return Random1D(seed.x ^ Random1D(seed.y));
+        }
+        int Random1D(Vector3Int seed)
+        {
+            return Random1D(seed.x ^ Random1D(seed.y ^ Random1D(seed.z)));
+        }
+        Vector2Int Random2D(int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            return new Vector2Int(x, y);
+        }
+        Vector2Int Random2D(Vector2Int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            return new Vector2Int(x, y);
+        }
+        Vector2Int Random2D(Vector3Int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            return new Vector2Int(x, y);
+        }
+        Vector3Int Random3D(int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            int z = Random1D(y);
+            return new Vector3Int(x, y, z);
+        }
+        Vector3Int Random3D(Vector2Int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            int z = Random1D(y);
+            return new Vector3Int(x, y, z);
+        }
+        Vector3Int Random3D(Vector3Int seed)
+        {
+            int x = Random1D(seed);
+            int y = Random1D(x);
+            int z = Random1D(y);
+            return new Vector3Int(x, y, z);
         }
     }
 }

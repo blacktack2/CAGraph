@@ -82,6 +82,9 @@ namespace TileGraph.Utilities
             {
                 switch (algorithm)
                 {
+                    case Algorithm.Value:
+                        ValueNoise2DCPU(tileMap, frequency, offset);
+                        break;
                     case Algorithm.Perlin:
                         PerlinNoise2DCPU(tileMap, frequency, offset);
                         break;
@@ -100,6 +103,39 @@ namespace TileGraph.Utilities
             private float Fade(float t)
             {
                 return t * t * t * (t * (t * 6f - 15f) + 10f);
+            }
+            private float ValueNoise2D(float x, float y)
+            {
+                Vector2Int posi = new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
+                Vector2 posr = new Vector2(Fade(x - posi.x), Fade(y - posi.y));
+
+                float r00 = (float) _FunctionLibrary.Random1D(posi                       ) / (float) int.MaxValue;
+                r00 -= Mathf.Floor(r00);
+                float r10 = (float) _FunctionLibrary.Random1D(posi + new Vector2Int(1, 0)) / (float) int.MaxValue;
+                r10 -= Mathf.Floor(r10);
+                float r01 = (float) _FunctionLibrary.Random1D(posi + new Vector2Int(0, 1)) / (float) int.MaxValue;
+                r01 -= Mathf.Floor(r01);
+                float r11 = (float) _FunctionLibrary.Random1D(posi + new Vector2Int(1, 1)) / (float) int.MaxValue;
+                r11 -= Mathf.Floor(r11);
+
+                float rx0 = Mathf.Lerp(r00, r10, posr.x);
+                float rx1 = Mathf.Lerp(r01, r11, posr.x);
+
+                return Mathf.Lerp(rx0, rx1, posr.y);
+            }
+            private void ValueNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    cells[c] = ValueNoise2D(x * frequency.x + offset.x, y * frequency.y + offset.y);
+                }
+                tileMap.SetCells(cells);
             }
             private float PerlinNoise2D(float x, float y)
             {
@@ -260,6 +296,9 @@ namespace TileGraph.Utilities
             {
                 switch (algorithm)
                 {
+                    case Algorithm.Value:
+                        FractalValueNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
+                        break;
                     case Algorithm.Perlin:
                         FractalPerlinNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
                         break;
@@ -267,6 +306,30 @@ namespace TileGraph.Utilities
                         FractalSimplexNoise2DCPU(tileMap, frequency, offset, octaves, lacunarity, persistence);
                         break;
                 }
+            }
+            private void FractalValueNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+                                                uint octaves, float[] lacunarity, float[] persistence)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    float px = x * frequency.x + offset.x;
+                    float py = y * frequency.y + offset.y;
+                    cells[c] = ValueNoise2D(px, py);
+                    float totalMax = 1f;
+                    for (int o = 0; o < octaves; o++)
+                    {
+                        cells[c] += ValueNoise2D(px * lacunarity[o], py * lacunarity[o]) * persistence[o];
+                        totalMax += persistence[o];
+                    }
+                    cells[c] = (cells[c] / totalMax);
+                }
+                tileMap.SetCells(cells);
             }
             private void FractalPerlinNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
                                                  uint octaves, float[] lacunarity, float[] persistence)
@@ -395,11 +458,11 @@ namespace TileGraph.Utilities
                     {
                         for (int j = -1; j <= 1; j++)
                         {
-                            Vector2Int r = _FunctionLibrary.RandomPCG(new Vector2Int(xi + i, yi + j));
+                            Vector2Int r = _FunctionLibrary.Random2D(new Vector2Int(xi + i, yi + j));
 
-                            float px = ((float) r.x / 2147483648f);
+                            float px = ((float) r.x / (float) int.MaxValue);
                             px -= Mathf.Floor(px);
-                            float py = ((float) r.y / 2147483648f);
+                            float py = ((float) r.y / (float) int.MaxValue);
                             py -= Mathf.Floor(py);
 
                             float dx = i + px - xf;
