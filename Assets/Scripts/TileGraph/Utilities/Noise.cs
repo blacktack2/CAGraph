@@ -369,7 +369,45 @@ namespace TileGraph.Utilities
 
             private void VoronoiNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
             {
-                
+                float[] cells = new float[tileMap.width * tileMap.height];
+                for (int c = 0, x = 0, y = 0; c < cells.Length; c++, x++)
+                {
+                    if (x >= tileMap.width)
+                    {
+                        x = 0;
+                        y++;
+                    }
+                    float xp = x * frequency.x + offset.x;
+                    float yp = y * frequency.y + offset.y;
+                    int xi = Mathf.FloorToInt(xp);
+                    int yi = Mathf.FloorToInt(yp);
+                    float xf = xp - xi;
+                    float yf = yp - yi;
+
+                    float minDist = 1f;
+                    for (int i = -1; i <= 1; i++)
+                    {
+                        for (int j = -1; j <= 1; j++)
+                        {
+                            Vector2Int r = _FunctionLibrary.RandomPCG(new Vector2Int(xi + i, yi + j));
+
+                            float px = ((float) r.x / 2147483648f);
+                            px -= Mathf.Floor(px);
+                            float py = ((float) r.y / 2147483648f);
+                            py -= Mathf.Floor(py);
+
+                            float dx = i + px - xf;
+                            float dy = j + py - yf;
+
+                            float dist = Mathf.Sqrt(dx * dx + dy * dy);
+
+                            minDist = Mathf.Min(minDist, dist);
+                        }
+                    }
+
+                    cells[c] = minDist;
+                }
+                tileMap.SetCells(cells);
             }
 
             private void VoronoiNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)

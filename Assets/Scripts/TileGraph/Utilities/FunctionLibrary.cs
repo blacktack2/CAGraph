@@ -96,5 +96,25 @@ namespace TileGraph.Utilities
             _LacunarityBuffer   = null;
             _PersistenceBuffer  = null;
         }
+
+        Vector2Int RandomPCG(Vector2Int v)
+        {
+            v.x = v.x * 1664525 + 1013904223;
+            v.y = v.y * 1664525 + 1013904223;
+            
+            v.x += v.y * 1664525;
+            v.y += v.x * 1664525;
+
+            v.x ^= v.x >> 16;
+            v.y ^= v.y >> 16;
+            
+            v.x += v.y * 1664525;
+            v.y += v.x * 1664525;
+
+            v.x ^= v.x >> 16;
+            v.y ^= v.y >> 16;
+
+            return v;
+        }
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2000f86ca31743d42917a79cdba14ff7, type: 3}
-  m_Name: Simplex Noise
+  m_Name: Perlin Noise
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 376, y: -328}
@@ -67,7 +67,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _GPUEnabled:
-    isEnabled: 1
+    isEnabled: 0
     isOverridden: 0
   _TileMapIn:
     width: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _RelativeFrequency: 1
-  _Algorithm: 1
+  _Algorithm: 0
   _Detail: 4.17
   _Octaves: 5
   _Lacunarity:
