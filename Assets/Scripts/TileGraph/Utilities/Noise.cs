@@ -82,6 +82,9 @@ namespace TileGraph.Utilities
             {
                 switch (algorithm)
                 {
+                    case Algorithm.White:
+                        WhiteNoise2DCPU(tileMap, Vector2Int.FloorToInt(offset));
+                        break;
                     case Algorithm.Value:
                         ValueNoise2DCPU(tileMap, frequency, offset);
                         break;
@@ -122,6 +125,21 @@ namespace TileGraph.Utilities
                 float rx1 = Mathf.Lerp(r01, r11, posr.x);
 
                 return Mathf.Lerp(rx0, rx1, posr.y);
+            }
+            private void WhiteNoise2DCPU(Types.TileMapCont tileMap, Vector2Int offset)
+            {
+                float[] cells = new float[tileMap.width * tileMap.height];
+                Vector2Int pos = Vector2Int.zero;
+                for (int c = 0; c < cells.Length; c++, pos.x++)
+                {
+                    if (pos.x >= tileMap.width)
+                    {
+                        pos.x = 0;
+                        pos.y++;
+                    }
+                    cells[c] = (float) _FunctionLibrary.Random1D(offset + pos) / (float) int.MaxValue;
+                }
+                tileMap.SetCells(cells);
             }
             private void ValueNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset)
             {
