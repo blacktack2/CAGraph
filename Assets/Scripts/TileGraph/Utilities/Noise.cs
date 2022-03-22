@@ -45,13 +45,13 @@ namespace TileGraph.Utilities
             private const float F3 = 0.333333333f;
             private const float G3 = 0.166666667f;
 
-            public enum Algorithm { Value, Perlin, Simplex }
+            public enum Algorithm { White, Value, Perlin, Simplex }
 
             public Noise(FunctionLibrary functionLibrary) : base(functionLibrary)
             {
             }
 
-            public void GradientNoise2D(Types.TileMapCont tileMap, Vector2? frequency = null, Vector2? offset = null,
+            public void RandomNoise2D(Types.TileMapCont tileMap, Vector2? frequency = null, Vector2? offset = null,
                                         uint octaves = 1, float[] lacunarity = null, float[] persistence = null,
                                         Algorithm algorithm = Algorithm.Simplex, bool useGPU = true)
             {
@@ -63,22 +63,22 @@ namespace TileGraph.Utilities
                     lacunarity = new float[] {2f, 4f, 8f, 16f, 32f, 64f, 128f, 256f, 512f, 1024f, 2048f, 4096f, 8192f, 16384f, 32768f, 65536f, 131072f, 262144f, 524288f, 1048576f};
                 if (persistence == null)
                     persistence = new float[] {0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f, 0.0009765625f, 0.00048828125f, 0.000244140625f, 0.0001220703125f, 6.103515625e-05f, 3.0517578125e-05f, 1.52587890625e-05f, 7.62939453125e-06f, 3.814697265625e-06f, 1.9073486328125e-06f, 9.5367431640625e-07f};
-                if (octaves <= 1)
+                if (octaves <= 1 || algorithm == Algorithm.White)
                 {
                     if (useGPU)
-                        GradientNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, algorithm);
+                        RandomNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, algorithm);
                     else
-                        GradientNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, algorithm);
+                        RandomNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, algorithm);
                 }
                 else
                 {
                     if (useGPU)
-                        FractalGradientNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
+                        FractalRandomNoise2DGPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
                     else
-                        FractalGradientNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
+                        FractalRandomNoise2DCPU(tileMap, (Vector2) frequency, (Vector2) offset, octaves, lacunarity, persistence, algorithm);
                 }
             }
-            private void GradientNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
+            private void RandomNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
             {
                 switch (algorithm)
                 {
@@ -254,18 +254,21 @@ namespace TileGraph.Utilities
                 }
                 tileMap.SetCells(cells);
             }
-            private void GradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
+            private void RandomNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset, Algorithm algorithm)
             {
                 int kernelIndex;
                 switch (algorithm)
                 {
+                    case Algorithm.White: default:
+                        kernelIndex = (int) FunctionLibrary.FunctionKernels.WhiteNoise2D;
+                        break;
                     case Algorithm.Value:
                         kernelIndex = (int) FunctionLibrary.FunctionKernels.ValueNoise2D;
                         break;
                     case Algorithm.Perlin:
                         kernelIndex = (int) FunctionLibrary.FunctionKernels.PerlinNoise2D;
                         break;
-                    case Algorithm.Simplex: default:
+                    case Algorithm.Simplex:
                         kernelIndex = (int) FunctionLibrary.FunctionKernels.SimplexNoise2D;
                         break;
                 }
@@ -278,7 +281,10 @@ namespace TileGraph.Utilities
                 _FunctionLibrary._ComputeShader.SetInt(_ScaleXID, tileMap.width);
                 _FunctionLibrary._ComputeShader.SetInt(_ScaleYID, tileMap.height);
                 _FunctionLibrary._ComputeShader.SetVector(_FrequencyID, frequency);
-                _FunctionLibrary._ComputeShader.SetVector(_OffsetID, offset);
+                if (algorithm == Algorithm.White)
+                    _FunctionLibrary._ComputeShader.SetInts(_IntOffsetID, new int[] {(int) offset.x, (int) offset.y});
+                else
+                    _FunctionLibrary._ComputeShader.SetVector(_OffsetID, offset);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapCont0ID, _FunctionLibrary._TileMapCont0Buffer);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapCont1ID, _FunctionLibrary._TileMapCont1Buffer);
 
@@ -291,7 +297,7 @@ namespace TileGraph.Utilities
                 _FunctionLibrary._TileMapCont1Buffer.GetData(cells);
                 tileMap.SetCells(cells);
             }
-            private void FractalGradientNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+            private void FractalRandomNoise2DCPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
                                                  uint octaves, float[] lacunarity, float[] persistence, Algorithm algorithm)
             {
                 switch (algorithm)
@@ -379,7 +385,7 @@ namespace TileGraph.Utilities
                 }
                 tileMap.SetCells(cells);
             }
-            private void FractalGradientNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
+            private void FractalRandomNoise2DGPU(Types.TileMapCont tileMap, Vector2 frequency, Vector2 offset,
                                                  uint octaves, float[] lacunarity, float[] persistence, Algorithm algorithm)
             {
                 int kernelIndex;

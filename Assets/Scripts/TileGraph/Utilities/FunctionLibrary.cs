@@ -17,6 +17,7 @@ namespace TileGraph.Utilities
             _LifeRulesID = Shader.PropertyToID("_LifeRules"),
             _FrequencyID = Shader.PropertyToID("_Frequency"), 
             _OffsetID = Shader.PropertyToID("_Offset"),
+            _IntOffsetID = Shader.PropertyToID("_IntOffset"),
             _OctavesID = Shader.PropertyToID("_Octaves"),
             _LacunarityID = Shader.PropertyToID("_Lacunarity"),
             _PersistenceID = Shader.PropertyToID("_Persistence"),
@@ -24,6 +25,7 @@ namespace TileGraph.Utilities
         
         private enum FunctionKernels {
             IterateLifeCells,
+            WhiteNoise1D, WhiteNoise2D, WhiteNoise3D,
             ValueNoise1D, ValueNoise2D, ValueNoise3D,
             FractalValueNoise1D, FractalValueNoise2D, FractalValueNoise3D,
             PerlinNoise1D, PerlinNoise2D, PerlinNoise3D,

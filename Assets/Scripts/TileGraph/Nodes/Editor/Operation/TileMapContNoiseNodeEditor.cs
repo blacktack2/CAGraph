@@ -4,13 +4,14 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using XNodeEditor;
 
 namespace TileGraph.Editors
 {
     [CustomNodeEditor(typeof(Nodes.TileMapContNoiseNode))]
     public class TileMapContNoiseNodeEditor : BaseNodeEditor<Nodes.TileMapContNoiseNode>
     {
-        private SerializedProperty _TileMapIn, _Frequency, _Offset, _TileMapOut,
+        private SerializedProperty _TileMapIn, _Frequency, _Offset, _IntOffset, _TileMapOut,
                                    _RelativeFrequency, _Algorithm, _Advanced,
                                    _Detail, _Octaves, _Lacunarity, _Persistence;
 
@@ -26,6 +27,7 @@ namespace TileGraph.Editors
             _TileMapIn         = serializedObject.FindProperty("_TileMapIn");
             _Frequency         = serializedObject.FindProperty("_Frequency");
             _Offset            = serializedObject.FindProperty("_Offset");
+            _IntOffset         = serializedObject.FindProperty("_IntOffset");
             _TileMapOut        = serializedObject.FindProperty("_TileMapOut");
 
             _RelativeFrequency = serializedObject.FindProperty("_RelativeFrequency");
@@ -52,6 +54,8 @@ namespace TileGraph.Editors
 
         protected override void NodeInputGUI()
         {
+            bool isWhite = _Algorithm.enumValueIndex == (int) Utilities.FunctionLibrary.Noise.Algorithm.White;
+
             EditorGUILayout.BeginHorizontal();
 
             graph.editorUtilities.PortFieldMinLabel(_TileMapIn);
@@ -59,39 +63,49 @@ namespace TileGraph.Editors
 
             EditorGUILayout.EndHorizontal();
 
-            graph.editorUtilities.PortFieldMinLabel(_Frequency);
-            graph.editorUtilities.PortFieldMinLabel(_Offset);
+            if (!isWhite)
+                graph.editorUtilities.PortFieldMinLabel(_Frequency);
+
+            if (isWhite)
+                graph.editorUtilities.PortFieldMinLabel(_IntOffset, new GUIContent("Offset"));
+            else
+                graph.editorUtilities.PortFieldMinLabel(_Offset, new GUIContent("Offset"));
         }
 
         protected override void NodeBodyGUI()
         {
-            graph.editorUtilities.PropertyFieldMinLabel(_RelativeFrequency, new GUIContent("Relative Scale"));
+            bool isWhite = _Algorithm.enumValueIndex == (int) Utilities.FunctionLibrary.Noise.Algorithm.White;
+            if (!isWhite)
+                graph.editorUtilities.PropertyFieldMinLabel(_RelativeFrequency, new GUIContent("Relative Scale"));
             graph.editorUtilities.PropertyFieldMinLabel(_Algorithm, new GUIContent("Algorithm"));
-            graph.editorUtilities.PropertyFieldMinLabel(_Advanced, new GUIContent("Advanced"));
-            serializedObject.ApplyModifiedProperties();
-            if (_Advanced.boolValue)
+            if (!isWhite)
             {
-                EditorGUILayout.BeginHorizontal();
-
-                graph.editorUtilities.SetLabelWidthToText("Octaves");
-                _ShowList = EditorGUILayout.Foldout(_ShowList, new GUIContent("Octaves"));
-                EditorGUIUtility.labelWidth = 0;
-
+                graph.editorUtilities.PropertyFieldMinLabel(_Advanced, new GUIContent("Advanced"));
                 serializedObject.ApplyModifiedProperties();
-                while (_Octaves.intValue - 1 > _OctaveParamList.list.Count)
-                    _OctaveParamList.list.Add(null);
-                while (_Octaves.intValue - 1 < _OctaveParamList.list.Count)
-                    _OctaveParamList.list.RemoveAt(_OctaveParamList.list.Count - 1);
-                graph.editorUtilities.PropertyFieldMinLabel(_Octaves, new GUIContent(""));
+                if (_Advanced.boolValue)
+                {
+                    EditorGUILayout.BeginHorizontal();
 
-                EditorGUILayout.EndHorizontal();
+                    graph.editorUtilities.SetLabelWidthToText("Octaves");
+                    _ShowList = EditorGUILayout.Foldout(_ShowList, new GUIContent("Octaves"));
+                    EditorGUIUtility.labelWidth = 0;
 
-                if (_ShowList)
-                    _OctaveParamList.DoLayoutList();
-            }
-            else
-            {
-                graph.editorUtilities.PropertyFieldMinLabel(_Detail);
+                    serializedObject.ApplyModifiedProperties();
+                    while (_Octaves.intValue - 1 > _OctaveParamList.list.Count)
+                        _OctaveParamList.list.Add(null);
+                    while (_Octaves.intValue - 1 < _OctaveParamList.list.Count)
+                        _OctaveParamList.list.RemoveAt(_OctaveParamList.list.Count - 1);
+                    graph.editorUtilities.PropertyFieldMinLabel(_Octaves, new GUIContent(""));
+
+                    EditorGUILayout.EndHorizontal();
+
+                    if (_ShowList)
+                        _OctaveParamList.DoLayoutList();
+                }
+                else
+                {
+                    graph.editorUtilities.PropertyFieldMinLabel(_Detail);
+                }
             }
         }
 

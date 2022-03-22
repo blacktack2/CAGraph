@@ -249,6 +249,24 @@ float SimplexNoise(float3 pos)
 }
 
 [numthreads(8, 1, 1)]
+void WhiteNoise1D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, frac(Random1D(id.x + _IntOffset.x) / (float) MAXINT));
+}
+
+[numthreads(8, 8, 1)]
+void WhiteNoise2D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, frac(Random1D(id.xy + _IntOffset.xy) / (float) MAXINT));
+}
+
+[numthreads(8, 8, 8)]
+void WhiteNoise3D(uint3 id: SV_DispatchThreadID)
+{
+    SetContTileAt(id.xy, frac(Random1D(id + _IntOffset) / (float) MAXINT));
+}
+
+[numthreads(8, 1, 1)]
 void ValueNoise1D(uint3 id: SV_DispatchThreadID)
 {
     SetContTileAt(id.xy, ValueNoise(id.x * _Frequency.x + _Offset.x));

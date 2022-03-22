@@ -11,6 +11,7 @@ namespace TileGraph.Nodes
     {
         [SerializeField, Input] private Types.TileMapCont _TileMapIn;
         [SerializeField, Input] private Vector2 _Frequency = new Vector2(0.1f, 0.1f), _Offset = Vector2.zero;
+        [SerializeField, Input] private Vector2Int _IntOffset = Vector2Int.zero;
         [SerializeField, Output] private Types.TileMapCont _TileMapOut;
 
         [SerializeField]
@@ -33,8 +34,9 @@ namespace TileGraph.Nodes
         private bool _Advanced = false;
 
         private Vector2 _CurrentFrequency = Vector2.zero, _CurrentOffset = Vector2.zero;
+        private Vector2Int _CurrentIntOffset = Vector2Int.zero;
         private bool _CurrentRelativeFrequency = false;
-        private Algorithm _CurrentAlgorithm = Algorithm.Simplex;
+        private Algorithm _CurrentAlgorithm = Algorithm.White;
         private bool _CurrentAdvanced = false;
         private float _CurrentDetail = 0f;
         private uint _CurrentOctaves = 1;
@@ -68,6 +70,7 @@ namespace TileGraph.Nodes
             {
                 _CurrentFrequency = _Frequency;
                 _CurrentOffset = _Offset;
+                _CurrentIntOffset = _IntOffset;
                 _CurrentRelativeFrequency = _RelativeFrequency;
                 _CurrentAdvanced = _Advanced;
                 if (_Advanced)
@@ -97,9 +100,14 @@ namespace TileGraph.Nodes
                     _CurrentLacunarity[_CurrentOctaves - 1] = f * t;
                 }
 
+                Vector2 offset = _Offset;
                 _CurrentAlgorithm = _Algorithm;
                 switch (_Algorithm)
                 {
+                    case Algorithm.White:
+                        name = "Random Noise";
+                        offset = _IntOffset;
+                        break;
                     case Algorithm.Value:
                         name = "Value Noise";
                         break;
@@ -111,7 +119,7 @@ namespace TileGraph.Nodes
                         break;
                 }
                 Vector2 frequency = _Frequency / (_RelativeFrequency ? new Vector2(_TileMapOutBuffer.width, _TileMapOutBuffer.height) : Vector2.one);
-                _Graph.functionLibrary.noise.GradientNoise2D(_TileMapOutBuffer, frequency, _Offset,
+                _Graph.functionLibrary.noise.RandomNoise2D(_TileMapOutBuffer, frequency, offset,
                                                              _CurrentOctaves, _CurrentLacunarity, _CurrentPersistence,
                                                              _Algorithm, GPUEnabled);
             }
@@ -119,7 +127,7 @@ namespace TileGraph.Nodes
 
         private bool ParameterChanged()
         {
-            if (_CurrentFrequency != _Frequency || _CurrentOffset != _Offset
+            if (_CurrentFrequency != _Frequency || _CurrentOffset != _Offset || _CurrentIntOffset != _IntOffset
                 || _CurrentRelativeFrequency != _RelativeFrequency
                 || _CurrentAlgorithm != _Algorithm
                 || _CurrentAdvanced != _Advanced)

@@ -1,4 +1,7 @@
 #pragma kernel IterateLifeCells
+#pragma kernel WhiteNoise1D
+#pragma kernel WhiteNoise2D
+#pragma kernel WhiteNoise3D
 #pragma kernel ValueNoise1D
 #pragma kernel ValueNoise2D
 #pragma kernel ValueNoise3D
@@ -48,6 +51,7 @@ RWStructuredBuffer<int> _LifeRules;
 float3 _Frequency;
 
 float3 _Offset;
+int3 _IntOffset;
 
 // Fractal Noise parameters
 uint _Octaves;
