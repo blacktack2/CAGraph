@@ -40,10 +40,15 @@ Set all elements of a given tile-map to a randomly assigned value.
 
 Apply a life-like Cellular Automata (CA) (see: [Cellular Automata](https://conwaylife.com/wiki/Cellular_automaton#Life-like_cellular_automata)) with custom rules for a set number of iterations to a matrix.
 
+##### Noise
+
+Apply smooth noise to a tile-map. Implementation includes 3 algorithms the user can select from (Value, Perlin, and Simplex Noise).
+
+##### Voronoi Noise
+
+Apply voronoi noise to a tile-map.
+
 ## TODO
 
 - Create new nodes
-  - Set points node
-- Expand CA shader to include more types of CA
-  - Generation based CA
-  - Continuous Automata
+- Fix CPU/GPU dissimilarity for randomization algorithms
