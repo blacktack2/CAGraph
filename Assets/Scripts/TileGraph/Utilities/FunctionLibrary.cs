@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace TileGraph.Utilities
@@ -11,6 +12,8 @@ namespace TileGraph.Utilities
             _TileMapCont1ID = Shader.PropertyToID("_TileMapCont1"),
             _TileMapUint0ID = Shader.PropertyToID("_TileMapUint0"),
             _TileMapUint1ID = Shader.PropertyToID("_TileMapUint1"),
+            _TileMapHydraulic0ID = Shader.PropertyToID("_TileMapHydraulic0"),
+            _TileMapHydraulic1ID = Shader.PropertyToID("_TileMapHydraulic1"),
             _BufferFlagID = Shader.PropertyToID("_BufferFlag"),
             _ScaleXID = Shader.PropertyToID("_ScaleX"),
             _ScaleYID = Shader.PropertyToID("_ScaleY"),
@@ -21,8 +24,22 @@ namespace TileGraph.Utilities
             _OctavesID = Shader.PropertyToID("_Octaves"),
             _LacunarityID = Shader.PropertyToID("_Lacunarity"),
             _PersistenceID = Shader.PropertyToID("_Persistence"),
-            _CentroidThresholdID = Shader.PropertyToID("_CentroidThreshold");
-        
+            _CentroidThresholdID = Shader.PropertyToID("_CentroidThreshold"),
+            _CellScaleID = Shader.PropertyToID("_CellScale"),
+            _ThermalErosionTimeScaleID = Shader.PropertyToID("_ThermalErosionTimeScale"),
+            _ThermalErosionRateID = Shader.PropertyToID("_ThermalErosionRate"),
+            _TalusAngleTangentCoeffID = Shader.PropertyToID("_TalusAngleTangentCoeff"),
+            _TalusAngleTangentBiasID = Shader.PropertyToID("_TalusAngleTangentBias"),
+            _SedimentCapacityID = Shader.PropertyToID("_SedimentCapacity"),
+            _MaxErosionDepthID = Shader.PropertyToID("_MaxErosionDepth"),
+            _SuspensionRateID = Shader.PropertyToID("_SuspensionRate"),
+            _DepositionRateID = Shader.PropertyToID("_DepositionRate"),
+            _SedimentSofteningRateID = Shader.PropertyToID("_SedimentSofteningRate"),
+            _DeltaTimeID = Shader.PropertyToID("_DeltaTime"),
+            _PipeAreaID = Shader.PropertyToID("_PipeArea"),
+            _PipeLengthID = Shader.PropertyToID("_PipeLength"),
+            _EvaporationID = Shader.PropertyToID("_Evaporation"),
+            _RainRateID = Shader.PropertyToID("_RainRate");
         private enum FunctionKernels {
             IterateLifeCells,
             WhiteNoise1D, WhiteNoise2D, WhiteNoise3D,
@@ -32,8 +49,23 @@ namespace TileGraph.Utilities
             FractalPerlinNoise1D, FractalPerlinNoise2D, FractalPerlinNoise3D,
             SimplexNoise1D, SimplexNoise2D, SimplexNoise3D,
             FractalSimplexNoise1D, FractalSimplexNoise2D, FractalSimplexNoise3D,
-            VoronoiNoise2D
+            VoronoiNoise2D,
+            ThermalErosionPass1, ThermalErosionPass2,
+            HydraulicErosionPass1, HydraulicErosionPass2, HydraulicErosionPass3, HydraulicErosionPass4, HydraulicErosionPass5,
+            FluvialErosion,
+            InitErosionTileMap, UpdateErosionTileMap
         }
+
+        public struct ErosionTile
+        {
+            public float tHeight; // Terrain height
+            public float wHeight; // Water height
+            public float sediment;
+            public float hardness;
+            public float2 velocity;
+            public float4 waterFlux; // r - left, g - right, b - top, a - bottom
+            public float4 terrainFlux; // r - left, g - right, b - top, a - bottom
+        };
 
         private ComputeShader _ComputeShader;
             
@@ -43,6 +75,8 @@ namespace TileGraph.Utilities
         private ComputeBuffer _TileMapCont1Buffer;
         private ComputeBuffer _TileMapUint0Buffer;
         private ComputeBuffer _TileMapUint1Buffer;
+        private ComputeBuffer _TileMapHydraulic0Buffer;
+        private ComputeBuffer _TileMapHydraulic1Buffer;
         private ComputeBuffer _LifeRulesBuffer;
         private ComputeBuffer _LacunarityBuffer;
         private ComputeBuffer _PersistenceBuffer;
@@ -51,6 +85,8 @@ namespace TileGraph.Utilities
         public CellularAutomata cellularAutomata {get {return _CellularAutomata;}}
         private Noise _Noise;
         public Noise noise {get {return _Noise;}}
+        private Erosion _Erosion;
+        public Erosion erosion {get {return _Erosion;}}
         private TileMapOperations _TileMapOperations;
         public TileMapOperations tileMapOperations {get {return _TileMapOperations;}}
         private TileMapCast _TileMapCast;
@@ -62,6 +98,7 @@ namespace TileGraph.Utilities
 
             _CellularAutomata = new CellularAutomata(this);
             _Noise = new Noise(this);
+            _Erosion = new Erosion(this);
             _TileMapOperations = new TileMapOperations(this);
             _TileMapCast = new TileMapCast(this);
         }
@@ -74,6 +111,8 @@ namespace TileGraph.Utilities
             _TileMapCont1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(float));
             _TileMapUint0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
             _TileMapUint1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
+            _TileMapHydraulic0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, System.Runtime.InteropServices.Marshal.SizeOf(new ErosionTile()));
+            _TileMapHydraulic1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, System.Runtime.InteropServices.Marshal.SizeOf(new ErosionTile()));
             _LifeRulesBuffer = new ComputeBuffer(18, sizeof(int));
             _LacunarityBuffer = new ComputeBuffer(20, sizeof(float));
             _PersistenceBuffer = new ComputeBuffer(20, sizeof(float));

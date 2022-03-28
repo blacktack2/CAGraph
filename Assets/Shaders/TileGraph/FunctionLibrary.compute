@@ -21,12 +21,22 @@
 #pragma kernel FractalSimplexNoise2D
 #pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
+#pragma kernel ThermalErosionPass1
+#pragma kernel ThermalErosionPass2
+#pragma kernel HydraulicErosionPass1
+#pragma kernel HydraulicErosionPass2
+#pragma kernel HydraulicErosionPass3
+#pragma kernel HydraulicErosionPass4
+#pragma kernel HydraulicErosionPass5
+#pragma kernel FluvialErosion
+#pragma kernel InitErosionTileMap
+#pragma kernel UpdateErosionTileMap
 
 static const int MAXINT = 2147483648;
 
 // Flattened tilemaps of integers with values 0 and 1 only
 RWStructuredBuffer<int>   _TileMapBool0;
-RWStructuredBuffer<int>   _TileMapBool1; 
+RWStructuredBuffer<int>   _TileMapBool1;
 // Flattened tilemaps of floats between 0 and 1 (inclusive)
 RWStructuredBuffer<float> _TileMapCont0;
 RWStructuredBuffer<float> _TileMapCont1;
@@ -57,6 +67,7 @@ int3 _IntOffset;
 uint _Octaves;
 RWStructuredBuffer<float> _Lacunarity, _Persistence;
 
+// Theshold value for Voronoi Noise
 float _CentroidThreshold;
 
 /**
@@ -209,3 +220,4 @@ uint3 Random3D(uint3 seed)
 
 #include "CellularAutomata.cginc"
 #include "Noise.cginc"
+#include "Erosion.cginc"

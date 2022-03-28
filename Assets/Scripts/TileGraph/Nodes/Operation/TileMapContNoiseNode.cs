@@ -20,10 +20,10 @@ namespace TileGraph.Nodes
         [SerializeField, NodeEnum]
         private Algorithm _Algorithm = Algorithm.Simplex;
 
-        [SerializeField, Range(1, 20)]
+        [SerializeField, Range(1, 19)]
         private float _Detail = 0f;
 
-        [SerializeField, Range(1, 20)]
+        [SerializeField, Range(1, 19)]
         private uint _Octaves = 1;
         [SerializeField]
         private float[] _Lacunarity = {2f, 4f, 8f, 16f, 32f, 64f, 128f, 256f, 512f, 1024f, 2048f, 4096f, 8192f, 16384f, 32768f, 65536f, 131072f, 262144f, 524288f, 1048576f};
