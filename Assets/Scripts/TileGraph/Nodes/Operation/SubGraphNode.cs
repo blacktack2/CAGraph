@@ -28,6 +28,7 @@ namespace TileGraph.Nodes
 
         protected override void Init()
         {
+            base.Init();
             _CurrentSubGraphID = -1;
             CheckForChange();
         }
@@ -118,8 +119,18 @@ namespace TileGraph.Nodes
             }
             else if (_CurrentSubGraphID != _SubGraph.id)
             {
-                _CurrentSubGraphID = _SubGraph.id;
-                UpdateDynamicPorts();
+                if (_SubGraph.id == _Graph.id)
+                {
+                    _SubGraph = null;
+                    _CurrentSubGraphID = -1;
+                    ClearDynamicPorts();
+                    Debug.LogWarning("Cannot add a graph to itself");
+                }
+                else
+                {
+                    _CurrentSubGraphID = _SubGraph.id;
+                    UpdateDynamicPorts();
+                }
             }
         }
     }
