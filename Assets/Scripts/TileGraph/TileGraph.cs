@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace TileGraph
     [CreateAssetMenu]
     public class TileGraph : NodeGraph
     {
+        private static int _IDCounter = 0;
+
         [SerializeField]
         private ComputeShader _ComputeShader;
         public ComputeShader computeShader {get {return _ComputeShader;}}
@@ -22,11 +25,16 @@ namespace TileGraph
         private bool _GPUEnabledGlobal = true;
         public bool GPUEnabledGlobal {get {return _GPUEnabledGlobal;}}
 
+        private int _ID;
+        public int id {get {return _ID;}}
+
         [ContextMenu("Toggle Default GPU")]
         public void ToggleGPUDefault() => _GPUEnabledGlobal = ! _GPUEnabledGlobal;
 
         void OnEnable()
         {
+            _ID = _IDCounter++;
+
             _FunctionLibrary = new Utilities.FunctionLibrary(_ComputeShader);
             _EditorUtilities = new Utilities.EditorUtilities();
             _FunctionLibrary.Enable();
@@ -126,6 +134,90 @@ namespace TileGraph
             }
             throw new System.ArgumentException(
                 string.Format("No input port with the name '{0}' and type '{1}' found.", name, typeof(T).Name));
+        }
+
+        public List<GraphPort> GetInputNodes()
+        {
+            List<GraphPort> ports = new List<GraphPort>();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i] is Nodes.IInputNode)
+                {
+                    Nodes.IInputNode node = nodes[i] as Nodes.IInputNode;
+                    ports.Add(new GraphPort(node.GetName(), node.GetValueType()));
+                }
+            }
+            ports.Sort(GraphPort.SortOrder);
+            return ports;
+        }
+
+        public List<GraphPort> GetOutputNodes()
+        {
+            List<GraphPort> ports = new List<GraphPort>();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i] is Nodes.IOutputNode)
+                {
+                    Nodes.IOutputNode node = nodes[i] as Nodes.IOutputNode;
+                    ports.Add(new GraphPort(node.GetName(), node.GetValueType()));
+                }
+            }
+            ports.Sort(GraphPort.SortOrder);
+            return ports;
+        }
+    }
+
+    public class GraphPort
+    {
+        private static Type[] typeOrder = new Type[] {
+            typeof(int), typeof(float), typeof(string),
+            typeof(Types.TileMap), typeof(Types.TileMapBool), typeof(Types.TileMapCont), typeof(Types.TileMapUint)
+        };
+
+        public string portName;
+        public Type portType;
+
+        public GraphPort(string portName, Type portType)
+        {
+            this.portName = portName;
+            this.portType = portType;
+        }
+
+        /// <summary> Sorted in order of type, then name. Types not in
+        /// <paramref name="typeOrder" /> are ordered erroneously. </summary>
+        public static int SortOrder(GraphPort left, GraphPort right)
+        {
+            int leftTypeIndex  = Array.IndexOf(typeOrder, left.GetType());
+            int rightTypeIndex = Array.IndexOf(typeOrder, right.GetType());
+            int nameOrder = left.portName.CompareTo(right.portName);
+            if (leftTypeIndex != -1)
+            {
+                if (rightTypeIndex != -1)
+                {
+                    if (leftTypeIndex == rightTypeIndex)
+                        return nameOrder;
+                    else
+                        return leftTypeIndex > rightTypeIndex ? 1 : -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if (rightTypeIndex != -1)
+                {
+                    return -1;
+                }
+                else
+                {
+                    if (leftTypeIndex == rightTypeIndex)
+                        return nameOrder;
+                    else
+                        return leftTypeIndex > rightTypeIndex ? 1 : -1;
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using XNode;
 using XNodeEditor;
 
 namespace TileGraph.Utilities
@@ -36,6 +37,27 @@ namespace TileGraph.Utilities
                 NodeEditorGUILayout.PropertyField(port, label, includeChildren, options);
             }
             EditorGUIUtility.labelWidth = 0;
+        }
+        /// <summary> Create a <c>NodeEditorGUILayout.PropertyField</c> with
+        /// the label width set to match the size of the label text </summary>
+        /// <seealso cref="NodeEditorGUILayout.PortField(GUIContent label, SerializedProperty port)" />
+        public float PortFieldMinLabel(NodePort port, GUIContent label = null, params GUILayoutOption[] options)
+        {
+            float width = 0;
+            if (label == null)
+            {
+                width = GUI.skin.label.CalcSize(new GUIContent(port.fieldName)).x;
+                EditorGUIUtility.labelWidth = width;
+                NodeEditorGUILayout.PortField(port, options);
+            }
+            else
+            {
+                width = GUI.skin.label.CalcSize(label).x;
+                EditorGUIUtility.labelWidth = width;
+                NodeEditorGUILayout.PortField(label, port, options);
+            }
+            EditorGUIUtility.labelWidth = 0;
+            return width;
         }
 
         /// <summary> Create a <c>EditorGUILayout.PropertyField</c> with

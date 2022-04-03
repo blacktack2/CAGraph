@@ -12,6 +12,9 @@ namespace TileGraph.Nodes
         [SerializeField]
         private string _Name;
 
+        private bool _ValueSetExternally = false;
+        private InT _CurrentValue;
+
         protected override void Init()
         {
             base.Init();
@@ -22,7 +25,12 @@ namespace TileGraph.Nodes
         public override object GetValue(NodePort port)
         {
             if (port.fieldName == "_Value")
-                return _Value;
+            {
+                if (_ValueSetExternally)
+                    return _CurrentValue;
+                else
+                    return _Value;
+            }
             return null;
         }
 
@@ -31,12 +39,18 @@ namespace TileGraph.Nodes
             return _Name;
         }
 
+        public Type GetValueType()
+        {
+            return typeof(InT);
+        }
+
         public void SetInput<T>(T input)
         {
             if (typeof(T) != typeof(InT))
                 throw new ArgumentException(string.Format("Type '{0}' does not match expected type '{1}'",
                                                           typeof(T).Name, typeof(InT).Name));
-            _Value = (InT) ((object) input);
+            _CurrentValue = (InT) ((object) input);
+            _ValueSetExternally = true;
         }
     }
 }

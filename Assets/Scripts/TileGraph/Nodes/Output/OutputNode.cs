@@ -28,6 +28,11 @@ namespace TileGraph.Nodes
             return _Name;
         }
 
+        public Type GetValueType()
+        {
+            return typeof(OutT);
+        }
+
         public T GetOutput<T>()
         {
             if (typeof(T) != typeof(OutT))
