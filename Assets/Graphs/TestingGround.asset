@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Replace Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1720, y: 248}
+  position: {x: 120, y: 1144}
   ports:
     keys:
     - _TileMapIn
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Name: Integer
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1208, y: 248}
+  position: {x: -392, y: 1144}
   ports:
     keys:
     - _Value
@@ -546,22 +546,19 @@ MonoBehaviour:
   m_Name: Sub-Graph
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1464, y: 248}
+  position: {x: -136, y: 1144}
   ports:
     keys:
-    - BoolOut
-    - Seed
     - Input1
+    - Seed
+    - BoolOut
     values:
-    - _fieldName: BoolOut
+    - _fieldName: Input1
       _node: {fileID: -5386992794153998454}
-      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _TileMapIn
-        node: {fileID: -9211253852010759119}
-        reroutePoints: []
-      _direction: 1
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
@@ -577,12 +574,15 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: Input1
+    - _fieldName: BoolOut
       _node: {fileID: -5386992794153998454}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -9211253852010759119}
+        reroutePoints: []
+      _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
@@ -590,6 +590,77 @@ MonoBehaviour:
     isEnabled: 1
     isOverridden: 0
   _SubGraph: {fileID: 11400000, guid: b4bc907f04f7cbf488f12bb0eaf9dc1e, type: 2}
+--- !u!114 &-5383024550381311603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7290468419f6c5e4aa5307da8ce0c5c9, type: 3}
+  m_Name: Binary-Space-Partitioning
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: -840}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapOut
+    - _Seed
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -5383024550381311603}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 2977948590872729745}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -5383024550381311603}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: -5383024550381311603}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _Seed: 10
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _DivisionChance: 0.5
+  _MinRooms: 6
+  _MaxRooms: 10
+  _MinRoomSize: 15
+  _MaxRoomSize: 60
+  _MinRoomArea: 1
+  _MaxRoomArea: 3055
+  _MinWallWidth: 8
+  _ShowDebugLines: 0
 --- !u!114 &-4666385158960886868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1381,6 +1452,7 @@ MonoBehaviour:
   - {fileID: -5386992794153998454}
   - {fileID: -8719908204242388708}
   - {fileID: -9211253852010759119}
+  - {fileID: -5383024550381311603}
   - {fileID: -420143625066265144}
   - {fileID: 6319879886868461092}
   - {fileID: -3976021060203263860}
@@ -1732,7 +1804,10 @@ MonoBehaviour:
       _node: {fileID: 2977948590872729745}
       _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -5383024550381311603}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -1941,8 +2016,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 100
-  _TileMapHeight: 100
+  _TileMapWidth: 150
+  _TileMapHeight: 150
   _TileMapBoolOut:
     width: 0
     height: 0

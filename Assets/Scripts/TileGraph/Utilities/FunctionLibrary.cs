@@ -51,6 +51,8 @@ namespace TileGraph.Utilities
         public CellularAutomata cellularAutomata {get {return _CellularAutomata;}}
         private Noise _Noise;
         public Noise noise {get {return _Noise;}}
+        private Roguelike _Roguelike;
+        public Roguelike roguelike {get {return _Roguelike;}}
         private TileMapOperations _TileMapOperations;
         public TileMapOperations tileMapOperations {get {return _TileMapOperations;}}
         private TileMapCast _TileMapCast;
@@ -62,6 +64,7 @@ namespace TileGraph.Utilities
 
             _CellularAutomata = new CellularAutomata(this);
             _Noise = new Noise(this);
+            _Roguelike = new Roguelike(this);
             _TileMapOperations = new TileMapOperations(this);
             _TileMapCast = new TileMapCast(this);
         }
@@ -102,6 +105,18 @@ namespace TileGraph.Utilities
             _PersistenceBuffer  = null;
         }
 
+        float Random01(int seed)
+        {
+            return (float) Random1D(seed) / (float) int.MaxValue;
+        }
+        float Random01(int seedX, int seedY)
+        {
+            return (float) Random1D(new Vector2Int(seedX, seedY)) / (float) int.MaxValue;
+        }
+        float Random01(int seedX, int seedY, int seedZ)
+        {
+            return (float) Random1D(new Vector3Int(seedX, seedY, seedZ)) / (float) int.MaxValue;
+        }
         int Random1D(int seed)
         {
             int state = (int) (seed * 74779640 + 2891336453);
