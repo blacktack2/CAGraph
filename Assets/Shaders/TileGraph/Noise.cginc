@@ -32,23 +32,18 @@ static const int p[512] = {
     138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
     61, 156, 180
 };
-static const float F2 = 0.366025403;
-static const float G2 = 0.211324865;
-static const float F3 = 0.333333333;
-static const float G3 = 0.166666667;
+#define F2 0.366025403;
+#define G2 0.211324865;
+#define F3 0.333333333;
+#define G3 0.166666667;
 
-float Fade(float t)
-{
-    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-}
-float2 Fade(float2 t)
-{
-    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-}
-float3 Fade(float3 t)
-{
-    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-}
+// Fractal Noise parameters
+uint _Octaves;
+RWStructuredBuffer<float> _Lacunarity, _Persistence;
+
+float _CentroidThreshold;
+
+#define Fade(t) t * t * t * (t * (t * 6.0 - 15.0) + 10.0)
 
 float Grad(int seed, float pos)
 {
@@ -75,6 +70,21 @@ float Grad(int seed, float3 pos)
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
+float WhiteNoise(float pos)
+{
+    return frac(Random1D(pos) / (float) MAXINT);
+}
+
+float WhiteNoise(float2 pos)
+{
+    return frac(Random1D(pos) / (float) MAXINT);
+}
+
+float WhiteNoise(float3 pos)
+{
+    return frac(Random1D(pos) / (float) MAXINT);
+}
+
 float ValueNoise(float pos)
 {
     int posi = floor(pos);
@@ -83,7 +93,7 @@ float ValueNoise(float pos)
     float r0 = frac((float) Random1D(posi    ) / (float) MAXINT);
     float r1 = frac((float) Random1D(posi + 1) / (float) MAXINT);
 
-    return lerp(r0, r1, Fade(posr));
+    return lerp(r0, r1, Fade(posr)) * 2.0 - 1.0;
 }
 
 float ValueNoise(float2 pos)
@@ -99,7 +109,7 @@ float ValueNoise(float2 pos)
     float rx0 = lerp(r00, r10, posr.x);
     float rx1 = lerp(r01, r11, posr.x);
 
-    return lerp(rx0, rx1, posr.y);
+    return lerp(rx0, rx1, posr.y) * 2.0 - 1.0;
 }
 
 float ValueNoise(float3 pos)
@@ -248,203 +258,67 @@ float SimplexNoise(float3 pos)
     return 0.5f;
 }
 
-[numthreads(8, 1, 1)]
-void WhiteNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, frac(Random1D(id.x + _IntOffset.x) / (float) MAXINT));
+#define IntNoiseKernel(name)\
+[numthreads(8, 1, 1)]\
+void name##1D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, frac(name(id.x + _IntOffset.x)));\
+}\
+[numthreads(8, 8, 1)]\
+void name##2D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, frac(name(id.xy + _IntOffset.xy)));\
+}\
+[numthreads(8, 8, 8)]\
+void name##3D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, frac(name(id + _IntOffset)));\
 }
 
-[numthreads(8, 8, 1)]
-void WhiteNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, frac(Random1D(id.xy + _IntOffset.xy) / (float) MAXINT));
+#define NoiseKernel(name)\
+[numthreads(8, 1, 1)]\
+void name##1D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, 0.5 + name(id.x * _Frequency.x + _Offset.x) * 0.5);\
+}\
+[numthreads(8, 8, 1)]\
+void name##2D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, 0.5 + name(id.xy * _Frequency.xy + _Offset.xy) * 0.5);\
+}\
+[numthreads(8, 8, 8)]\
+void name##3D(uint3 id: SV_DispatchThreadID)\
+{\
+    SetContTileAt(id.xy, 0.5 + name(id * _Frequency + _Offset) * 0.5);\
 }
 
-[numthreads(8, 8, 8)]
-void WhiteNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, frac(Random1D(id + _IntOffset) / (float) MAXINT));
+#define FractalNoiseKernelPart(name, dim, subset)\
+void Fractal##name##dim##D(uint3 id: SV_DispatchThreadID)\
+{\
+    float##dim pos = id.subset * _Frequency.subset + _Offset.subset;\
+    float value = name(pos);\
+    float totalMax = 1.0;\
+    for (int octave = 0; octave < (int) _Octaves - 1; octave++)\
+    {\
+        value += name(pos * _Lacunarity[octave]) * _Persistence[octave];\
+        totalMax += _Persistence[octave];\
+    }\
+    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);\
 }
 
-[numthreads(8, 1, 1)]
-void ValueNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, ValueNoise(id.x * _Frequency.x + _Offset.x));
-}
+#define FractalNoiseKernel(name)\
+NoiseKernel(name)\
+[numthreads(8, 1, 1)]\
+FractalNoiseKernelPart(name, 1, x)\
+[numthreads(8, 8, 1)]\
+FractalNoiseKernelPart(name, 2, xy)\
+[numthreads(8, 8, 8)]\
+FractalNoiseKernelPart(name, 3, xyz)\
 
-[numthreads(8, 8, 1)]
-void ValueNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, ValueNoise(id.xy * _Frequency.xy + _Offset.xy));
-}
-
-[numthreads(8, 8, 8)]
-void ValueNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, ValueNoise(id * _Frequency + _Offset));
-}
-
-[numthreads(8, 1, 1)]
-void FractalValueNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    float pos = id.x * _Frequency.x + _Offset.x;
-    float value = ValueNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, value / totalMax);
-}
-
-[numthreads(8, 8, 1)]
-void FractalValueNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
-    float value = ValueNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, value / totalMax);
-}
-
-[numthreads(8, 8, 8)]
-void FractalValueNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    float3 pos = id * _Frequency + _Offset;
-    float value = ValueNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += ValueNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, value / totalMax);
-}
-
-[numthreads(8, 1, 1)]
-void PerlinNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.x * _Frequency.x + _Offset.x) * 0.5);
-}
-
-[numthreads(8, 8, 1)]
-void PerlinNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id.xy * _Frequency.xy + _Offset.xy) * 0.5);
-}
-
-[numthreads(8, 8, 8)]
-void PerlinNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + PerlinNoise(id * _Frequency + _Offset) * 0.5);
-}
-
-[numthreads(8, 1, 1)]
-void FractalPerlinNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    float pos = id.x * _Frequency.x + _Offset.x;
-    float value = PerlinNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
-
-[numthreads(8, 8, 1)]
-void FractalPerlinNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
-    float value = PerlinNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
-
-[numthreads(8, 8, 8)]
-void FractalPerlinNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    float3 pos = id * _Frequency + _Offset;
-    float value = PerlinNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += PerlinNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
-
-[numthreads(8, 1, 1)]
-void SimplexNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.x * _Frequency.x + _Offset.x) * 0.5);
-}
-
-[numthreads(8, 8, 1)]
-void SimplexNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id.xy * _Frequency.xy + _Offset.xy) * 0.5);
-}
-
-[numthreads(8, 8, 8)]
-void SimplexNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    SetContTileAt(id.xy, 0.5 + SimplexNoise(id * _Frequency + _Offset) * 0.5);
-}
-
-[numthreads(8, 1, 1)]
-void FractalSimplexNoise1D(uint3 id: SV_DispatchThreadID)
-{
-    float pos = id.x * _Frequency.x + _Offset.x;
-    float value = SimplexNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
-
-[numthreads(8, 8, 1)]
-void FractalSimplexNoise2D(uint3 id: SV_DispatchThreadID)
-{
-    float2 pos = id.xy * _Frequency.xy + _Offset.xy;
-    float value = SimplexNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
-
-[numthreads(8, 8, 8)]
-void FractalSimplexNoise3D(uint3 id: SV_DispatchThreadID)
-{
-    float3 pos = id * _Frequency + _Offset;
-    float value = SimplexNoise(pos);
-    float totalMax = 1.0;
-    for (int octave = 0; octave < (int) _Octaves - 1; octave++)
-    {
-        value += SimplexNoise(pos * _Lacunarity[octave]) * _Persistence[octave];
-        totalMax += _Persistence[octave];
-    }
-    SetContTileAt(id.xy, 0.5 + (value / totalMax) * 0.5);
-}
+IntNoiseKernel(WhiteNoise)
+FractalNoiseKernel(ValueNoise)
+FractalNoiseKernel(PerlinNoise)
+FractalNoiseKernel(SimplexNoise)
 
 [numthreads(8, 8, 1)]
 void VoronoiNoise2D(uint3 id: SV_DispatchThreadID)

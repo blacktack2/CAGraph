@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2000f86ca31743d42917a79cdba14ff7, type: 3}
-  m_Name: Random Noise
+  m_Name: Simplex Noise
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 376, y: -328}
@@ -425,7 +425,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _Frequency: {x: 5, y: 5}
+  _Frequency: {x: 3, y: 3}
   _Offset: {x: 0, y: 0}
   _IntOffset: {x: 0, y: 0}
   _TileMapOut:
@@ -433,7 +433,7 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _RelativeFrequency: 1
-  _Algorithm: 0
+  _Algorithm: 3
   _Detail: 0
   _Octaves: 5
   _Lacunarity:
@@ -532,7 +532,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 1
+  toReplaceChanged: 0
 --- !u!114 &-5386992794153998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,7 +647,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
-  _Seed: 10
+  _Seed: 50
   _TileMapOut:
     width: 0
     height: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
   _DivisionChance: 0.5
   _MinRooms: 6
   _MaxRooms: 10
-  _MinRoomSize: 15
+  _MinRoomSize: 13
   _MaxRoomSize: 60
   _MinRoomArea: 1
   _MaxRoomArea: 3055
@@ -822,8 +822,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 100
-  _TileMapHeight: 100
+  _TileMapWidth: 150
+  _TileMapHeight: 150
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -2528,8 +2528,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 100
-  _TileMapHeight: 100
+  _TileMapWidth: 150
+  _TileMapHeight: 150
   _TileMapBoolOut:
     width: 0
     height: 0

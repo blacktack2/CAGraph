@@ -24,16 +24,6 @@
 
 static const int MAXINT = 2147483648;
 
-// Flattened tilemaps of integers with values 0 and 1 only
-RWStructuredBuffer<int>   _TileMapBool0;
-RWStructuredBuffer<int>   _TileMapBool1; 
-// Flattened tilemaps of floats between 0 and 1 (inclusive)
-RWStructuredBuffer<float> _TileMapCont0;
-RWStructuredBuffer<float> _TileMapCont1;
-// Flattened tilemaps of unsigned integers
-RWStructuredBuffer<uint>  _TileMapUint0;
-RWStructuredBuffer<uint>  _TileMapUint1;
-
 // Flag used to swap between using _TileMap0 and _TileMap1
 // (false = read 0, write 1 | true = read 1, write 0)
 bool _BufferFlag = false;
@@ -44,114 +34,42 @@ uint _ScaleX, _ScaleY;
 // Seed for random number generation
 int _Seed;
 
-// Ruleset for Lifelike Cellular Automata
-RWStructuredBuffer<int> _LifeRules;
-
-// Noise scale
-float3 _Frequency;
-
-float3 _Offset;
+float3 _Frequency, _Offset;
 int3 _IntOffset;
 
-// Fractal Noise parameters
-uint _Octaves;
-RWStructuredBuffer<float> _Lacunarity, _Persistence;
-
-float _CentroidThreshold;
-
-/**
- * Return the value of the tile at xy in the currently buffered array
- */
-int GetBoolTileAt(uint2 xy)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            return _TileMapBool1[xy.x + xy.y * _ScaleX];
-        else
-            return _TileMapBool0[xy.x + xy.y * _ScaleX];
-    }
-    else
-    {
-        return 0;
-    }
-}
-/**
- * Set the value of the tile at xy in the currently buffered array
- */
-void SetBoolTileAt(uint2 xy, int value)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            _TileMapBool0[xy.x + xy.y * _ScaleX] = value;
-        else
-            _TileMapBool1[xy.x + xy.y * _ScaleX] = value;
-    }
+#define DefineTileMap(name, type, default)\
+RWStructuredBuffer<type> _TileMap##name##0;\
+RWStructuredBuffer<type> _TileMap##name##1;\
+/* Return the value of the tile at xy in the currently buffered array */\
+type Get##name##TileAt(uint2 xy)\
+{\
+    if (xy.x < _ScaleX && xy.y < _ScaleY)\
+    {\
+        if (_BufferFlag)\
+            return _TileMap##name##1[xy.x + xy.y * _ScaleX];\
+        else\
+            return _TileMap##name##0[xy.x + xy.y * _ScaleX];\
+    }\
+    else\
+    {\
+        return default;\
+    }\
+}\
+/* Set the value of the tile at xy in the currently buffered array */\
+void Set##name##TileAt(uint2 xy, type value)\
+{\
+    if (xy.x < _ScaleX && xy.y < _ScaleY)\
+    {\
+        if (_BufferFlag)\
+            _TileMap##name##0[xy.x + xy.y * _ScaleX] = value;\
+        else\
+            _TileMap##name##1[xy.x + xy.y * _ScaleX] = value;\
+    }\
 }
 
-/**
- * Return the value of the tile at xy in the currently buffered array
- */
-float GetContTileAt(uint2 xy)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            return _TileMapCont1[xy.x + xy.y * _ScaleX];
-        else
-            return _TileMapCont0[xy.x + xy.y * _ScaleX];
-    }
-    else
-    {
-        return 0.0;
-    }
-}
-/**
- * Set the value of the tile at xy in the currently buffered array
- */
-void SetContTileAt(uint2 xy, float value)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            _TileMapCont0[xy.x + xy.y * _ScaleX] = value;
-        else
-            _TileMapCont1[xy.x + xy.y * _ScaleX] = value;
-    }
-}
-
-
-/**
- * Return the value of the tile at xy in the currently buffered array
- */
-uint GetUintTileAt(uint2 xy)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            return _TileMapUint1[xy.x + xy.y * _ScaleX];
-        else
-            return _TileMapUint0[xy.x + xy.y * _ScaleX];
-    }
-    else
-    {
-        return 0;
-    }
-}
-/**
- * Set the value of the tile at xy in the currently buffered array
- */
-void SetUintTileAt(uint2 xy, uint value)
-{
-    if (xy.x < _ScaleX && xy.y < _ScaleY)
-    {
-        if (_BufferFlag)
-            _TileMapUint0[xy.x + xy.y * _ScaleX] = value;
-        else
-            _TileMapUint1[xy.x + xy.y * _ScaleX] = value;
-    }
-}
+DefineTileMap(Bool, int, 0)     // GetBoolTileAt() SetBoolTileAt()
+DefineTileMap(Cont, float, 0.0) // GetContTileAt() SetContTileAt()
+DefineTileMap(Uint, uint, 0u)   // GetUintTileAt() SetUintTileAt()
 
 uint Random1D(uint seed)
 {

@@ -1,3 +1,6 @@
+// Ruleset for Lifelike Cellular Automata
+RWStructuredBuffer<int> _LifeRules;
+
 /**
  * Return the number of neighbours in the Moore neighbourhood of the cell at xy
  */
