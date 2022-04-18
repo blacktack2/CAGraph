@@ -344,7 +344,7 @@ MonoBehaviour:
     _Cells: []
   _RelativeFrequency: 1
   _Advanced: 1
-  _Threshold: 1.5
+  _Threshold: 1
 --- !u!114 &-6535732497149164816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &-5386992794153998454
 MonoBehaviour:
   m_ObjectHideFlags: 0

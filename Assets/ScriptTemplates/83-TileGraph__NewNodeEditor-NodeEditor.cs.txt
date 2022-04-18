@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using XNode;
+using XNodeEditor;
+
+namespace TileGraph.Editors
+{
+    [CustomNodeEditor(typeof(Nodes.))]
+    public class #SCRIPTNAME# : BaseNodeEditor<Nodes.>
+    {
+        private SerializedProperty _TileMapIn, _TileMapOut;
+
+        protected override bool GPUToggleable => true;
+
+        protected override void OnNodeEnable()
+        {
+            AddPreview("_TileMapOut");
+        }
+
+        protected override void NodeInputGUI()
+        {
+        }
+
+        protected override void NodeBodyGUI()
+        {
+        }
+    }
+}

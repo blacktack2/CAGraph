@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using XNode;
+
+namespace TileGraph.Nodes
+{
+    public class #SCRIPTNAME# : BaseNode
+    {
+        private long _TileMapInIDBuffer = 0L;
+        private Types.TileMapBool _TileMapOutBuffer;
+
+        private void Reset()
+        {
+            name = "Node";
+        }
+
+        public override object GetValue(NodePort port)
+        {
+            if (port.fieldName == "_TileMapOut")
+            {
+                GetTileMapInput(
+                    "_TileMapIn", "_TileMapOut",
+                    ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
+                    false
+                );
+                return _TileMapOutBuffer;
+            }
+            return null;
+        }
+
+        protected override void UpdateTileMapOutput(string portName)
+        {
+
+        } 
+    }
+}
