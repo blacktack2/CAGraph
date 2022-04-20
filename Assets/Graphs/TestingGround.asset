@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: Voronoi Noise
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 888, y: -328}
+  position: {x: 632, y: -648}
   ports:
     keys:
     - _TileMapIn
@@ -404,6 +404,12 @@ MonoBehaviour:
       connections:
       - fieldName: _TileMapIn
         node: {fileID: -6602391650931841200}
+        reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: -3976021060203263860}
+        reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: -2247996835724070591}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -1017,7 +1023,7 @@ MonoBehaviour:
   m_Name: Tile-Map (Continuous-Integer)
   m_EditorClassIdentifier: Assembly-CSharp:TileGraph.Nodes:TileMapContToUintNode
   graph: {fileID: 11400000}
-  position: {x: 632, y: -264}
+  position: {x: 632, y: -200}
   ports:
     keys:
     - _TileMapIn
@@ -1128,6 +1134,58 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &-2247996835724070591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5217ec06f23ea36469fb43a6a8797eb4, type: 3}
+  m_Name: Erosion
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 888, y: -328}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -2247996835724070591}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -6535732497149164816}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -2247996835724070591}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _Iterations: 10000
 --- !u!114 &-2196727178909149565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1460,6 +1518,7 @@ MonoBehaviour:
   - {fileID: 7088624274236928638}
   - {fileID: 7316948954124433502}
   - {fileID: -8301220961684233726}
+  - {fileID: -2247996835724070591}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581

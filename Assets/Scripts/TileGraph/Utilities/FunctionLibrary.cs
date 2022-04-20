@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace TileGraph.Utilities
 {
@@ -11,9 +12,12 @@ namespace TileGraph.Utilities
             _TileMapCont1ID = Shader.PropertyToID("_TileMapCont1"),
             _TileMapUint0ID = Shader.PropertyToID("_TileMapUint0"),
             _TileMapUint1ID = Shader.PropertyToID("_TileMapUint1"),
+            _TileMapErosion0ID = Shader.PropertyToID("_TileMapErosion0"),
+            _TileMapErosion1ID = Shader.PropertyToID("_TileMapErosion1"),
             _BufferFlagID = Shader.PropertyToID("_BufferFlag"),
             _ScaleXID = Shader.PropertyToID("_ScaleX"),
             _ScaleYID = Shader.PropertyToID("_ScaleY"),
+            _IterationID = Shader.PropertyToID("_Iteration"),
             _LifeRulesID = Shader.PropertyToID("_LifeRules"),
             _FrequencyID = Shader.PropertyToID("_Frequency"), 
             _OffsetID = Shader.PropertyToID("_Offset"),
@@ -32,7 +36,8 @@ namespace TileGraph.Utilities
             FractalPerlinNoise1D, FractalPerlinNoise2D, FractalPerlinNoise3D,
             SimplexNoise1D, SimplexNoise2D, SimplexNoise3D,
             FractalSimplexNoise1D, FractalSimplexNoise2D, FractalSimplexNoise3D,
-            VoronoiNoise2D
+            VoronoiNoise2D,
+            HydraulicErosion
         }
 
         private ComputeShader _ComputeShader;
@@ -43,12 +48,16 @@ namespace TileGraph.Utilities
         private ComputeBuffer _TileMapCont1Buffer;
         private ComputeBuffer _TileMapUint0Buffer;
         private ComputeBuffer _TileMapUint1Buffer;
+        private ComputeBuffer _TileMapErosion0Buffer;
+        private ComputeBuffer _TileMapErosion1Buffer;
         private ComputeBuffer _LifeRulesBuffer;
         private ComputeBuffer _LacunarityBuffer;
         private ComputeBuffer _PersistenceBuffer;
 
         private CellularAutomata _CellularAutomata;
         public CellularAutomata cellularAutomata {get {return _CellularAutomata;}}
+        private Erosion _Erosion;
+        public Erosion erosion {get {return _Erosion;}}
         private Noise _Noise;
         public Noise noise {get {return _Noise;}}
         private Roguelike _Roguelike;
@@ -58,11 +67,12 @@ namespace TileGraph.Utilities
         private TileMapCast _TileMapCast;
         public TileMapCast tileMapCast {get {return _TileMapCast;}}
 
-        public FunctionLibrary(ComputeShader computeShader)
+        public FunctionLibrary(ComputeShader computeShader) 
         {
             _ComputeShader = computeShader;
 
             _CellularAutomata = new CellularAutomata(this);
+            _Erosion = new Erosion(this);
             _Noise = new Noise(this);
             _Roguelike = new Roguelike(this);
             _TileMapOperations = new TileMapOperations(this);
@@ -71,12 +81,16 @@ namespace TileGraph.Utilities
 
         public void Enable()
         {
-            _TileMapBool0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
-            _TileMapBool1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(int));
-            _TileMapCont0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(float));
-            _TileMapCont1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(float));
-            _TileMapUint0Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
-            _TileMapUint1Buffer = new ComputeBuffer(Types.TileMapBool.maxTileMapSize * Types.TileMapBool.maxTileMapSize, sizeof(uint));
+            _TileMapBool0Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(int));
+            _TileMapBool1Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(int));
+            _TileMapCont0Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(float));
+            _TileMapCont1Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(float));
+            _TileMapUint0Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(uint));
+            _TileMapUint1Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, sizeof(uint));
+
+            _TileMapErosion0Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, Marshal.SizeOf(typeof(Erosion.ErosionTile)));
+            _TileMapErosion1Buffer = new ComputeBuffer(Types.TileMap.maxTileMapSize * Types.TileMap.maxTileMapSize, Marshal.SizeOf(typeof(Erosion.ErosionTile)));
+
             _LifeRulesBuffer = new ComputeBuffer(18, sizeof(int));
             _LacunarityBuffer = new ComputeBuffer(20, sizeof(float));
             _PersistenceBuffer = new ComputeBuffer(20, sizeof(float));
@@ -90,6 +104,10 @@ namespace TileGraph.Utilities
             _TileMapCont1Buffer.Dispose();
             _TileMapUint0Buffer.Dispose();
             _TileMapUint1Buffer.Dispose();
+
+            _TileMapErosion0Buffer.Dispose();
+            _TileMapErosion1Buffer.Dispose();
+
             _LifeRulesBuffer.Dispose();
             _LacunarityBuffer.Dispose();
             _PersistenceBuffer.Dispose();
@@ -100,6 +118,10 @@ namespace TileGraph.Utilities
             _TileMapCont1Buffer = null;
             _TileMapUint0Buffer = null;
             _TileMapUint1Buffer = null;
+
+            _TileMapErosion0Buffer = null;
+            _TileMapErosion1Buffer = null;
+
             _LifeRulesBuffer    = null;
             _LacunarityBuffer   = null;
             _PersistenceBuffer  = null;

@@ -12,7 +12,7 @@ namespace TileGraph.Types
         /// <summary> Maximum width/height of the TileMap (the max number of
         /// total elements will be <paramref name="maxTileMapSize" /> *
         /// <paramref name="maxTileMapSize" />) </summary>
-        public const int maxTileMapSize = 150;
+        public const int maxTileMapSize = 400;
 
         [SerializeField, HideInInspector, Range(2, maxTileMapSize)]
         public int width, height;

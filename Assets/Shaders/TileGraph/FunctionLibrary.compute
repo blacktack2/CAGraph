@@ -21,27 +21,41 @@
 #pragma kernel FractalSimplexNoise2D
 #pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
+#pragma kernel HydraulicErosion
 
 static const int MAXINT = 2147483648;
+
+#define N  float2( 0,  1)
+#define NE float2( 1,  1)
+#define E  float2( 1,  0)
+#define SE float2( 1, -1)
+#define S  float2( 0, -1)
+#define SW float2(-1, -1)
+#define W  float2(-1,  0)
+#define NW float2(-1,  1)
 
 // Flag used to swap between using _TileMap0 and _TileMap1
 // (false = read 0, write 1 | true = read 1, write 0)
 bool _BufferFlag = false;
 
 // Bounds of the current tilemap
-uint _ScaleX, _ScaleY;
+int _ScaleX, _ScaleY;
 
 // Seed for random number generation
 int _Seed;
+// Counter to keep track of the number of iterations
+int _Iteration;
 
 float3 _Frequency, _Offset;
 int3 _IntOffset;
+
+#define mod(x, y) ((x % y) + y) % y
 
 #define DefineTileMap(name, type, default)\
 RWStructuredBuffer<type> _TileMap##name##0;\
 RWStructuredBuffer<type> _TileMap##name##1;\
 /* Return the value of the tile at xy in the currently buffered array */\
-type Get##name##TileAt(uint2 xy)\
+type Get##name##TileAt(int2 xy)\
 {\
     if (xy.x < _ScaleX && xy.y < _ScaleY)\
     {\
@@ -55,8 +69,24 @@ type Get##name##TileAt(uint2 xy)\
         return default;\
     }\
 }\
+type GetClamp##name##TileAt(int2 xy)\
+{\
+    int2 uv = int2(clamp(xy.x, 0, _ScaleX), clamp(xy.y, 0, _ScaleY));\
+    if (_BufferFlag)\
+        return _TileMap##name##1[uv.x + uv.y * _ScaleX];\
+    else\
+        return _TileMap##name##0[uv.x + uv.y * _ScaleX];\
+}\
+type GetWrap##name##TileAt(int2 xy)\
+{\
+    int2 uv = int2(mod(xy.x, _ScaleX), mod(xy.y, _ScaleY));\
+    if (_BufferFlag)\
+        return _TileMap##name##1[uv.x + uv.y * _ScaleX];\
+    else\
+        return _TileMap##name##0[uv.x + uv.y * _ScaleX];\
+}\
 /* Set the value of the tile at xy in the currently buffered array */\
-void Set##name##TileAt(uint2 xy, type value)\
+void Set##name##TileAt(int2 xy, type value)\
 {\
     if (xy.x < _ScaleX && xy.y < _ScaleY)\
     {\
@@ -67,9 +97,9 @@ void Set##name##TileAt(uint2 xy, type value)\
     }\
 }
 
-DefineTileMap(Bool, int, 0)     // GetBoolTileAt() SetBoolTileAt()
-DefineTileMap(Cont, float, 0.0) // GetContTileAt() SetContTileAt()
-DefineTileMap(Uint, uint, 0u)   // GetUintTileAt() SetUintTileAt()
+DefineTileMap(Bool, int, 0)     // GetBoolTileAt() GetClampBoolTileAt SetBoolTileAt()
+DefineTileMap(Cont, float, 0.0) // GetContTileAt() GetClampContTileAt SetContTileAt()
+DefineTileMap(Uint, uint, 0u)   // GetUintTileAt() GetClampUintTileAt SetUintTileAt()
 
 uint Random1D(uint seed)
 {
@@ -126,4 +156,5 @@ uint3 Random3D(uint3 seed)
 }
 
 #include "CellularAutomata.cginc"
+#include "Erosion.cginc"
 #include "Noise.cginc"
