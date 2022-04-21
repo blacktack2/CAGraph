@@ -73,8 +73,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 400
-  _TileMapHeight: 400
+  _TileMapWidth: 100
+  _TileMapHeight: 100
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -187,7 +187,7 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _Frequency: {x: 4, y: 4}
+  _Frequency: {x: 2, y: 2}
   _Offset: {x: 100, y: 0}
   _IntOffset: {x: 0, y: 0}
   _TileMapOut:
@@ -296,6 +296,7 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _Iterations: 1000
+  _Algorithm: 0
 --- !u!114 &5340130137164207482
 MonoBehaviour:
   m_ObjectHideFlags: 0

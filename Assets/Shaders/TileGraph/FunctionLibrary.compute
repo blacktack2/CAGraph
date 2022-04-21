@@ -21,18 +21,19 @@
 #pragma kernel FractalSimplexNoise2D
 #pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
-#pragma kernel HydraulicErosion
+#pragma kernel HydraulicErosionStreamPowerLaw
+#pragma kernel HydraulicErosionPoor
 
 static const int MAXINT = 2147483648;
 
-#define N  float2( 0,  1)
-#define NE float2( 1,  1)
-#define E  float2( 1,  0)
-#define SE float2( 1, -1)
-#define S  float2( 0, -1)
-#define SW float2(-1, -1)
-#define W  float2(-1,  0)
-#define NW float2(-1,  1)
+#define N  float2( 0.0,  1.0)
+#define NE float2( 1.0,  1.0)
+#define E  float2( 1.0,  0.0)
+#define SE float2( 1.0, -1.0)
+#define S  float2( 0.0, -1.0)
+#define SW float2(-1.0, -1.0)
+#define W  float2(-1.0,  0.0)
+#define NW float2(-1.0,  1.0)
 
 // Flag used to swap between using _TileMap0 and _TileMap1
 // (false = read 0, write 1 | true = read 1, write 0)
@@ -100,6 +101,23 @@ void Set##name##TileAt(int2 xy, type value)\
 DefineTileMap(Bool, int, 0)     // GetBoolTileAt() GetClampBoolTileAt SetBoolTileAt()
 DefineTileMap(Cont, float, 0.0) // GetContTileAt() GetClampContTileAt SetContTileAt()
 DefineTileMap(Uint, uint, 0u)   // GetUintTileAt() GetClampUintTileAt SetUintTileAt()
+
+// Exponential function supporting negative x
+float PowN(float x, float y)
+{
+    if (x > 0)
+    {
+        return pow(x, y);
+    }
+    else if ((uint)(-x) % 2 == 0)
+    {
+        return pow(-x, y);
+    }
+    else
+    {
+        return -pow(-x, y);
+    }
+}
 
 uint Random1D(uint seed)
 {

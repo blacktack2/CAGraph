@@ -19,9 +19,64 @@ float hash12(float2 p)
     return frac((p3.x + p3.y) * p3.z);
 }
 
+#define slope(p, q) (GetWrapErosionTileAt(q).landH - GetWrapErosionTileAt(p).landH) / distance(p, q)
+
+float2 rec(float2 t)
+{
+    float2 d = N;
+    if (slope(t + NE, t) > slope(t + d, t))
+        d = NE;
+    if (slope(t + E , t) > slope(t + d, t))
+        d = E;
+    if (slope(t + SE, t) > slope(t + d, t))
+        d = SE;
+    if (slope(t + S , t) > slope(t + d, t))
+        d = S;
+    if (slope(t + SW, t) > slope(t + d, t))
+        d = SW;
+    if (slope(t + W , t) > slope(t + d, t))
+        d = W;
+    if (slope(t + NW, t) > slope(t + d, t))
+        d = NW;
+    return d;
+}
+
+[numthreads(8, 8, 1)]
+void HydraulicErosionStreamPowerLaw(uint3 id: SV_DispatchThreadID)
+{
+    ErosionTile tile = GetErosionTileAt(id.xy);
+    float landH  = tile.landH;
+    float waterV = 1.0;
+
+    if (distance(rec(id.xy + N ), -N ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + N ).waterV;
+    if (distance(rec(id.xy + NE), -NE) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + NE).waterV;
+    if (distance(rec(id.xy + E ), -E ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + E ).waterV;
+    if (distance(rec(id.xy + SE), -SE) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + SE).waterV;
+    if (distance(rec(id.xy + S ), -S ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + S ).waterV;
+    if (distance(rec(id.xy + SW), -SW) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + SW).waterV;
+    if (distance(rec(id.xy + W ), -W ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + W ).waterV;
+    if (distance(rec(id.xy + NW), -NW) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + NW).waterV;
+
+    ErosionTile receiver = GetWrapErosionTileAt(id.xy + rec(id.xy));
+    float tileSlope = (landH - receiver.landH) / length(rec(id.xy));
+    landH = max(landH - 0.05 * PowN(waterV, 0.8) * PowN(tileSlope, 2.0), receiver.landH); 
+    
+    tile.landH = landH;
+    tile.waterV = waterV;
+    SetErosionTileAt(id.xy, tile);
+}
+
 // Based on https://www.shadertoy.com/view/XsKGWG#
 [numthreads(8, 8, 1)]
-void HydraulicErosion(uint3 id: SV_DispatchThreadID)
+void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
 {
     float2 uv = id.xy + _Offset.xy;
  
@@ -81,7 +136,7 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
 
     waterV *= 0.98;
     
-    ErosionTile tile; 
+    ErosionTile tile;
     tile.landH = landH;
     tile.waterV = waterV;
     SetErosionTileAt(id.xy, tile);

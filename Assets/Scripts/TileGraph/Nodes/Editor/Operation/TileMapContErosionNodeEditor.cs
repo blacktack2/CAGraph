@@ -10,7 +10,7 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapContErosionNode))]
     public class TileMapContErosionNodeEditor : BaseNodeEditor<Nodes.TileMapContErosionNode>
     {
-        private SerializedProperty _TileMapIn, _TileMapOut, _Iterations;
+        private SerializedProperty _TileMapIn, _TileMapOut, _Iterations, _Algorithm;
 
         protected override bool GPUToggleable => true;
 
@@ -20,6 +20,7 @@ namespace TileGraph.Editors
             _TileMapOut = serializedObject.FindProperty("_TileMapOut");
             
             _Iterations = serializedObject.FindProperty("_Iterations");
+            _Algorithm = serializedObject.FindProperty("_Algorithm");
 
             AddPreview("_TileMapOut");
         }
@@ -37,6 +38,7 @@ namespace TileGraph.Editors
         protected override void NodeBodyGUI()
         {
             graph.editorUtilities.PropertyFieldMinLabel(_Iterations);
+            graph.editorUtilities.PropertyFieldMinLabel(_Algorithm);
         }
     }
 }
