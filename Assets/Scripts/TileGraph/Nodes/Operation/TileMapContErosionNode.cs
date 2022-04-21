@@ -18,9 +18,16 @@ namespace TileGraph.Nodes
 
         [SerializeField, NodeEnum]
         private Hydraulic.Algorithm _Algorithm = Hydraulic.Algorithm.PoorErosion;
+        [SerializeField]
+        private float _TerrainHardness = 1f;
+        [SerializeField]
+        private float _RainRate = 0.5f;
+        [SerializeField]
+        private float _RainAmount = 1f;
 
         private int _CurrentIterations = 1;
         private Hydraulic.Algorithm _CurrentAlgorithm = Hydraulic.Algorithm.PoorErosion;
+        private float _CurrentTerrainHardness = 1f, _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f;
         
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -38,6 +45,8 @@ namespace TileGraph.Nodes
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
                     _CurrentIterations != _Iterations || _CurrentAlgorithm != _Algorithm
+                    || _CurrentTerrainHardness != _TerrainHardness
+                    || _CurrentRainRate != _RainRate || _CurrentRainAmount != _RainAmount
                 );
                 return _TileMapOutBuffer;
             }
@@ -50,10 +59,15 @@ namespace TileGraph.Nodes
             {
                 _CurrentIterations = _Iterations;
                 _CurrentAlgorithm = _Algorithm;
+                _CurrentTerrainHardness = _TerrainHardness;
+                _CurrentRainRate = _RainRate;
+                _CurrentRainAmount = _RainAmount;
                 switch (_Algorithm)
                 {
                     case Hydraulic.Algorithm.PoorErosion:
-                        _Graph.functionLibrary.erosion.hydraulic.Poor(_TileMapOutBuffer, _Iterations, GPUEnabled);
+                        _Graph.functionLibrary.erosion.hydraulic.Poor(_TileMapOutBuffer, _Iterations,
+                            _TerrainHardness, _RainRate, _RainAmount,
+                            GPUEnabled);
                         break;
                     case Hydraulic.Algorithm.StreamPowerLaw:
                         _Graph.functionLibrary.erosion.hydraulic.StreamPowerLaw(_TileMapOutBuffer, _Iterations, GPUEnabled);

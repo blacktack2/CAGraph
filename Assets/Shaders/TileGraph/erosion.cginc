@@ -1,3 +1,5 @@
+float _TerrainHardness, _RainRate, _RainAmount;
+
 struct ErosionTile
 {
     float landH;  // Terrain Height
@@ -103,7 +105,7 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
         float waterVi = tiles[i].waterV;
         float waterHi = landHi + waterVi;
         float waterSlope = waterHi - waterHC;
-        float landSlope  = landHi  - landHC ;
+        float landSlope  = landHi - landHC;
 
         if (i > 4)
         {
@@ -114,25 +116,33 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
 
         if (waterVC > 0.0 && waterSlope < 0.0)
         {
+            // Reduce water (outflow) and erode terrain
             waterV += waterSlope * (1.0 / 9.0);
-            landH += 0.003 * waterSlope; // Deposition
+            landH += _TerrainHardness * 0.003 * waterSlope;
         }
         if (waterVi > 0.0 && waterSlope > 0.0)
         {
+            // Increase water (inflow) and erode terrain
             waterV += waterSlope * (1.0 / 12.0);
-            landH -= 0.003 * waterSlope; // Erosion
+            landH -= _TerrainHardness * 0.003 * waterSlope;
         }
 
-        landH += 0.001 * waterSlope;
+        // Erode/deposit based on slope
+        if (waterSlope > 0)
+            landH += 0.001 * waterSlope;
+        else
+            landH += _TerrainHardness * 0.001 * waterSlope;
 
         if (landSlope < -0.002 - 0.004 * hash12(uv))
-            landH += landSlope * (1.0 / 9.0);
+            landH += _TerrainHardness * landSlope * (1.0 / 9.0);
     }
-    landH += 0.001 * waterV;
-    waterV -= 1.0 / 65535.0;
+
+    landH += 0.001 * waterV; // Deposition
+    waterV -= 1.0 / 65535.0; // Evaporation
     
-    if (hash12((uv + _Iteration * 0.001) % 100.) > 0.5)
-        waterV += 4.0 / 65535.0;
+    // Rain
+    if (hash12((uv + _Iteration * 0.001) % 100.) > _RainRate)
+        waterV += _RainAmount * 4.0 / 65535.0;
 
     waterV *= 0.98;
     

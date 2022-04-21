@@ -80,18 +80,20 @@ namespace TileGraph.Utilities
                     tileMap.SetCells(cells); 
                 }
 
-                public void Poor(Types.TileMapCont tileMap, int iterations = 1, bool useGPU = true)
+                public void Poor(Types.TileMapCont tileMap, int iterations = 1,
+                    float terrainHardness = 1f, float rainRate = 0.5f, float rainAmount = 1f,
+                    bool useGPU = true)
                 {
                     if (useGPU)
-                        PoorGPU(tileMap, iterations);
+                        PoorGPU(tileMap, iterations, terrainHardness, rainRate, rainAmount);
                     else
-                        PoorCPU(tileMap, iterations);
+                        PoorCPU(tileMap, iterations, terrainHardness, rainRate, rainAmount);
                 }
-                private void PoorCPU(Types.TileMapCont tileMap, int iterations)
+                private void PoorCPU(Types.TileMapCont tileMap, int iterations, float terrainHardness, float rainRate, float rainAmount)
                 {
 
                 }
-                private void PoorGPU(Types.TileMapCont tileMap, int iterations)
+                private void PoorGPU(Types.TileMapCont tileMap, int iterations, float terrainHardness, float rainRate, float rainAmount)
                 {
                     const int kernelIndex = (int) FunctionKernels.HydraulicErosionPoor;
 
@@ -100,6 +102,10 @@ namespace TileGraph.Utilities
                     for (int i = 0; i < tiles.Length; i++)
                         tiles[i] = new ErosionTile() {landH = cells[i], waterV = 0f};
                     
+                    _FunctionLibrary._ComputeShader.SetFloat(_TerrainHardnessID, terrainHardness);
+                    _FunctionLibrary._ComputeShader.SetFloat(_RainRateID, rainRate);
+                    _FunctionLibrary._ComputeShader.SetFloat(_RainAmountID, rainAmount);
+
                     _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion0ID, _FunctionLibrary._TileMapErosion0Buffer);
                     _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion1ID, _FunctionLibrary._TileMapErosion1Buffer);
                     
