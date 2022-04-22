@@ -42,7 +42,7 @@ namespace TileGraph.Utilities
             SimplexNoise1D, SimplexNoise2D, SimplexNoise3D,
             FractalSimplexNoise1D, FractalSimplexNoise2D, FractalSimplexNoise3D,
             VoronoiNoise2D,
-            HydraulicErosionStreamPowerLaw, HydraulicErosionPoor
+            HydraulicErosion, FluvialErosion
         }
 
         private ComputeShader _ComputeShader;

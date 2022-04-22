@@ -21,8 +21,8 @@
 #pragma kernel FractalSimplexNoise2D
 #pragma kernel FractalSimplexNoise3D
 #pragma kernel VoronoiNoise2D
-#pragma kernel HydraulicErosionStreamPowerLaw
-#pragma kernel HydraulicErosionPoor
+#pragma kernel HydraulicErosion
+#pragma kernel FluvialErosion
 
 static const int MAXINT = 2147483648;
 

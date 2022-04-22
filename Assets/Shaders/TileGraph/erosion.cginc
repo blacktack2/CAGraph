@@ -44,39 +44,6 @@ float2 rec(float2 t)
     return d;
 }
 
-[numthreads(8, 8, 1)]
-void HydraulicErosionStreamPowerLaw(uint3 id: SV_DispatchThreadID)
-{
-    ErosionTile tile = GetErosionTileAt(id.xy);
-    float landH  = tile.landH;
-    float waterV = 1.0;
-
-    if (distance(rec(id.xy + N ), -N ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + N ).waterV;
-    if (distance(rec(id.xy + NE), -NE) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + NE).waterV;
-    if (distance(rec(id.xy + E ), -E ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + E ).waterV;
-    if (distance(rec(id.xy + SE), -SE) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + SE).waterV;
-    if (distance(rec(id.xy + S ), -S ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + S ).waterV;
-    if (distance(rec(id.xy + SW), -SW) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + SW).waterV;
-    if (distance(rec(id.xy + W ), -W ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + W ).waterV;
-    if (distance(rec(id.xy + NW), -NW) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + NW).waterV;
-
-    ErosionTile receiver = GetWrapErosionTileAt(id.xy + rec(id.xy));
-    float tileSlope = (landH - receiver.landH) / length(rec(id.xy));
-    landH = max(landH - 0.05 * PowN(waterV, 0.8) * PowN(tileSlope, 2.0), receiver.landH); 
-    
-    tile.landH = landH;
-    tile.waterV = waterV;
-    SetErosionTileAt(id.xy, tile);
-}
-
 #define softErode(amount)\
 sedH -= _SedimentHardness * amount;\
 if (sedH < 0.0)\
@@ -85,9 +52,9 @@ if (sedH < 0.0)\
     sedH = 0.0;\
 }
 
-// Based on https://www.shadertoy.com/view/XsKGWG#
+// Hydraulic Erosion, based on: https://www.shadertoy.com/view/XsKGWG#
 [numthreads(8, 8, 1)]
-void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
+void HydraulicErosion(uint3 id: SV_DispatchThreadID)
 {
     float2 uv = id.xy + _Offset.xy;
  
@@ -175,6 +142,40 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
     ErosionTile tile;
     tile.landH = landH;
     tile.sedH = sedH;
+    tile.waterV = waterV;
+    SetErosionTileAt(id.xy, tile);
+}
+
+// Stream Power Law, based on: https://www.shadertoy.com/view/XsVBRm
+[numthreads(8, 8, 1)]
+void FluvialErosion(uint3 id: SV_DispatchThreadID)
+{
+    ErosionTile tile = GetErosionTileAt(id.xy);
+    float landH  = tile.landH;
+    float waterV = 1.0;
+
+    if (distance(rec(id.xy + N ), -N ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + N ).waterV;
+    if (distance(rec(id.xy + NE), -NE) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + NE).waterV;
+    if (distance(rec(id.xy + E ), -E ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + E ).waterV;
+    if (distance(rec(id.xy + SE), -SE) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + SE).waterV;
+    if (distance(rec(id.xy + S ), -S ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + S ).waterV;
+    if (distance(rec(id.xy + SW), -SW) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + SW).waterV;
+    if (distance(rec(id.xy + W ), -W ) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + W ).waterV;
+    if (distance(rec(id.xy + NW), -NW) < 0.001)
+        waterV += GetWrapErosionTileAt(id.xy + NW).waterV;
+
+    ErosionTile receiver = GetWrapErosionTileAt(id.xy + rec(id.xy));
+    float tileSlope = (landH - receiver.landH) / length(rec(id.xy));
+    landH = max(landH - 0.05 * PowN(waterV, 0.8) * PowN(tileSlope, 2.0), receiver.landH); 
+    
+    tile.landH = landH;
     tile.waterV = waterV;
     SetErosionTileAt(id.xy, tile);
 }
