@@ -10,7 +10,11 @@ namespace TileGraph.Editors
     [CustomNodeEditor(typeof(Nodes.TileMapContErosionNode))]
     public class TileMapContErosionNodeEditor : BaseNodeEditor<Nodes.TileMapContErosionNode>
     {
-        private SerializedProperty _TileMapIn, _TileMapOut, _Iterations, _Algorithm, _TerrainHardness, _SedimentHardness, _DepositionRate, _RainRate, _RainAmount;
+        private SerializedProperty _TileMapIn, _TileMapOut,
+            _Iterations, _Algorithm,
+            _TerrainHardness, _SedimentHardness, _DepositionRate,
+            _RainRate, _RainAmount,
+            _MaxSlope, _ThermalRate;
 
         protected override bool GPUToggleable => true;
 
@@ -25,8 +29,12 @@ namespace TileGraph.Editors
             _TerrainHardness  = serializedObject.FindProperty("_TerrainHardness");
             _SedimentHardness = serializedObject.FindProperty("_SedimentHardness");
             _DepositionRate   = serializedObject.FindProperty("_DepositionRate");
-            _RainRate         = serializedObject.FindProperty("_RainRate");
-            _RainAmount       = serializedObject.FindProperty("_RainAmount");
+
+            _RainRate   = serializedObject.FindProperty("_RainRate");
+            _RainAmount = serializedObject.FindProperty("_RainAmount");
+
+            _MaxSlope    = serializedObject.FindProperty("_MaxSlope");
+            _ThermalRate = serializedObject.FindProperty("_ThermalRate");
 
             AddPreview("_TileMapOut");
         }
@@ -49,8 +57,12 @@ namespace TileGraph.Editors
             graph.editorUtilities.PropertyFieldMinLabel(_TerrainHardness);
             graph.editorUtilities.PropertyFieldMinLabel(_SedimentHardness);
             graph.editorUtilities.PropertyFieldMinLabel(_DepositionRate);
+
             graph.editorUtilities.PropertyFieldMinLabel(_RainRate);
             graph.editorUtilities.PropertyFieldMinLabel(_RainAmount);
+
+            graph.editorUtilities.PropertyFieldMinLabel(_MaxSlope);
+            graph.editorUtilities.PropertyFieldMinLabel(_ThermalRate);
         }
     }
 }

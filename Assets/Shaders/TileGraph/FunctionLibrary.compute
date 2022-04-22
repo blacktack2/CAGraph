@@ -23,6 +23,7 @@
 #pragma kernel VoronoiNoise2D
 #pragma kernel HydraulicErosion
 #pragma kernel FluvialErosion
+#pragma kernel ThermalErosion
 
 static const int MAXINT = 2147483648;
 
@@ -72,7 +73,7 @@ type Get##name##TileAt(int2 xy)\
 }\
 type GetClamp##name##TileAt(int2 xy)\
 {\
-    int2 uv = int2(clamp(xy.x, 0, _ScaleX), clamp(xy.y, 0, _ScaleY));\
+    int2 uv = int2(clamp(xy.x, 0, _ScaleX - 1), clamp(xy.y, 0, _ScaleY - 1));\
     if (_BufferFlag)\
         return _TileMap##name##1[uv.x + uv.y * _ScaleX];\
     else\

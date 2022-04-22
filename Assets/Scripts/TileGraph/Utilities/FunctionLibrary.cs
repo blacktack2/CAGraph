@@ -30,7 +30,9 @@ namespace TileGraph.Utilities
             _SedimentHardnessID = Shader.PropertyToID("_SedimentHardness"),
             _DepositionRateID = Shader.PropertyToID("_DepositionRate"),
             _RainRateID = Shader.PropertyToID("_RainRate"),
-            _RainAmountID = Shader.PropertyToID("_RainAmount");
+            _RainAmountID = Shader.PropertyToID("_RainAmount"),
+            _MaxSlopeID = Shader.PropertyToID("_MaxSlope"),
+            _ThermalRateID = Shader.PropertyToID("_ThermalRate");
         
         private enum FunctionKernels {
             IterateLifeCells,
@@ -42,7 +44,7 @@ namespace TileGraph.Utilities
             SimplexNoise1D, SimplexNoise2D, SimplexNoise3D,
             FractalSimplexNoise1D, FractalSimplexNoise2D, FractalSimplexNoise3D,
             VoronoiNoise2D,
-            HydraulicErosion, FluvialErosion
+            HydraulicErosion, FluvialErosion, ThermalErosion
         }
 
         private ComputeShader _ComputeShader;

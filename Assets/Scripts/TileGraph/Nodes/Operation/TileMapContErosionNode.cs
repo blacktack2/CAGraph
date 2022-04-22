@@ -28,11 +28,16 @@ namespace TileGraph.Nodes
         private float _RainRate = 0.5f;
         [SerializeField]
         private float _RainAmount = 1f;
+        [SerializeField]
+        private float _MaxSlope = 3.6f;
+        [SerializeField]
+        private float _ThermalRate = 0.146f;
 
         private int _CurrentIterations = 1;
         private Erosion.Algorithm _CurrentAlgorithm = Erosion.Algorithm.Hydraulic;
         private float _CurrentTerrainHardness = 1f, _CurrentSedimentHardness = 1f, _CurretnDepositionRate = 1f,
-            _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f;
+            _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f,
+            _CurrentMaxSlope = 3.6f, _CurrentThermalRate = 0.146f;
         
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -52,6 +57,7 @@ namespace TileGraph.Nodes
                     _CurrentIterations != _Iterations || _CurrentAlgorithm != _Algorithm
                     || _CurrentTerrainHardness != _TerrainHardness || _CurrentSedimentHardness != _SedimentHardness || _CurretnDepositionRate != _DepositionRate
                     || _CurrentRainRate != _RainRate || _CurrentRainAmount != _RainAmount
+                    || _CurrentMaxSlope != _MaxSlope || _CurrentThermalRate != _ThermalRate
                 );
                 return _TileMapOutBuffer;
             }
@@ -64,12 +70,17 @@ namespace TileGraph.Nodes
             {
                 _CurrentIterations = _Iterations;
                 _CurrentAlgorithm = _Algorithm;
+
                 _CurrentTerrainHardness = _TerrainHardness;
                 _CurrentSedimentHardness = _SedimentHardness;
                 _CurretnDepositionRate = _DepositionRate;
+
                 _CurrentRainRate = _RainRate;
                 _CurrentRainAmount = _RainAmount;
-                switch (_Algorithm)
+
+                _CurrentMaxSlope = _MaxSlope;
+                _CurrentThermalRate = _ThermalRate;
+                switch (_Algorithm) 
                 {
                     case Erosion.Algorithm.Hydraulic:
                         _Graph.functionLibrary.erosion.Hydraulic(_TileMapOutBuffer, _Iterations,
@@ -79,6 +90,9 @@ namespace TileGraph.Nodes
                         break;
                     case Erosion.Algorithm.Fluvial:
                         _Graph.functionLibrary.erosion.Fluvial(_TileMapOutBuffer, _Iterations, GPUEnabled);
+                        break;
+                    case Erosion.Algorithm.Thermal:
+                        _Graph.functionLibrary.erosion.Thermal(_TileMapOutBuffer, _Iterations, _MaxSlope, _ThermalRate, GPUEnabled);
                         break;
                 }
             }

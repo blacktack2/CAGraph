@@ -1,4 +1,6 @@
-float _TerrainHardness, _SedimentHardness, _DepositionRate, _RainRate, _RainAmount;
+float _TerrainHardness, _SedimentHardness, _DepositionRate,
+    _RainRate, _RainAmount,
+    _MaxSlope, _ThermalRate;
 
 struct ErosionTile
 {
@@ -61,15 +63,15 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
     ErosionTile tiles[9];
     tiles[0] = GetWrapErosionTileAt(id.xy);
     // Cardinal neighbours
-    tiles[1] = GetWrapErosionTileAt(id.xy + int2( 1,  0));
-    tiles[2] = GetWrapErosionTileAt(id.xy + int2(-1,  0));
-    tiles[3] = GetWrapErosionTileAt(id.xy + int2( 0,  1));
-    tiles[4] = GetWrapErosionTileAt(id.xy + int2( 0, -1));
+    tiles[1] = GetClampErosionTileAt(id.xy + N);
+    tiles[2] = GetClampErosionTileAt(id.xy + E);
+    tiles[3] = GetClampErosionTileAt(id.xy + S);
+    tiles[4] = GetClampErosionTileAt(id.xy + W);
     // Corner neighbours
-    tiles[5] = GetWrapErosionTileAt(id.xy + int2( 1,  1));
-    tiles[6] = GetWrapErosionTileAt(id.xy + int2(-1,  1));
-    tiles[7] = GetWrapErosionTileAt(id.xy + int2( 1, -1));
-    tiles[8] = GetWrapErosionTileAt(id.xy + int2(-1, -1));
+    tiles[5] = GetClampErosionTileAt(id.xy + NE);
+    tiles[6] = GetClampErosionTileAt(id.xy + SE);
+    tiles[7] = GetClampErosionTileAt(id.xy + SW);
+    tiles[8] = GetClampErosionTileAt(id.xy + NW);
 
     float landHC  = tiles[0].landH;  // Land height of current cell
     float sedHC   = tiles[0].sedH;   // Sediment height of current cell
@@ -178,4 +180,49 @@ void FluvialErosion(uint3 id: SV_DispatchThreadID)
     tile.landH = landH;
     tile.waterV = waterV;
     SetErosionTileAt(id.xy, tile);
+}
+
+// Thermal Erosion, based on: https://www.shadertoy.com/view/XtKSWh
+[numthreads(8, 8, 1)]
+void ThermalErosion(uint3 id: SV_DispatchThreadID)
+{
+    ErosionTile tiles[9];
+    tiles[0] = GetErosionTileAt(id.xy);
+    // Cardinal neighbours
+    tiles[1] = GetClampErosionTileAt(id.xy + N);
+    tiles[2] = GetClampErosionTileAt(id.xy + E);
+    tiles[3] = GetClampErosionTileAt(id.xy + S);
+    tiles[4] = GetClampErosionTileAt(id.xy + W);
+    // Corner neighbours
+    tiles[5] = GetClampErosionTileAt(id.xy + NE);
+    tiles[6] = GetClampErosionTileAt(id.xy + SE);
+    tiles[7] = GetClampErosionTileAt(id.xy + SW);
+    tiles[8] = GetClampErosionTileAt(id.xy + NW);
+
+    float landH = tiles[0].landH;
+
+    float mDif = 0.0;
+    for (int i = 1; i < 9; i++)
+    {
+        float dist = (i > 4 ? 1.41421356237 : 1.0); // Offset by sqrt(2) if a corner neighbour
+        float maxDif = _MaxSlope * dist / 400.0;
+        float landHi = tiles[i].landH;
+        if (landH > landHi)
+        {
+            // Lower current tile height closer to tile i
+            float diff = landH - landHi;
+            if (diff > maxDif)
+                mDif -= _ThermalRate * (diff - maxDif) / dist;
+        }
+        else
+        {
+            // Raise current tile height closer to tile i
+            float diff = landHi - landH;
+            if (diff > maxDif)
+                mDif += _ThermalRate * (diff - maxDif) / dist;
+        }
+    }
+
+    tiles[0].landH += mDif;
+    SetErosionTileAt(id.xy, tiles[0]);
 }

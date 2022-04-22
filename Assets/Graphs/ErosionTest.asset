@@ -73,8 +73,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 300
-  _TileMapHeight: 300
+  _TileMapWidth: 200
+  _TileMapHeight: 200
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   _RelativeFrequency: 1
   _Algorithm: 3
   _Detail: 0
-  _Octaves: 5
+  _Octaves: 8
   _Lacunarity:
   - 2
   - 4
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: Erosion
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -264}
+  position: {x: 120, y: -200}
   ports:
     keys:
     - _TileMapIn
@@ -296,12 +296,14 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _Iterations: 1000
-  _Algorithm: 0
+  _Algorithm: 2
   _TerrainHardness: 1
   _SedimentHardness: 1
   _DepositionRate: 1
   _RainRate: 0.5
   _RainAmount: 1
+  _MaxSlope: 3.6
+  _ThermalRate: 0.146
 --- !u!114 &5340130137164207482
 MonoBehaviour:
   m_ObjectHideFlags: 0
