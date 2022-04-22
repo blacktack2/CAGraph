@@ -13,7 +13,7 @@ namespace TileGraph.Nodes
         [SerializeField, Input] private Types.TileMapCont _TileMapIn;
         [SerializeField, Output] private Types.TileMapCont _TileMapOut;
 
-        [SerializeField, Range(1, 10000)]
+        [SerializeField, Range(1, 1000)]
         private int _Iterations = 1;
 
         [SerializeField, NodeEnum]
@@ -21,13 +21,18 @@ namespace TileGraph.Nodes
         [SerializeField]
         private float _TerrainHardness = 1f;
         [SerializeField]
+        private float _SedimentHardness = 1f;
+        [SerializeField]
+        private float _DepositionRate = 1f;
+        [SerializeField]
         private float _RainRate = 0.5f;
         [SerializeField]
         private float _RainAmount = 1f;
 
         private int _CurrentIterations = 1;
         private Hydraulic.Algorithm _CurrentAlgorithm = Hydraulic.Algorithm.PoorErosion;
-        private float _CurrentTerrainHardness = 1f, _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f;
+        private float _CurrentTerrainHardness = 1f, _CurrentSedimentHardness = 1f, _CurretnDepositionRate = 1f,
+            _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f;
         
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -45,7 +50,7 @@ namespace TileGraph.Nodes
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
                     _CurrentIterations != _Iterations || _CurrentAlgorithm != _Algorithm
-                    || _CurrentTerrainHardness != _TerrainHardness
+                    || _CurrentTerrainHardness != _TerrainHardness || _CurrentSedimentHardness != _SedimentHardness || _CurretnDepositionRate != _DepositionRate
                     || _CurrentRainRate != _RainRate || _CurrentRainAmount != _RainAmount
                 );
                 return _TileMapOutBuffer;
@@ -60,13 +65,16 @@ namespace TileGraph.Nodes
                 _CurrentIterations = _Iterations;
                 _CurrentAlgorithm = _Algorithm;
                 _CurrentTerrainHardness = _TerrainHardness;
+                _CurrentSedimentHardness = _SedimentHardness;
+                _CurretnDepositionRate = _DepositionRate;
                 _CurrentRainRate = _RainRate;
                 _CurrentRainAmount = _RainAmount;
                 switch (_Algorithm)
                 {
                     case Hydraulic.Algorithm.PoorErosion:
                         _Graph.functionLibrary.erosion.hydraulic.Poor(_TileMapOutBuffer, _Iterations,
-                            _TerrainHardness, _RainRate, _RainAmount,
+                            _TerrainHardness, _SedimentHardness, _DepositionRate,
+                            _RainRate, _RainAmount,
                             GPUEnabled);
                         break;
                     case Hydraulic.Algorithm.StreamPowerLaw:

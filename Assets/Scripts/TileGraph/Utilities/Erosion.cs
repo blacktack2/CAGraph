@@ -9,6 +9,7 @@ namespace TileGraph.Utilities
             public struct ErosionTile
             {
                 public float landH;
+                public float sedH;
                 public float waterV;
             }
 
@@ -50,7 +51,7 @@ namespace TileGraph.Utilities
                     float[] cells = tileMap.GetCells();
                     ErosionTile[] tiles = new ErosionTile[cells.Length];
                     for (int i = 0; i < tiles.Length; i++)
-                        tiles[i] = new ErosionTile() {landH = cells[i], waterV = 0f};
+                        tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
                     
                     _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion0ID, _FunctionLibrary._TileMapErosion0Buffer);
                     _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion1ID, _FunctionLibrary._TileMapErosion1Buffer);
@@ -81,28 +82,35 @@ namespace TileGraph.Utilities
                 }
 
                 public void Poor(Types.TileMapCont tileMap, int iterations = 1,
-                    float terrainHardness = 1f, float rainRate = 0.5f, float rainAmount = 1f,
+                    float terrainHardness = 1f, float sedimentHardness = 1f, float depositionRate = 1f,
+                    float rainRate = 0.5f, float rainAmount = 1f,
                     bool useGPU = true)
                 {
                     if (useGPU)
-                        PoorGPU(tileMap, iterations, terrainHardness, rainRate, rainAmount);
+                        PoorGPU(tileMap, iterations, terrainHardness, sedimentHardness, depositionRate, rainRate, rainAmount);
                     else
-                        PoorCPU(tileMap, iterations, terrainHardness, rainRate, rainAmount);
+                        PoorCPU(tileMap, iterations, terrainHardness, sedimentHardness, depositionRate, rainRate, rainAmount);
                 }
-                private void PoorCPU(Types.TileMapCont tileMap, int iterations, float terrainHardness, float rainRate, float rainAmount)
+                private void PoorCPU(Types.TileMapCont tileMap, int iterations,
+                    float terrainHardness, float sedimentHardness, float depositionRate,
+                    float rainRate, float rainAmount)
                 {
 
                 }
-                private void PoorGPU(Types.TileMapCont tileMap, int iterations, float terrainHardness, float rainRate, float rainAmount)
+                private void PoorGPU(Types.TileMapCont tileMap, int iterations,
+                    float terrainHardness, float sedimentHardness, float depositionRate,
+                    float rainRate, float rainAmount)
                 {
                     const int kernelIndex = (int) FunctionKernels.HydraulicErosionPoor;
 
                     float[] cells = tileMap.GetCells();
                     ErosionTile[] tiles = new ErosionTile[cells.Length];
                     for (int i = 0; i < tiles.Length; i++)
-                        tiles[i] = new ErosionTile() {landH = cells[i], waterV = 0f};
+                        tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
                     
                     _FunctionLibrary._ComputeShader.SetFloat(_TerrainHardnessID, terrainHardness);
+                    _FunctionLibrary._ComputeShader.SetFloat(_SedimentHardnessID, sedimentHardness);
+                    _FunctionLibrary._ComputeShader.SetFloat(_DepositionRateID, depositionRate);
                     _FunctionLibrary._ComputeShader.SetFloat(_RainRateID, rainRate);
                     _FunctionLibrary._ComputeShader.SetFloat(_RainAmountID, rainAmount);
 
@@ -130,7 +138,7 @@ namespace TileGraph.Utilities
                         _FunctionLibrary._TileMapErosion1Buffer.GetData(tiles);
                     
                     for (int i = 0; i < cells.Length; i++)
-                        cells[i] = tiles[i].landH;
+                        cells[i] = tiles[i].landH + tiles[i].sedH;
                     tileMap.SetCells(cells); 
                 }
             }

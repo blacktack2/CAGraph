@@ -298,6 +298,8 @@ MonoBehaviour:
   _Iterations: 1000
   _Algorithm: 0
   _TerrainHardness: 1
+  _SedimentHardness: 1
+  _DepositionRate: 1
   _RainRate: 0.5
   _RainAmount: 1
 --- !u!114 &5340130137164207482

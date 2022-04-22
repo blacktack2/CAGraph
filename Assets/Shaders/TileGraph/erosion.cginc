@@ -1,8 +1,9 @@
-float _TerrainHardness, _RainRate, _RainAmount;
+float _TerrainHardness, _SedimentHardness, _DepositionRate, _RainRate, _RainAmount;
 
 struct ErosionTile
 {
     float landH;  // Terrain Height
+    float sedH;   // Sediment Height
     float waterV; // Water Volume
 };
 ErosionTile GetDefaultErosionTile()
@@ -76,6 +77,14 @@ void HydraulicErosionStreamPowerLaw(uint3 id: SV_DispatchThreadID)
     SetErosionTileAt(id.xy, tile);
 }
 
+#define softErode(amount)\
+sedH -= _SedimentHardness * amount;\
+if (sedH < 0.0)\
+{\
+    landH += sedH * _TerrainHardness / _SedimentHardness;\
+    sedH = 0.0;\
+}
+
 // Based on https://www.shadertoy.com/view/XsKGWG#
 [numthreads(8, 8, 1)]
 void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
@@ -84,32 +93,38 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
  
     ErosionTile tiles[9];
     tiles[0] = GetWrapErosionTileAt(id.xy);
+    // Cardinal neighbours
     tiles[1] = GetWrapErosionTileAt(id.xy + int2( 1,  0));
     tiles[2] = GetWrapErosionTileAt(id.xy + int2(-1,  0));
     tiles[3] = GetWrapErosionTileAt(id.xy + int2( 0,  1));
     tiles[4] = GetWrapErosionTileAt(id.xy + int2( 0, -1));
+    // Corner neighbours
     tiles[5] = GetWrapErosionTileAt(id.xy + int2( 1,  1));
     tiles[6] = GetWrapErosionTileAt(id.xy + int2(-1,  1));
     tiles[7] = GetWrapErosionTileAt(id.xy + int2( 1, -1));
     tiles[8] = GetWrapErosionTileAt(id.xy + int2(-1, -1));
 
     float landHC  = tiles[0].landH;  // Land height of current cell
+    float sedHC   = tiles[0].sedH;   // Sediment height of current cell
     float waterVC = tiles[0].waterV; // Water volume of current cell
-    float waterHC = landHC + waterVC;
+    float waterHC = landHC + sedHC + waterVC;
 
+    // Return values
     float landH  = landHC;
-    float waterV = waterVC;    
+    float sedH   = sedHC;
+    float waterV = waterVC;
     for (int i = 1; i < 9; i++)
     {
         float landHi  = tiles[i].landH;
+        float sedHi   = tiles[i].sedH;
         float waterVi = tiles[i].waterV;
-        float waterHi = landHi + waterVi;
+        float waterHi = landHi + sedHi + waterVi;
         float waterSlope = waterHi - waterHC;
-        float landSlope  = landHi - landHC;
+        float landSlope  = landHi + sedHi - landHC - sedHC;
 
         if (i > 4)
         {
-            // Normalize corner weights
+            // Normalize corner weights (1 / sqrt(2))
             waterSlope *= 0.70710678118;
             landSlope  *= 0.70710678118;
         }
@@ -118,26 +133,37 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
         {
             // Reduce water (outflow) and erode terrain
             waterV += waterSlope * (1.0 / 9.0);
-            landH += _TerrainHardness * 0.003 * waterSlope;
+            softErode(0.003 * waterSlope)
+            // landH += _TerrainHardness * 0.003 * waterSlope;
         }
         if (waterVi > 0.0 && waterSlope > 0.0)
         {
             // Increase water (inflow) and erode terrain
             waterV += waterSlope * (1.0 / 12.0);
-            landH -= _TerrainHardness * 0.003 * waterSlope;
+            softErode(-0.003 * waterSlope);
+            // landH -= _TerrainHardness * 0.003 * waterSlope;
         }
 
         // Erode/deposit based on slope
         if (waterSlope > 0)
-            landH += 0.001 * waterSlope;
+        {
+            sedH += _DepositionRate * 0.001 * waterSlope;
+        }
         else
-            landH += _TerrainHardness * 0.001 * waterSlope;
+        {
+            softErode(-0.001 * waterSlope)
+            // landH += _TerrainHardness * 0.001 * waterSlope;
+        }
 
+        // Erode steep slopes
         if (landSlope < -0.002 - 0.004 * hash12(uv))
-            landH += _TerrainHardness * landSlope * (1.0 / 9.0);
+        {
+            softErode(-landSlope * (1.0 / 9.0))
+            // landH += _TerrainHardness * landSlope * (1.0 / 9.0);
+        }
     }
 
-    landH += 0.001 * waterV; // Deposition
+    sedH += _DepositionRate * 0.001 * waterV; // Deposition
     waterV -= 1.0 / 65535.0; // Evaporation
     
     // Rain
@@ -148,6 +174,7 @@ void HydraulicErosionPoor(uint3 id: SV_DispatchThreadID)
     
     ErosionTile tile;
     tile.landH = landH;
+    tile.sedH = sedH;
     tile.waterV = waterV;
     SetErosionTileAt(id.xy, tile);
 }

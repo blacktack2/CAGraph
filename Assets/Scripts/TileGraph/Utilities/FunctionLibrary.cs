@@ -27,6 +27,8 @@ namespace TileGraph.Utilities
             _PersistenceID = Shader.PropertyToID("_Persistence"),
             _CentroidThresholdID = Shader.PropertyToID("_CentroidThreshold"),
             _TerrainHardnessID = Shader.PropertyToID("_TerrainHardness"),
+            _SedimentHardnessID = Shader.PropertyToID("_SedimentHardness"),
+            _DepositionRateID = Shader.PropertyToID("_DepositionRate"),
             _RainRateID = Shader.PropertyToID("_RainRate"),
             _RainAmountID = Shader.PropertyToID("_RainAmount");
         
