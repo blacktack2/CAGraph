@@ -4,15 +4,17 @@ float _TerrainHardness, _SedimentHardness, _DepositionRate,
 
 struct ErosionTile
 {
-    float landH;  // Terrain Height
-    float sedH;   // Sediment Height
-    float waterV; // Water Volume
+    float landH;   // Terrain Height
+    float sedH;    // Sediment Height
+    float waterVH; // Water Volume (Hydraulic Erosion)
+    float waterVF; // Water Volume (Fluvial Erosion)
 };
 ErosionTile GetDefaultErosionTile()
 {
     ErosionTile tile;
     tile.landH = 0.0;
-    tile.waterV = 0.0;
+    tile.waterVH = 0.0;
+    tile.waterVF = 0.0;
     return tile;
 }
 DefineTileMap(Erosion, ErosionTile, GetDefaultErosionTile()) // GetErosionTileAt() GetClampErosionTileAt SetErosionTileAt()
@@ -75,7 +77,7 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
 
     float landHC  = tiles[0].landH;  // Land height of current cell
     float sedHC   = tiles[0].sedH;   // Sediment height of current cell
-    float waterVC = tiles[0].waterV; // Water volume of current cell
+    float waterVC = tiles[0].waterVH; // Water volume of current cell
     float waterHC = landHC + sedHC + waterVC;
 
     // Return values
@@ -86,7 +88,7 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
     {
         float landHi  = tiles[i].landH;
         float sedHi   = tiles[i].sedH;
-        float waterVi = tiles[i].waterV;
+        float waterVi = tiles[i].waterVH;
         float waterHi = landHi + sedHi + waterVi;
         float waterSlope = waterHi - waterHC;
         float landSlope  = landHi + sedHi - landHC - sedHC;
@@ -140,7 +142,8 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
     ErosionTile tile;
     tile.landH = landH;
     tile.sedH = sedH;
-    tile.waterV = waterV;
+    tile.waterVH = waterV;
+    tile.waterVF = tiles[0].waterVF;
     SetErosionTileAt(id.xy, tile);
 }
 
@@ -152,22 +155,36 @@ void FluvialErosion(uint3 id: SV_DispatchThreadID)
     float landH  = tile.landH;
     float waterV = 1.0;
 
-    if (distance(rec(id.xy + N ), -N ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + N ).waterV;
-    if (distance(rec(id.xy + NE), -NE) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + NE).waterV;
-    if (distance(rec(id.xy + E ), -E ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + E ).waterV;
-    if (distance(rec(id.xy + SE), -SE) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + SE).waterV;
-    if (distance(rec(id.xy + S ), -S ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + S ).waterV;
-    if (distance(rec(id.xy + SW), -SW) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + SW).waterV;
-    if (distance(rec(id.xy + W ), -W ) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + W ).waterV;
-    if (distance(rec(id.xy + NW), -NW) < 0.001)
-        waterV += GetWrapErosionTileAt(id.xy + NW).waterV;
+    float2 dirs[8];
+    dirs[0] = N;
+    dirs[1] = NE;
+    dirs[2] = E;
+    dirs[3] = SE;
+    dirs[4] = S;
+    dirs[5] = SW;
+    dirs[6] = W;
+    dirs[7] = NW;
+
+    for (int i = 0; i < 8; i++)
+        if (distance(rec(id.xy + dirs[i]), -dirs[i]) < 0.001)
+            waterV += GetWrapErosionTileAt(id.xy + dirs[i]).waterVF;
+
+    // if (distance(rec(id.xy + N ), -N ) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + N ).waterVF;
+    // if (distance(rec(id.xy + NE), -NE) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + NE).waterVF;
+    // if (distance(rec(id.xy + E ), -E ) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + E ).waterVF;
+    // if (distance(rec(id.xy + SE), -SE) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + SE).waterVF;
+    // if (distance(rec(id.xy + S ), -S ) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + S ).waterVF;
+    // if (distance(rec(id.xy + SW), -SW) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + SW).waterVF;
+    // if (distance(rec(id.xy + W ), -W ) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + W ).waterVF;
+    // if (distance(rec(id.xy + NW), -NW) < 0.001)
+    //     waterV += GetWrapErosionTileAt(id.xy + NW).waterVF;
 
     float2 recPos = rec(id.xy);
     ErosionTile receiver = GetWrapErosionTileAt(id.xy + recPos);
@@ -175,6 +192,7 @@ void FluvialErosion(uint3 id: SV_DispatchThreadID)
     landH = max(landH - 0.05 * pow(abs(waterV), 0.8) * pow(abs(tileSlope), 2.0), receiver.landH); 
     
     tile.landH = landH;
+    tile.waterVF = waterV;
     SetErosionTileAt(id.xy, tile);
 }
 

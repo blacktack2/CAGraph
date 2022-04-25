@@ -61,7 +61,8 @@ namespace TileGraph.Utilities
             {
                 public float landH;
                 public float sedH;
-                public float waterV;
+                public float waterVH;
+                public float waterVF;
             }
 
             public Erosion(FunctionLibrary functionLibrary) : base(functionLibrary)
@@ -88,7 +89,7 @@ namespace TileGraph.Utilities
                 float[] cells = tileMap.GetCells();
                 ErosionTile[] tiles = new ErosionTile[cells.Length];
                 for (int i = 0; i < tiles.Length; i++)
-                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
+                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterVH = 0f, waterVF = 0f};
                 
                 _FunctionLibrary._ComputeShader.SetBuffer(hydraulicKernel, _TileMapErosion0ID, _FunctionLibrary._TileMapErosion0Buffer);
                 _FunctionLibrary._ComputeShader.SetBuffer(hydraulicKernel, _TileMapErosion1ID, _FunctionLibrary._TileMapErosion1Buffer);
@@ -178,7 +179,7 @@ namespace TileGraph.Utilities
                 float[] cells = tileMap.GetCells();
                 ErosionTile[] tiles = new ErosionTile[cells.Length];
                 for (int i = 0; i < tiles.Length; i++)
-                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
+                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterVH = 0f, waterVF = 0f};
                 
                 _FunctionLibrary._ComputeShader.SetFloat(_TerrainHardnessID, terrainHardness);
                 _FunctionLibrary._ComputeShader.SetFloat(_SedimentHardnessID, sedimentHardness);
@@ -235,7 +236,7 @@ namespace TileGraph.Utilities
                 float[] cells = tileMap.GetCells();
                 ErosionTile[] tiles = new ErosionTile[cells.Length];
                 for (int i = 0; i < tiles.Length; i++)
-                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
+                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterVH = 0f, waterVF = 0f};
                 
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion0ID, _FunctionLibrary._TileMapErosion0Buffer);
                 _FunctionLibrary._ComputeShader.SetBuffer(kernelIndex, _TileMapErosion1ID, _FunctionLibrary._TileMapErosion1Buffer);
@@ -287,7 +288,7 @@ namespace TileGraph.Utilities
                 float[] cells = tileMap.GetCells();
                 ErosionTile[] tiles = new ErosionTile[cells.Length];
                 for (int i = 0; i < tiles.Length; i++)
-                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterV = 0f};
+                    tiles[i] = new ErosionTile() {landH = cells[i], sedH = 0f, waterVH = 0f, waterVF = 0f};
                 
                 _FunctionLibrary._ComputeShader.SetFloat(_MaxSlopeID, maxSlope);
                 _FunctionLibrary._ComputeShader.SetFloat(_ThermalRateID, thermalRate);

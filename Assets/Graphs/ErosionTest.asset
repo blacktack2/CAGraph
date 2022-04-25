@@ -298,7 +298,7 @@ MonoBehaviour:
   _Iterations: 1000
   _Passes:
   - algorithm: 1
-    repeats: 2
+    repeats: 1
     terrainHardness: 1
     sedimentHardness: 1
     depositionRate: 1
@@ -313,7 +313,16 @@ MonoBehaviour:
     depositionRate: 1
     rainRate: 0.5
     rainAmount: 1
-    maxSlope: 1.5
+    maxSlope: 1.1
+    thermalRate: 0.146
+  - algorithm: 1
+    repeats: 1
+    terrainHardness: 1
+    sedimentHardness: 1
+    depositionRate: 1
+    rainRate: 0.5
+    rainAmount: 1
+    maxSlope: 3.6
     thermalRate: 0.146
   - algorithm: 0
     repeats: 1
