@@ -103,14 +103,12 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
             // Reduce water (outflow) and erode terrain
             waterV += waterSlope * (1.0 / 9.0);
             softErode(0.003 * waterSlope)
-            // landH += _TerrainHardness * 0.003 * waterSlope;
         }
         if (waterVi > 0.0 && waterSlope > 0.0)
         {
             // Increase water (inflow) and erode terrain
             waterV += waterSlope * (1.0 / 12.0);
             softErode(-0.003 * waterSlope);
-            // landH -= _TerrainHardness * 0.003 * waterSlope;
         }
 
         // Erode/deposit based on slope
@@ -121,14 +119,12 @@ void HydraulicErosion(uint3 id: SV_DispatchThreadID)
         else
         {
             softErode(-0.001 * waterSlope)
-            // landH += _TerrainHardness * 0.001 * waterSlope;
         }
 
         // Erode steep slopes
         if (landSlope < -0.002 - 0.004 * hash12(uv))
         {
             softErode(-landSlope * (1.0 / 9.0))
-            // landH += _TerrainHardness * landSlope * (1.0 / 9.0);
         }
     }
 
@@ -173,12 +169,12 @@ void FluvialErosion(uint3 id: SV_DispatchThreadID)
     if (distance(rec(id.xy + NW), -NW) < 0.001)
         waterV += GetWrapErosionTileAt(id.xy + NW).waterV;
 
-    ErosionTile receiver = GetWrapErosionTileAt(id.xy + rec(id.xy));
-    float tileSlope = (landH - receiver.landH) / length(rec(id.xy));
-    landH = max(landH - 0.05 * PowN(waterV, 0.8) * PowN(tileSlope, 2.0), receiver.landH); 
+    float2 recPos = rec(id.xy);
+    ErosionTile receiver = GetWrapErosionTileAt(id.xy + recPos);
+    float tileSlope = (landH - receiver.landH) / length(recPos);
+    landH = max(landH - 0.05 * pow(abs(waterV), 0.8) * pow(abs(tileSlope), 2.0), receiver.landH); 
     
     tile.landH = landH;
-    tile.waterV = waterV;
     SetErosionTileAt(id.xy, tile);
 }
 

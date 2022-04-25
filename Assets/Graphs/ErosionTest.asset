@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: Erosion
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -200}
+  position: {x: 120, y: -264}
   ports:
     keys:
     - _TileMapIn
@@ -296,14 +296,34 @@ MonoBehaviour:
     height: 0
     _Cells: []
   _Iterations: 1000
-  _Algorithm: 2
-  _TerrainHardness: 1
-  _SedimentHardness: 1
-  _DepositionRate: 1
-  _RainRate: 0.5
-  _RainAmount: 1
-  _MaxSlope: 3.6
-  _ThermalRate: 0.146
+  _Passes:
+  - algorithm: 1
+    repeats: 2
+    terrainHardness: 1
+    sedimentHardness: 1
+    depositionRate: 1
+    rainRate: 0.5
+    rainAmount: 1
+    maxSlope: 3.6
+    thermalRate: 0.146
+  - algorithm: 2
+    repeats: 1
+    terrainHardness: 1
+    sedimentHardness: 1
+    depositionRate: 1
+    rainRate: 0.5
+    rainAmount: 1
+    maxSlope: 1.5
+    thermalRate: 0.146
+  - algorithm: 0
+    repeats: 1
+    terrainHardness: 1
+    sedimentHardness: 1
+    depositionRate: 1
+    rainRate: 0.5
+    rainAmount: 1
+    maxSlope: 3.6
+    thermalRate: 0.146
 --- !u!114 &5340130137164207482
 MonoBehaviour:
   m_ObjectHideFlags: 0

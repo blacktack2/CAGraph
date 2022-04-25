@@ -103,23 +103,6 @@ DefineTileMap(Bool, int, 0)     // GetBoolTileAt() GetClampBoolTileAt SetBoolTil
 DefineTileMap(Cont, float, 0.0) // GetContTileAt() GetClampContTileAt SetContTileAt()
 DefineTileMap(Uint, uint, 0u)   // GetUintTileAt() GetClampUintTileAt SetUintTileAt()
 
-// Exponential function supporting negative x
-float PowN(float x, float y)
-{
-    if (x > 0)
-    {
-        return pow(x, y);
-    }
-    else if ((uint)(-x) % 2 == 0)
-    {
-        return pow(-x, y);
-    }
-    else
-    {
-        return -pow(-x, y);
-    }
-}
-
 uint Random1D(uint seed)
 {
     uint state = seed * 74779640 + 2891336453;

@@ -16,28 +16,11 @@ namespace TileGraph.Nodes
         [SerializeField, Range(1, 1000)]
         private int _Iterations = 1;
 
-        [SerializeField, NodeEnum]
-        private Erosion.Algorithm _Algorithm = Erosion.Algorithm.Hydraulic;
         [SerializeField]
-        private float _TerrainHardness = 1f;
-        [SerializeField]
-        private float _SedimentHardness = 1f;
-        [SerializeField]
-        private float _DepositionRate = 1f;
-        [SerializeField]
-        private float _RainRate = 0.5f;
-        [SerializeField]
-        private float _RainAmount = 1f;
-        [SerializeField]
-        private float _MaxSlope = 3.6f;
-        [SerializeField]
-        private float _ThermalRate = 0.146f;
+        private List<Erosion.ErosionPass> _Passes = new List<Erosion.ErosionPass>();
 
         private int _CurrentIterations = 1;
-        private Erosion.Algorithm _CurrentAlgorithm = Erosion.Algorithm.Hydraulic;
-        private float _CurrentTerrainHardness = 1f, _CurrentSedimentHardness = 1f, _CurretnDepositionRate = 1f,
-            _CurrentRainRate = 0.5f, _CurrentRainAmount = 1f,
-            _CurrentMaxSlope = 3.6f, _CurrentThermalRate = 0.146f;
+        private List<Erosion.ErosionPass> _CurrentPasses = new List<Erosion.ErosionPass>();
         
         private long _TileMapInIDBuffer = 0L;
         private Types.TileMapCont _TileMapOutBuffer;
@@ -54,10 +37,7 @@ namespace TileGraph.Nodes
                 GetTileMapInput(
                     "_TileMapIn", "_TileMapOut",
                     ref _TileMapOutBuffer, ref _TileMapInIDBuffer,
-                    _CurrentIterations != _Iterations || _CurrentAlgorithm != _Algorithm
-                    || _CurrentTerrainHardness != _TerrainHardness || _CurrentSedimentHardness != _SedimentHardness || _CurretnDepositionRate != _DepositionRate
-                    || _CurrentRainRate != _RainRate || _CurrentRainAmount != _RainAmount
-                    || _CurrentMaxSlope != _MaxSlope || _CurrentThermalRate != _ThermalRate
+                    ParameterChanged()
                 );
                 return _TileMapOutBuffer;
             }
@@ -69,33 +49,21 @@ namespace TileGraph.Nodes
             if (portName == "_TileMapOut")
             {
                 _CurrentIterations = _Iterations;
-                _CurrentAlgorithm = _Algorithm;
-
-                _CurrentTerrainHardness = _TerrainHardness;
-                _CurrentSedimentHardness = _SedimentHardness;
-                _CurretnDepositionRate = _DepositionRate;
-
-                _CurrentRainRate = _RainRate;
-                _CurrentRainAmount = _RainAmount;
-
-                _CurrentMaxSlope = _MaxSlope;
-                _CurrentThermalRate = _ThermalRate;
-                switch (_Algorithm) 
-                {
-                    case Erosion.Algorithm.Hydraulic:
-                        _Graph.functionLibrary.erosion.Hydraulic(_TileMapOutBuffer, _Iterations,
-                            _TerrainHardness, _SedimentHardness, _DepositionRate,
-                            _RainRate, _RainAmount,
-                            GPUEnabled);
-                        break;
-                    case Erosion.Algorithm.Fluvial:
-                        _Graph.functionLibrary.erosion.Fluvial(_TileMapOutBuffer, _Iterations, GPUEnabled);
-                        break;
-                    case Erosion.Algorithm.Thermal:
-                        _Graph.functionLibrary.erosion.Thermal(_TileMapOutBuffer, _Iterations, _MaxSlope, _ThermalRate, GPUEnabled);
-                        break;
-                }
+                _CurrentPasses = new List<Erosion.ErosionPass>(_Passes);
+                _Graph.functionLibrary.erosion.Combined(_TileMapOutBuffer, _Passes, _Iterations, GPUEnabled);
             }
-        } 
+        }
+
+        private bool ParameterChanged()
+        {
+            if (_CurrentIterations != _Iterations || _CurrentPasses.Count != _Passes.Count)
+                return true;
+
+            for (int i = 0; i < _Passes.Count; i++)
+                if (!_Passes[i].Equals(_CurrentPasses[i]))
+                    return true;
+
+            return false;
+        }
     }
 }
