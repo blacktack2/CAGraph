@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5102248875678444088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e50e3a1e8f47546a28e2216e58a5a9, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 888, y: 696}
+  ports:
+    keys:
+    - _Value
+    values:
+    - _fieldName: _Value
+      _node: {fileID: -5102248875678444088}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _Value: 0
+  _Name: Input1
+--- !u!114 &-3650518379664974678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e50e3a1e8f47546a28e2216e58a5a9, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -233.68102, y: 3.9216547}
+  ports:
+    keys:
+    - _Value
+    values:
+    - _fieldName: _Value
+      _node: {fileID: -3650518379664974678}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _Value: 0
+  _Name: Input1
 --- !u!114 &-1032670733250814191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,8 +169,8 @@ MonoBehaviour:
   - {fileID: 1952895984900238229}
   - {fileID: 8987360796086877642}
   - {fileID: -1032670733250814191}
-  - {fileID: 2007183285487612349}
-  _ComputeShader: {fileID: 0}
+  - {fileID: -5102248875678444088}
+  _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &1952895984900238229
 MonoBehaviour:
@@ -146,38 +210,6 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _Name: BoolOut
---- !u!114 &2007183285487612349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c330f766f01ed042b6e00be9066cddb, type: 3}
-  m_Name: Integer
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 918.5891, y: 721.85516}
-  ports:
-    keys:
-    - _Value
-    values:
-    - _fieldName: _Value
-      _node: {fileID: 2007183285487612349}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  _GPUEnabled:
-    isEnabled: 1
-    isOverridden: 0
-  _Value: 0
-  _Name: Input1
 --- !u!114 &2649654950153603756
 MonoBehaviour:
   m_ObjectHideFlags: 0
