@@ -1423,6 +1423,70 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _TileMapType: 2
+--- !u!114 &-1582918088849074718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ba6e1fa06337d40bb3056e0ff6189a, type: 3}
+  m_Name: Integer Clamp
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: 1848}
+  ports:
+    keys:
+    - _Var
+    - _Min
+    - _Max
+    - _Out
+    values:
+    - _fieldName: _Var
+      _node: {fileID: -1582918088849074718}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Min
+      _node: {fileID: -1582918088849074718}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: -1582918088849074718}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Out
+      _node: {fileID: -1582918088849074718}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _Var: 4
+  _Min: 2
+  _Max: 6
+  _Out: 0
 --- !u!114 &-1138292751727731261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1553,6 +1617,70 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &-806623890304620231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf53902720a7f3748bb2bbe95cabdef2, type: 3}
+  m_Name: Float Clamp
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: 1976}
+  ports:
+    keys:
+    - _Var
+    - _Min
+    - _Max
+    - _Out
+    values:
+    - _fieldName: _Var
+      _node: {fileID: -806623890304620231}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Min
+      _node: {fileID: -806623890304620231}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: -806623890304620231}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Out
+      _node: {fileID: -806623890304620231}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _Var: 0.5
+  _Min: 0
+  _Max: 1
+  _Out: 0
 --- !u!114 &-420143625066265144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1728,6 +1856,8 @@ MonoBehaviour:
   - {fileID: -6941517695740761911}
   - {fileID: -1138292751727731261}
   - {fileID: 7385430710505530964}
+  - {fileID: -1582918088849074718}
+  - {fileID: -806623890304620231}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
