@@ -656,7 +656,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 1
+  toReplaceChanged: 0
 --- !u!114 &-5386992794153998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1423,6 +1423,60 @@ MonoBehaviour:
     height: 0
     _Cells: 
   _TileMapType: 2
+--- !u!114 &-1138292751727731261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3bba77605c9af4f886546dbdab88c6, type: 3}
+  m_Name: Integer Math
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: 1848}
+  ports:
+    keys:
+    - _A
+    - _B
+    - _Out
+    values:
+    - _fieldName: _A
+      _node: {fileID: -1138292751727731261}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _B
+      _node: {fileID: -1138292751727731261}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Out
+      _node: {fileID: -1138292751727731261}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _A: 10
+  _B: 5
+  _Out: 0
+  _Operation: 0
 --- !u!114 &-884156821854156011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1672,6 +1726,8 @@ MonoBehaviour:
   - {fileID: 7131600174344142773}
   - {fileID: -8402715694262339364}
   - {fileID: -6941517695740761911}
+  - {fileID: -1138292751727731261}
+  - {fileID: 7385430710505530964}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
@@ -2685,6 +2741,60 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
+--- !u!114 &7385430710505530964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca86343e702d11348a4af5ca59faaa24, type: 3}
+  m_Name: Float Math
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: 1976}
+  ports:
+    keys:
+    - _A
+    - _B
+    - _Out
+    values:
+    - _fieldName: _A
+      _node: {fileID: 7385430710505530964}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _B
+      _node: {fileID: 7385430710505530964}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Out
+      _node: {fileID: 7385430710505530964}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _A: 0.1
+  _B: 9.8
+  _Out: 0
+  _Operation: 0
 --- !u!114 &7717094702920464699
 MonoBehaviour:
   m_ObjectHideFlags: 0
