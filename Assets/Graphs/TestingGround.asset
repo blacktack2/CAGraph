@@ -390,6 +390,59 @@ MonoBehaviour:
     _connectionType: 0
     _typeConstraint: 0
     _dynamic: 0
+--- !u!114 &-6653998791635266190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca337aff4cc7604c9e7cf4100a1ff88, type: 3}
+  m_Name: Clamp
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 888, y: -648}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -6653998791635266190}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -6602391650931841200}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -6653998791635266190}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _Min: 0.22
+  _Max: 0.55
 --- !u!114 &-6602391650931841200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +498,10 @@ MonoBehaviour:
       _node: {fileID: -6602391650931841200}
       _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -6653998791635266190}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -656,7 +712,7 @@ MonoBehaviour:
     _Cells: 
   _ToReplace: 00000000
   _Replacement: 1
-  toReplaceChanged: 0
+  toReplaceChanged: 1
 --- !u!114 &-5386992794153998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,8 +1389,17 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: []
-  _Iterations: 10000
-  _Passes: []
+  _Iterations: 1000
+  _Passes:
+  - algorithm: 0
+    repeats: 1
+    terrainHardness: 1
+    sedimentHardness: 1
+    depositionRate: 1
+    rainRate: 0.5
+    rainAmount: 1
+    maxSlope: 3.6
+    thermalRate: 0.146
 --- !u!114 &-2196727178909149565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1487,6 +1552,59 @@ MonoBehaviour:
   _Min: 2
   _Max: 6
   _Out: 0
+--- !u!114 &-1561934646337910999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea00b09b34dfbb843a6bbd27f567782b, type: 3}
+  m_Name: Clamp
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 632, y: -1032}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -1561934646337910999}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 2977948590872729745}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -1561934646337910999}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _Min: 5
+  _Max: 10
 --- !u!114 &-1138292751727731261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1858,6 +1976,8 @@ MonoBehaviour:
   - {fileID: 7385430710505530964}
   - {fileID: -1582918088849074718}
   - {fileID: -806623890304620231}
+  - {fileID: -6653998791635266190}
+  - {fileID: -1561934646337910999}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
@@ -2202,6 +2322,9 @@ MonoBehaviour:
       connections:
       - fieldName: _TileMapIn
         node: {fileID: -5383024550381311603}
+        reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: -1561934646337910999}
         reroutePoints: []
       _direction: 1
       _connectionType: 0

@@ -115,6 +115,21 @@ namespace TileGraph.Utilities
                         cells[c] = replaceWith;
                 tileMap.SetCells(cells);
             }
+
+            public void ClampTileMap(Types.TileMapCont tileMap, float min, float max)
+            {
+                float[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] = Mathf.Clamp(cells[c], min, max);
+                tileMap.SetCells(cells);
+            }
+            public void ClampTileMap(Types.TileMapUint tileMap, uint min, uint max)
+            {
+                uint[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] = (uint) Mathf.Clamp(cells[c], min, max);
+                tileMap.SetCells(cells);
+            }
         }
     }
 }
