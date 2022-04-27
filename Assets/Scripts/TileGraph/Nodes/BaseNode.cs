@@ -145,6 +145,55 @@ namespace TileGraph.Nodes
                 UpdateTileMapOutput(outputPortName);
             }
         }
+        /// <summary> Check the given parameters to identify if a change has
+        /// been made requiring an update to the output TileMap. If a change
+        /// has been detected in the TileMap at
+        /// <paramref name="inputAPortName" /> or
+        /// <paramref name="inputBPortName" /> the <paramref name="outBuffer" />
+        /// and <paramref name="inBuffer" /> will be set accordingly (either to
+        /// null and 0 respectively if the input is null, or the
+        /// <paramref name="inBuffer" /> will be set to the id of the input).
+        /// In the event of a change to a non-null value a call to
+        /// UpdateTileMapOutput will be made with
+        /// <paramref name="outputPortName" /> as the parameter. </summary>
+        /// <param name="inputPortName"> Name of the input port receiving the
+        /// input value TileMap. </param>
+        /// <param name="outputPortName"> Name of the port the output TileMap is
+        /// to be sent to. </param>
+        /// <param name="outBuffer"> Reference to the buffer used to store the
+        /// output TileMap. </param>
+        /// <param name="inBuffer"> Reference to the buffer used to store the
+        /// ID of the input TileMap. </param>
+        /// <param name="parameterChanged"> <c>true</c> if a value relevant to
+        /// the output has been changed, otherwise <c>false</c>. </param>
+        /// <typeparam name="MTypeIn"> Type of TileMap being input.
+        /// </typeparam>
+        protected void GetTileMapInput<MTypeIn>(string inputAPortName, string inputBPortName, string outputPortName,
+                                                ref MTypeIn outBuffer, ref long inBufferA, ref long inBufferB,
+                                                bool parameterChanged = false)
+            where MTypeIn : Types.TileMap
+        {
+            MTypeIn tileMapA = GetInputValue<MTypeIn>(inputAPortName);
+            MTypeIn tileMapB = GetInputValue<MTypeIn>(inputBPortName);
+            if (tileMapA == null || tileMapB == null)
+            {
+                inBufferA = 0L;
+                inBufferB = 0L;
+                outBuffer = null;
+            }
+            else if (outBuffer == null || tileMapA.GetID() != inBufferA || tileMapB.GetID() != inBufferB)
+            {
+                inBufferA = tileMapA.GetID();
+                inBufferB = tileMapB.GetID();
+                outBuffer = (MTypeIn) tileMapA.Clone();
+                UpdateTileMapOutput(outputPortName);
+            }
+            else if (parameterChanged)
+            {
+                outBuffer = (MTypeIn) tileMapA.Clone();
+                UpdateTileMapOutput(outputPortName);
+            }
+        }
 
         /// <summary> Update the contents of the TileMap buffer being sent to
         /// the output port at <paramref name="portName" /> </summary>

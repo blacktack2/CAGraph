@@ -57,7 +57,7 @@ namespace TileGraph.Types
         {
             if (cells.Length != width * height)
                 throw new FormatException(string.Format(
-                    "Cannot accept TileMap of different size (Expected size: {}, got {})",
+                    "Cannot accept TileMap of different size (Expected size: {0}, got {1})",
                     width * height,
                     cells.Length
                 ));

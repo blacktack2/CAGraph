@@ -54,6 +54,94 @@ MonoBehaviour:
   _ToReplace: 
   _Replacement: 0
   toReplaceChanged: 0
+--- !u!114 &-9026036322235199134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Tile-Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -4104}
+  ports:
+    keys:
+    - _TileMapWidth
+    - _TileMapHeight
+    - _TileMapBoolOut
+    - _TileMapContOut
+    - _TileMapUintOut
+    values:
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -9026036322235199134}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -9026036322235199134}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBoolOut
+      _node: {fileID: -9026036322235199134}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapContOut
+      _node: {fileID: -9026036322235199134}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapUintOut
+      _node: {fileID: -9026036322235199134}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -6160924567178056654}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapWidth: 10
+  _TileMapHeight: 10
+  _TileMapBoolOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapContOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapUintOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapType: 2
 --- !u!114 &-8719908204242388708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,6 +747,82 @@ MonoBehaviour:
   - 0.0000019073486
   - 0.0000009536743
   _Advanced: 1
+--- !u!114 &-6160924567178056654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec69018b5211ab44b5c673fa7f6f4e2, type: 3}
+  m_Name: Randomize Tile-Map Integer
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -4104}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Seed
+    - _Max
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -6160924567178056654}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapUintOut
+        node: {fileID: -9026036322235199134}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: -6160924567178056654}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: -6160924567178056654}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -6160924567178056654}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: 1966464551571635752}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _Seed: 0
+  _Max: 5
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
 --- !u!114 &-5952752644616989140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,6 +877,78 @@ MonoBehaviour:
   _ToReplace: 00000000
   _Replacement: 1
   toReplaceChanged: 1
+--- !u!114 &-5575740056823212414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc39e7dd5355b047a76ddb534a6f861, type: 3}
+  m_Name: Node
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -3272}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapBIn
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: -5575740056823212414}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 8590476048175918229}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBIn
+      _node: {fileID: -5575740056823212414}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 6461947485507426033}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: -5575740056823212414}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapBIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _Value: 0.08
+  _OffsetX: 0
+  _OffsetY: 0
+  _Operation: 0
 --- !u!114 &-5386992794153998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,6 +1107,94 @@ MonoBehaviour:
   _MaxRoomArea: 3055
   _MinWallWidth: 8
   _ShowDebugLines: 0
+--- !u!114 &-5316123783128101367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Tile-Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -3144}
+  ports:
+    keys:
+    - _TileMapWidth
+    - _TileMapHeight
+    - _TileMapBoolOut
+    - _TileMapContOut
+    - _TileMapUintOut
+    values:
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -5316123783128101367}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -5316123783128101367}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBoolOut
+      _node: {fileID: -5316123783128101367}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapContOut
+      _node: {fileID: -5316123783128101367}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: 6461947485507426033}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapUintOut
+      _node: {fileID: -5316123783128101367}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapWidth: 11
+  _TileMapHeight: 11
+  _TileMapBoolOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapContOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapUintOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapType: 1
 --- !u!114 &-4666385158960886868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,6 +1662,94 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &-3327446001095008443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Tile-Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -3464}
+  ports:
+    keys:
+    - _TileMapWidth
+    - _TileMapHeight
+    - _TileMapBoolOut
+    - _TileMapContOut
+    - _TileMapUintOut
+    values:
+    - _fieldName: _TileMapWidth
+      _node: {fileID: -3327446001095008443}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: -3327446001095008443}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBoolOut
+      _node: {fileID: -3327446001095008443}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapContOut
+      _node: {fileID: -3327446001095008443}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: 8590476048175918229}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapUintOut
+      _node: {fileID: -3327446001095008443}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapWidth: 10
+  _TileMapHeight: 10
+  _TileMapBoolOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapContOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapUintOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapType: 1
 --- !u!114 &-2247996835724070591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1718,6 +2130,9 @@ MonoBehaviour:
       - fieldName: _TileMapIn
         node: {fileID: -3799896867797653077}
         reroutePoints: []
+      - fieldName: _TileMapIn
+        node: {fileID: 7316948954124433502}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -1978,6 +2393,16 @@ MonoBehaviour:
   - {fileID: -806623890304620231}
   - {fileID: -6653998791635266190}
   - {fileID: -1561934646337910999}
+  - {fileID: -5575740056823212414}
+  - {fileID: -5316123783128101367}
+  - {fileID: -3327446001095008443}
+  - {fileID: 8590476048175918229}
+  - {fileID: 6461947485507426033}
+  - {fileID: 8554328144695183475}
+  - {fileID: -9026036322235199134}
+  - {fileID: 1966464551571635752}
+  - {fileID: -6160924567178056654}
+  - {fileID: 5734572840903723683}
   _ComputeShader: {fileID: 7200000, guid: 701f0d4a6945fe246b6a02f57b923fff, type: 3}
   _GPUEnabledGlobal: 1
 --- !u!114 &214212154403782581
@@ -2264,6 +2689,78 @@ MonoBehaviour:
     isOverridden: 0
   _Value: 0
   _Name: Input1
+--- !u!114 &1966464551571635752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29b189e5b4e8c646961e25a30f01987, type: 3}
+  m_Name: Node
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -3912}
+  ports:
+    keys:
+    - _TileMapIn
+    - _TileMapBIn
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 1966464551571635752}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: -6160924567178056654}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBIn
+      _node: {fileID: 1966464551571635752}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapOut
+        node: {fileID: 5734572840903723683}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 1966464551571635752}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapBIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _Value: 0
+  _OffsetX: 0
+  _OffsetY: 0
+  _Operation: 0
 --- !u!114 &2977948590872729745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2711,6 +3208,82 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &5734572840903723683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec69018b5211ab44b5c673fa7f6f4e2, type: 3}
+  m_Name: Randomize Tile-Map Integer
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -3784}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Seed
+    - _Max
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 5734572840903723683}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapUintOut
+        node: {fileID: 8554328144695183475}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: 5734572840903723683}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Max
+      _node: {fileID: 5734572840903723683}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 5734572840903723683}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapBIn
+        node: {fileID: 1966464551571635752}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: 
+  _Seed: 0
+  _Max: 3
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: 
 --- !u!114 &6319879886868461092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2773,6 +3346,71 @@ MonoBehaviour:
     width: 0
     height: 0
     _Cells: 
+--- !u!114 &6461947485507426033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5fa37dc5d82abe4781fe472389bb6e4, type: 3}
+  m_Name: Randomize Tile-Map Continuous
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -3144}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Seed
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 6461947485507426033}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapContOut
+        node: {fileID: -5316123783128101367}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: 6461947485507426033}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 6461947485507426033}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapBIn
+        node: {fileID: -5575740056823212414}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Seed: 1
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
 --- !u!114 &6735193270223423599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3145,6 +3783,159 @@ MonoBehaviour:
     isOverridden: 0
   _Value: 0
   _Name: Input1
+--- !u!114 &8554328144695183475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d838a6f64af047a3d3c30f84e20b1, type: 3}
+  m_Name: Tile-Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -3784}
+  ports:
+    keys:
+    - _TileMapWidth
+    - _TileMapHeight
+    - _TileMapBoolOut
+    - _TileMapContOut
+    - _TileMapUintOut
+    values:
+    - _fieldName: _TileMapWidth
+      _node: {fileID: 8554328144695183475}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapHeight
+      _node: {fileID: 8554328144695183475}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapBoolOut
+      _node: {fileID: 8554328144695183475}
+      _typeQualifiedName: TileGraph.Types.TileMapBool, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapContOut
+      _node: {fileID: 8554328144695183475}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapUintOut
+      _node: {fileID: 8554328144695183475}
+      _typeQualifiedName: TileGraph.Types.TileMapUint, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: 5734572840903723683}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapWidth: 11
+  _TileMapHeight: 11
+  _TileMapBoolOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapContOut:
+    width: 0
+    height: 0
+    _Cells: []
+  _TileMapUintOut:
+    width: 0
+    height: 0
+    _Cells: 
+  _TileMapType: 2
+--- !u!114 &8590476048175918229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5fa37dc5d82abe4781fe472389bb6e4, type: 3}
+  m_Name: Randomize Tile-Map Continuous
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -3464}
+  ports:
+    keys:
+    - _TileMapIn
+    - _Seed
+    - _TileMapOut
+    values:
+    - _fieldName: _TileMapIn
+      _node: {fileID: 8590476048175918229}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapContOut
+        node: {fileID: -3327446001095008443}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _Seed
+      _node: {fileID: 8590476048175918229}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _TileMapOut
+      _node: {fileID: 8590476048175918229}
+      _typeQualifiedName: TileGraph.Types.TileMapCont, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _TileMapIn
+        node: {fileID: -5575740056823212414}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _GPUEnabled:
+    isEnabled: 1
+    isOverridden: 0
+  _TileMapIn:
+    width: 0
+    height: 0
+    _Cells: []
+  _Seed: 0
+  _TileMapOut:
+    width: 0
+    height: 0
+    _Cells: []
 --- !u!114 &9178318360205335164
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -116,6 +116,15 @@ namespace TileGraph.Utilities
                 tileMap.SetCells(cells);
             }
 
+            /// <summary> Clamp all values in <paramref name="tileMap" />
+            /// to between <paramref name="min" /> and
+            /// <paramref name="max" />. </summary>
+            /// <param name="tileMap"> <paramref name="TileMapCont" /> to
+            /// operate on. </param>
+            /// <param name="min"> Minimum value to clamp to (inclusive)
+            /// </param>
+            /// <param name="max"> Maximum value to clamp to (inclusive)
+            /// </param>
             public void ClampTileMap(Types.TileMapCont tileMap, float min, float max)
             {
                 float[] cells = tileMap.GetCells();
@@ -123,12 +132,230 @@ namespace TileGraph.Utilities
                     cells[c] = Mathf.Clamp(cells[c], min, max);
                 tileMap.SetCells(cells);
             }
+            /// <summary> Clamp all values in <paramref name="tileMap" />
+            /// to between <paramref name="min" /> and
+            /// <paramref name="max" />. </summary>
+            /// <param name="tileMap"> <paramref name="TileMapUint" /> to
+            /// operate on. </param>
+            /// <param name="min"> Minimum value to clamp to (inclusive)
+            /// </param>
+            /// <param name="max"> Maximum value to clamp to (inclusive)
+            /// </param>
             public void ClampTileMap(Types.TileMapUint tileMap, uint min, uint max)
             {
                 uint[] cells = tileMap.GetCells();
                 for (int c = 0; c < cells.Length; c++)
                     cells[c] = (uint) Mathf.Clamp(cells[c], min, max);
                 tileMap.SetCells(cells);
+            }
+
+            public void TileMapAdd(Types.TileMapCont tileMap, float value)
+            {
+                float[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] += value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapAdd(Types.TileMapUint tileMap, uint value)
+            {
+                uint[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] += value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapAdd(ref Types.TileMapCont tileMapA, Types.TileMapCont tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                float[] cells = new float[w * h];
+                float[] cellsA = tileMapA.GetCells();
+                float[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] + cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapCont(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapAdd(ref Types.TileMapUint tileMapA, Types.TileMapUint tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                uint[] cells = new uint[w * h];
+                uint[] cellsA = tileMapA.GetCells();
+                uint[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] + cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapUint(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapSubtract(Types.TileMapCont tileMap, float value)
+            {
+                float[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] -= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapSubtract(Types.TileMapUint tileMap, uint value)
+            {
+                uint[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] -= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapSubtract(ref Types.TileMapCont tileMapA, Types.TileMapCont tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                float[] cells = new float[w * h];
+                float[] cellsA = tileMapA.GetCells();
+                float[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] - cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapCont(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapSubtract(ref Types.TileMapUint tileMapA, Types.TileMapUint tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                uint[] cells = new uint[w * h];
+                uint[] cellsA = tileMapA.GetCells();
+                uint[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] - cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapUint(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapMultiply(Types.TileMapCont tileMap, float value)
+            {
+                float[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] *= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapMultiply(Types.TileMapUint tileMap, uint value)
+            {
+                uint[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] *= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapMultiply(ref Types.TileMapCont tileMapA, Types.TileMapCont tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                float[] cells = new float[w * h];
+                float[] cellsA = tileMapA.GetCells();
+                float[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] * cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapCont(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapMultiply(ref Types.TileMapUint tileMapA, Types.TileMapUint tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                uint[] cells = new uint[w * h];
+                uint[] cellsA = tileMapA.GetCells();
+                uint[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] * cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapUint(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapDivide(Types.TileMapCont tileMap, float value)
+            {
+                float[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] *= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapDivide(Types.TileMapUint tileMap, uint value)
+            {
+                uint[] cells = tileMap.GetCells();
+                for (int c = 0; c < cells.Length; c++)
+                    cells[c] *= value;
+                tileMap.SetCells(cells);
+            }
+            public void TileMapDivide(ref Types.TileMapCont tileMapA, Types.TileMapCont tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                float[] cells = new float[w * h];
+                float[] cellsA = tileMapA.GetCells();
+                float[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] / cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapCont(w, h);
+                tileMapA.SetCells(cells);
+            }
+            public void TileMapDivide(ref Types.TileMapUint tileMapA, Types.TileMapUint tileMapB, int offsetX = 0, int offsetY = 0)
+            {
+                int w = Mathf.Max(0, Mathf.Min(tileMapA.width,  tileMapB.width)  - Mathf.Max(0, offsetX));
+                int h = Mathf.Max(0, Mathf.Min(tileMapA.height, tileMapB.height) - Mathf.Max(0, offsetY));
+                uint[] cells = new uint[w * h];
+                uint[] cellsA = tileMapA.GetCells();
+                uint[] cellsB = tileMapB.GetCells();
+                int counter = 0;
+                int startX = Mathf.Max(0, offsetX);
+                int startY = Mathf.Max(0, offsetY);
+                for (int x = startX; x < startX + w; x++)
+                    for (int y = startY; y < startY + h; y++)
+                    {
+                        cells[counter++] = cellsA[x + y * tileMapA.width] / cellsB[x + y * tileMapB.width];
+                        Debug.Log(x + " " + y);
+                    }
+                tileMapA = new Types.TileMapUint(w, h);
+                tileMapA.SetCells(cells);
             }
         }
     }
