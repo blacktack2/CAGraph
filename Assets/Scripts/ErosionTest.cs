@@ -21,15 +21,20 @@ public class ErosionTest : MonoBehaviour
     {
         TileGraph.Types.TileMapCont tileMap = _TileGraph.GetOutputValue<TileGraph.Types.TileMapCont>("TileMapOut");
         float[] cells = tileMap.GetCells();
-        float[,] heightmap = new float[tileMap.width, tileMap.height];
+
+        int res = _Terrain.terrainData.heightmapResolution;
+        float[,] heightmap = _Terrain.terrainData.GetHeights(0, 0, res, res);
+        int tx = 0, ty = 0;
         for (int i = 0, x = 0, y = 0; i < heightmap.Length; i++, x++)
         {
-            if (x >= tileMap.width)
+            if (x >= res)
             {
                 x = 0;
                 y++;
+                ty = (int) (y * (float) tileMap.height / res);
             }
-            heightmap[x,y] = cells[i] / 3f;
+            tx = (int) (x * (float) tileMap.width / res);
+            heightmap[x,y] = cells[tx + ty * tileMap.width] / 3f;
         }
         _Terrain.terrainData.SetHeights(0, 0, heightmap);
     }

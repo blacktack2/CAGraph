@@ -73,8 +73,8 @@ MonoBehaviour:
   _GPUEnabled:
     isEnabled: 1
     isOverridden: 0
-  _TileMapWidth: 200
-  _TileMapHeight: 200
+  _TileMapWidth: 400
+  _TileMapHeight: 400
   _TileMapBoolOut:
     width: 0
     height: 0
@@ -307,13 +307,13 @@ MonoBehaviour:
     maxSlope: 3.6
     thermalRate: 0.146
   - algorithm: 2
-    repeats: 0
+    repeats: 1
     terrainHardness: 1
     sedimentHardness: 1
     depositionRate: 1
     rainRate: 0.5
     rainAmount: 1
-    maxSlope: 1.1
+    maxSlope: 2
     thermalRate: 0.146
   - algorithm: 1
     repeats: 1
@@ -325,7 +325,7 @@ MonoBehaviour:
     maxSlope: 3.6
     thermalRate: 0.146
   - algorithm: 0
-    repeats: 1
+    repeats: 0
     terrainHardness: 1
     sedimentHardness: 1
     depositionRate: 1
